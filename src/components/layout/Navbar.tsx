@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
 import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const LANGUAGE_META: Record<Language, { code: string; flagSrc: string }> = {
   en: { code: 'En', flagSrc: '/images/flags/en.svg' },
@@ -180,7 +181,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 h-[76px] flex items-center justify-between gap-8">
 
           {/* ── Logo (matches footer: gradient mark + Orbitron wordmark) ── */}
-          <a href="/" className="flex shrink-0 items-center gap-2" aria-label="Apex Detailing — Home">
+          <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Apex Detailing — Home">
             <div
               className="flex h-7 w-7 items-center justify-center rounded-full"
               style={{ background: 'linear-gradient(135deg, #C9A84C, #FFD700)' }}
@@ -195,7 +196,7 @@ export default function Navbar() {
               <span style={{ color: '#C9A84C' }}>APEX</span>
               <span className="ml-1 text-white">DETAILING</span>
             </span>
-          </a>
+          </Link>
 
           {/* ── Desktop nav ── */}
           <nav className="hidden lg:flex items-center gap-6" aria-label="Primary navigation">

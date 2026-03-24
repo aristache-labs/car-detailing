@@ -29,7 +29,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Apex Detail — Premium Car Detailing",
+  title: "Apex Detailing — Premium Car Detailing",
   description:
     "Luxury car detailing, ceramic coating, PPF wrapping, and leather restoration. Transform your vehicle with precision craftsmanship.",
   keywords: [
