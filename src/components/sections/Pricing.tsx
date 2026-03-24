@@ -127,7 +127,7 @@ export default function Pricing() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -3, transition: { duration: 0.24, ease: 'easeOut' } }}
-              className={`relative flex min-h-112 sm:min-h-120 lg:min-h-128 flex-col rounded-xl ${plan.highlight ? 'pricing-highlight-card' : ''}`}
+              className={`relative flex min-h-112 sm:min-h-120 lg:min-h-128 flex-col rounded-xl overflow-hidden ${plan.highlight ? 'pricing-highlight-card' : ''}`}
               style={{
                 background: plan.highlight
                   ? 'linear-gradient(160deg, rgba(27,24,15,0.98) 0%, rgba(15,13,9,0.99) 100%)'
@@ -151,7 +151,7 @@ export default function Pricing() {
                 }}
               />
               {/* Top accent bar */}
-              <div className="absolute left-0 top-0 right-0 h-[2px] overflow-hidden rounded-t-xl">
+              <div className="absolute left-0 top-0 right-0 h-[2px]">
                 {plan.highlight
                   ? <div className="pricing-top-sweep" />
                   : <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)' }} />
