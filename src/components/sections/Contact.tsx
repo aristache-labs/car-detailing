@@ -63,14 +63,14 @@ export default function Contact() {
         </span>
       </div>
 
-      <div className="max-w-6xl mx-auto px-8 md:px-14 lg:pl-32 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 md:px-14 lg:pl-32 relative">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14"
+          className="mb-10"
         >
           <h2
             className="text-5xl md:text-7xl font-black leading-none"
@@ -99,7 +99,7 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-14">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-14">
           {/* ── FORM — 60% ── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}

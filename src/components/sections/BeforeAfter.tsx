@@ -195,7 +195,7 @@ export default function BeforeAfter() {
       style={{ background: 'var(--carbon-900)' }}
     >
       {/* Section label */}
-      <div className="px-8 md:px-14 mb-10 flex items-end justify-between">
+      <div className="px-4 sm:px-8 md:px-14 mb-8 flex items-end justify-between gap-4">
         <div>
           <h2
             className="text-5xl md:text-6xl font-black leading-none"
@@ -228,8 +228,41 @@ export default function BeforeAfter() {
         </span>
       </div>
 
-      {/* Filmstrip */}
-      <div className="flex h-[420px] md:h-[520px] px-8 md:px-14 gap-2">
+      {/* ── Mobile: full-width single active panel ── */}
+      <div className="md:hidden px-4">
+        <div
+          className="relative overflow-hidden"
+          style={{
+            height: '70vw',
+            maxHeight: '360px',
+            background: panels[active].beforeBg,
+            border: '1px solid rgba(201,168,76,0.3)',
+          }}
+        >
+          <DragSlider panel={panels[active]} />
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute top-3 left-3 z-30 px-3 py-1"
+            style={{
+              background: 'rgba(201,168,76,0.15)',
+              border: '1px solid rgba(201,168,76,0.4)',
+              backdropFilter: 'blur(8px)',
+            }}
+          >
+            <span
+              className="text-[10px] font-bold tracking-widest uppercase"
+              style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
+            >
+              {panels[active].service}
+            </span>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ── Desktop: filmstrip ── */}
+      <div className="hidden md:flex h-[520px] px-14 gap-2">
         {panels.map((panel) => {
           const isActive = panel.id === active;
           return (
@@ -255,7 +288,6 @@ export default function BeforeAfter() {
                 {isActive ? (
                   <DragSlider panel={panel} />
                 ) : (
-                  /* Collapsed panel — just show label */
                   <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 gap-2">
                     <div
                       className="w-px flex-1"
@@ -277,7 +309,6 @@ export default function BeforeAfter() {
                 )}
               </div>
 
-              {/* Active badge */}
               {isActive && (
                 <motion.div
                   initial={{ opacity: 0, y: -8 }}
@@ -303,7 +334,7 @@ export default function BeforeAfter() {
       </div>
 
       {/* Panel selector dots */}
-      <div className="flex items-center gap-3 px-8 md:px-14 mt-6">
+      <div className="flex items-center gap-3 px-4 sm:px-8 md:px-14 mt-5">
         {panels.map((p) => (
           <button
             key={p.id}

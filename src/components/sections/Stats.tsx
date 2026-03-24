@@ -188,7 +188,7 @@ export default function Stats() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-8 md:px-14 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-14 relative">
         {/* Section label — flush left, no SectionHeading */}
         <div className="mb-14">
           <h2

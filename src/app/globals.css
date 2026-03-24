@@ -398,3 +398,9 @@ body {
   background: var(--carbon-800);
   color: white;
 }
+
+/* ─── Service row clip-path — only on desktop ────────────────────────────── */
+@media (min-width: 1024px) {
+  .svc-clip-right { clip-path: polygon(0 0, 94% 0, 100% 100%, 0 100%); }
+  .svc-clip-left  { clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%); }
+}

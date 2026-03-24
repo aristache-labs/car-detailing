@@ -82,7 +82,7 @@ export default function Process() {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-8 md:px-14 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 md:px-14 relative">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -133,14 +133,14 @@ export default function Process() {
               >
                 {/* Large race number — ghost behind */}
                 <div
-                  className="shrink-0 select-none"
+                  className="shrink-0 select-none hidden sm:block"
                   style={{
                     fontFamily: 'var(--font-bebas)',
-                    fontSize: 'clamp(4rem, 8vw, 7rem)',
+                    fontSize: 'clamp(3.5rem, 8vw, 7rem)',
                     lineHeight: 1,
                     color: i === 0 ? 'rgba(201,168,76,0.18)' : 'rgba(255,255,255,0.05)',
                     letterSpacing: '-0.02em',
-                    minWidth: '6rem',
+                    minWidth: '5rem',
                     textAlign: 'right',
                   }}
                 >
@@ -211,7 +211,7 @@ export default function Process() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-4 flex items-center gap-4"
+          className="mt-4 flex flex-wrap items-center gap-4"
         >
           <button
             onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}

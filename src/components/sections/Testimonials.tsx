@@ -89,9 +89,9 @@ export default function Testimonials() {
         />
       </div>
 
-      <div className="max-w-6xl mx-auto px-8 md:px-14 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 md:px-14 relative">
         {/* Section header */}
-        <div className="mb-16 flex items-end justify-between">
+        <div className="mb-10 flex items-end justify-between gap-4">
           <div>
             <h2
               className="text-5xl md:text-7xl font-black leading-none"
@@ -146,21 +146,22 @@ export default function Testimonials() {
           </button>
         </div>
 
-        {/* Stacked deck */}
+        {/* Stacked deck — auto height on mobile, fixed on desktop */}
         <div
           className="relative cursor-grab active:cursor-grabbing select-none"
-          style={{ height: '320px', perspective: '1000px' }}
+          style={{ perspective: '1000px', paddingBottom: '20px' }}
           onMouseDown={onDragStart}
           onMouseUp={onDragEnd}
           onTouchStart={onDragStart}
           onTouchEnd={onDragEnd}
         >
-          {/* Peek cards behind — 2 ghost cards */}
+          {/* Ghost shadow cards — positioned behind active card */}
           {[2, 1].map((offset) => (
             <div
               key={offset}
-              className="absolute inset-0"
+              className="absolute bottom-0 left-0 right-0"
               style={{
+                height: '20px',
                 background: 'var(--carbon-800)',
                 border: '1px solid rgba(255,255,255,0.05)',
                 borderTop: '2px solid rgba(201,168,76,0.15)',
@@ -171,7 +172,7 @@ export default function Testimonials() {
             />
           ))}
 
-          {/* Active card */}
+          {/* Active card — in flow, auto height */}
           <AnimatePresence mode="popLayout" custom={dir}>
             <motion.div
               key={current}
@@ -180,17 +181,18 @@ export default function Testimonials() {
               animate={{ x: 0, opacity: 1, scale: 1 }}
               exit={{ x: dir * -60, opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between"
+              className="relative p-6 sm:p-8 md:p-12 flex flex-col justify-between gap-6"
               style={{
                 background: 'var(--carbon-800)',
                 border: '1px solid rgba(201,168,76,0.2)',
                 borderTop: '2px solid rgba(201,168,76,0.5)',
                 zIndex: 20,
                 borderRadius: '2px',
+                minHeight: '260px',
               }}
             >
               {/* Stars */}
-              <div className="flex gap-1 mb-6">
+              <div className="flex gap-1">
                 {Array.from({ length: t.rating }).map((_, i) => (
                   <svg key={i} viewBox="0 0 16 16" className="w-4 h-4" fill="#C9A84C">
                     <path d="M8 1l1.854 3.759L14 5.528l-3 2.922.708 4.128L8 10.545l-3.708 2.033L5 8.45 2 5.528l4.146-.769L8 1z" />
@@ -200,14 +202,14 @@ export default function Testimonials() {
 
               {/* Quote */}
               <blockquote
-                className="flex-1 text-lg md:text-2xl italic leading-relaxed mb-8"
+                className="text-base sm:text-lg md:text-2xl italic leading-relaxed"
                 style={{ color: 'rgba(255,255,255,0.85)', fontFamily: 'Georgia, serif' }}
               >
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
 
               {/* Footer */}
-              <div className="flex items-end justify-between">
+              <div className="flex items-end justify-between flex-wrap gap-3">
                 <div>
                   <p
                     className="font-bold text-sm"

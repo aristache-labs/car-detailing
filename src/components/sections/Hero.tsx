@@ -58,7 +58,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen overflow-hidden flex items-center"
+      className="relative overflow-hidden flex flex-col lg:flex-row lg:items-center min-h-screen"
       style={{ background: 'var(--carbon-950)' }}
     >
       {/* Carbon grid bg */}
@@ -82,16 +82,16 @@ export default function Hero() {
         }}
       />
 
-      {/* Right panel background */}
+      {/* Right panel background — desktop only */}
       <div
-        className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2"
+        className="absolute right-0 top-0 bottom-0 hidden lg:block lg:w-1/2"
         style={{
           background: 'linear-gradient(135deg, #0d0d14 0%, #12121e 50%, #0a0a12 100%)',
         }}
       />
 
-      {/* Speed lines behind car */}
-      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
+      {/* Speed lines behind car — desktop only */}
+      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none hidden lg:block" style={{ zIndex: 1 }}>
         {[20, 35, 50, 65, 75].map((top, i) => (
           <div
             key={i}
@@ -108,7 +108,7 @@ export default function Hero() {
       </div>
 
       {/* ── LEFT PANEL — flush-left editorial ── */}
-      <div ref={leftRef} className="relative z-10 w-full lg:w-[55%] px-8 md:px-14 lg:px-20 py-32 lg:py-0">
+      <div ref={leftRef} className="relative z-10 w-full lg:w-[55%] px-6 sm:px-8 md:px-14 lg:px-20 pt-28 pb-6 lg:py-0">
         {/* Eyebrow tag */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
@@ -238,7 +238,7 @@ export default function Hero() {
         </div>
 
         {/* Mini stats row */}
-        <div className="flex gap-8 mt-14">
+        <div className="flex gap-6 sm:gap-8 mt-10 lg:mt-14">
           {[
             { v: '500+', l: 'Cars Detailed' },
             { v: '5★', l: 'Rating' },
@@ -262,13 +262,14 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── RIGHT PANEL — cutout car (PNG w/ alpha) on studio gradient ── */}
+      {/* ── RIGHT PANEL — cutout car (PNG w/ alpha) ── */}
+      {/* Mobile: in-flow block; Desktop: absolute right half */}
       <div
         ref={carRef}
-        className="absolute right-0 top-0 bottom-0 w-full lg:w-[50%] flex items-center justify-center px-2 sm:px-4 lg:px-8"
+        className="relative lg:absolute lg:right-0 lg:top-0 lg:bottom-0 w-full lg:w-[50%] flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-10 lg:pb-0"
         style={{ zIndex: 3, opacity: 0 }}
       >
-        {/* Soft spotlight behind the car — no box, no photo edge */}
+        {/* Soft spotlight behind the car */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -277,7 +278,7 @@ export default function Hero() {
           }}
         />
 
-        <div className="relative flex h-[min(72vh,620px)] w-full max-w-[min(96vw,900px)] items-center justify-center overflow-hidden lg:h-[min(82vh,760px)] xl:h-[min(88vh,820px)]">
+        <div className="relative flex h-[56vw] sm:h-[48vw] lg:h-[min(82vh,760px)] xl:h-[min(88vh,820px)] w-full max-w-[min(96vw,900px)] items-center justify-center overflow-hidden">
           <Image
             src={HERO_CAR}
             alt="Premium detailed sports car"
@@ -299,9 +300,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Bottom left corner tag */}
+      {/* Bottom left corner tag — desktop only */}
       <div
-        className="absolute bottom-8 left-8 lg:left-20 flex items-center gap-3 z-10"
+        className="hidden lg:flex absolute bottom-8 left-20 items-center gap-3 z-10"
       >
         <div className="w-6 h-px" style={{ background: 'rgba(201,168,76,0.4)' }} />
         <span

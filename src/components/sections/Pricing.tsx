@@ -97,7 +97,7 @@ export default function Pricing() {
       />
 
       {/* Section title — overlaps card rail */}
-      <div className="px-8 md:px-14 mb-10 relative z-10">
+      <div className="px-4 sm:px-8 md:px-14 mb-10 relative z-10">
         <h2
           className="text-5xl md:text-7xl font-black leading-none"
           style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
@@ -126,7 +126,7 @@ export default function Pricing() {
       <div
         ref={railRef}
         onScroll={onScroll}
-        className="flex gap-4 overflow-x-auto px-8 md:px-14 pb-6"
+        className="flex gap-4 overflow-x-auto px-4 sm:px-8 md:px-14 pb-6"
         style={{
           scrollSnapType: 'x mandatory',
           scrollbarWidth: 'none',
@@ -146,7 +146,7 @@ export default function Pricing() {
               onMouseLeave={() => setHoveredId(null)}
               className="relative shrink-0 flex flex-col"
               style={{
-                width: isHovered ? '340px' : '300px',
+                width: isHovered ? '340px' : 'min(85vw, 300px)',
                 minHeight: '520px',
                 scrollSnapAlign: 'start',
                 background: plan.highlight ? 'linear-gradient(180deg, #1a1a24 0%, #12121a 100%)' : 'var(--carbon-800)',
@@ -313,7 +313,7 @@ export default function Pricing() {
           transition={{ delay: 0.36, duration: 0.6 }}
           className="shrink-0 flex flex-col items-center justify-center p-10 text-center"
           style={{
-            width: '260px',
+            width: 'min(85vw, 260px)',
             minHeight: '520px',
             scrollSnapAlign: 'start',
             border: '1px dashed rgba(201,168,76,0.2)',
@@ -349,7 +349,7 @@ export default function Pricing() {
       </div>
 
       {/* Gold scroll progress bar */}
-      <div className="px-8 md:px-14 mt-4">
+      <div className="px-4 sm:px-8 md:px-14 mt-4">
         <div
           className="h-px w-full"
           style={{ background: 'rgba(255,255,255,0.06)' }}

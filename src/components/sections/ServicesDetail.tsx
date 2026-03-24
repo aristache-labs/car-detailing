@@ -140,19 +140,16 @@ function ServiceRow({ service }: ServiceRowProps) {
   return (
     <div
       className="relative flex flex-col lg:flex-row overflow-hidden"
-      style={{ minHeight: '52vh' }}
+      style={{ minHeight: 'clamp(340px, 52vh, 700px)' }}
     >
       {/* Icon panel */}
       <motion.div
-        className={`relative flex items-center justify-center flex-1 ${service.flip ? 'lg:order-2' : 'lg:order-1'}`}
+        className={`relative flex items-center justify-center flex-1 ${service.flip ? 'lg:order-2 svc-clip-left' : 'lg:order-1 svc-clip-right'}`}
         style={{
           background: service.flip
             ? 'linear-gradient(135deg, #0d0d14 0%, #14141c 100%)'
             : 'linear-gradient(225deg, #0d0d14 0%, #12121e 100%)',
-          clipPath: service.flip
-            ? 'polygon(0 0, 100% 0, 100% 100%, 6% 100%)'
-            : 'polygon(0 0, 94% 0, 100% 100%, 0 100%)',
-          minHeight: '260px',
+          minHeight: '220px',
         }}
         initial={{ x: fromLeft ? -80 : 80, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
@@ -177,14 +174,14 @@ function ServiceRow({ service }: ServiceRowProps) {
             backgroundSize: '40px 40px',
           }}
         />
-        <div className="relative z-10 w-32 h-32 md:w-44 md:h-44">
+        <div className="relative z-10 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44">
           {service.icon}
         </div>
       </motion.div>
 
       {/* Text panel */}
       <motion.div
-        className={`flex-1 flex items-center px-8 md:px-14 lg:px-16 py-12 ${service.flip ? 'lg:order-1' : 'lg:order-2'}`}
+        className={`flex-1 flex items-center px-6 sm:px-8 md:px-14 lg:px-16 py-8 lg:py-12 ${service.flip ? 'lg:order-1' : 'lg:order-2'}`}
         style={{ background: 'var(--carbon-950)' }}
         initial={{ x: fromLeft ? 80 : -80, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
