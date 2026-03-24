@@ -51,6 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${bebasNeue.variable} ${orbitron.variable} ${inter.variable}`}
     >
       <body className="antialiased overflow-x-hidden">

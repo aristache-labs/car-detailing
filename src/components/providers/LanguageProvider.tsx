@@ -92,14 +92,15 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export default function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === 'undefined') {
-      return 'en';
-    }
+  const [language, setLanguage] = useState<Language>('en');
 
+  useEffect(() => {
     const saved = window.localStorage.getItem('apex-language');
-    return saved === 'en' || saved === 'ro' ? saved : 'en';
-  });
+    if (saved === 'en' || saved === 'ro') {
+      const raf = window.requestAnimationFrame(() => setLanguage(saved));
+      return () => window.cancelAnimationFrame(raf);
+    }
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem('apex-language', language);

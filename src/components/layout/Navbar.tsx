@@ -4,6 +4,12 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
 import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
+import Image from 'next/image';
+
+const LANGUAGE_META: Record<Language, { code: string; flagSrc: string }> = {
+  en: { code: 'EN', flagSrc: '/images/flags/en.svg' },
+  ro: { code: 'RO', flagSrc: '/images/flags/ro.svg' },
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -53,7 +59,15 @@ export default function Navbar() {
         aria-label={t.nav.language}
         aria-expanded={langOpen}
       >
-        {language.toUpperCase()}
+        <Image
+          src={LANGUAGE_META[language].flagSrc}
+          alt=""
+          aria-hidden
+          width={18}
+          height={12}
+          className="h-3 w-[18px] rounded-[2px] object-cover"
+        />
+        <span>{LANGUAGE_META[language].code}</span>
         <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
       </button>
 
@@ -82,7 +96,17 @@ export default function Navbar() {
                   fontFamily: 'var(--font-inter)',
                 }}
               >
-                <span>{option.toUpperCase()}</span>
+                <span className="flex items-center gap-2">
+                  <Image
+                    src={LANGUAGE_META[option].flagSrc}
+                    alt=""
+                    aria-hidden
+                    width={18}
+                    height={12}
+                    className="h-3 w-[18px] rounded-[2px] object-cover"
+                  />
+                  <span>{LANGUAGE_META[option].code}</span>
+                </span>
                 {language === option && <Check className="h-3.5 w-3.5" />}
               </button>
             ))}
