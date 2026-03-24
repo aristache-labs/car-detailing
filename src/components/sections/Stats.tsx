@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 
 const items = [
-  { text: '500+ Vehicles Detailed', iconSrc: '/images/trust-icons/car.png' },
+  { text: '500+ Vehicles Refined', iconSrc: '/images/trust-icons/car.png' },
   { text: '5+ Years Experience', iconSrc: '/images/trust-icons/calendar.png' },
   { text: 'Certified Premium Products', iconSrc: '/images/trust-icons/premium.png' },
   { text: 'Response Within 24h', iconSrc: '/images/trust-icons/time.png' },

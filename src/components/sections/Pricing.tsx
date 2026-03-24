@@ -6,7 +6,7 @@ import { ArrowRight, Check, Sparkles } from 'lucide-react';
 const plans = [
   {
     id: 'essential',
-    name: 'Essential Detail',
+    name: 'Essential Detailing',
     tagline: 'Regular maintenance and a refreshed overall appearance',
     price: '180',
     currency: 'RON',

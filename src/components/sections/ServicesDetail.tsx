@@ -357,7 +357,7 @@ const services: Service[] = [
   {
     number: '08',
     title: 'Engine Bay\nDetailing',
-    subtitle: 'Degreasing, detail & protection',
+    subtitle: 'Degreasing, detailing & protection',
     description: 'Controlled degreasing removes years of grime and oil residue. All plastics dressed, metal surfaces protected, and wiring shielded — leaving the engine bay concours-clean.',
     tags: ['Degreasing', 'Plastic Dress', 'Wiring Safe'],
     imageSrc: '/images/services/Engine-Bay-Detailing.png',
