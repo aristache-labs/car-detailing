@@ -30,7 +30,7 @@ const plans = [
     currency: 'RON',
     duration: '',
     highlight: true,
-    badge: 'Most Requested',
+    badge: 'Top Choice',
     services: [
       'Paint preparation included',
       'Ceramic coating application',
@@ -127,7 +127,7 @@ export default function Pricing() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -3, transition: { duration: 0.24, ease: 'easeOut' } }}
-              className={`relative flex flex-col overflow-hidden rounded-xl ${plan.highlight ? 'pricing-highlight-card' : ''}`}
+              className={`relative flex flex-col rounded-xl ${plan.highlight ? 'pricing-highlight-card' : ''}`}
               style={{
                 background: plan.highlight
                   ? 'linear-gradient(160deg, rgba(27,24,15,0.98) 0%, rgba(15,13,9,0.99) 100%)'
@@ -150,36 +150,48 @@ export default function Pricing() {
                     : 'radial-gradient(ellipse at top right, rgba(255,255,255,0.03), transparent 60%)',
                 }}
               />
-              {/* Left-edge ribbon badge */}
-              {plan.badge && (
-                <div className="absolute left-0 z-20 pointer-events-none flex flex-col items-start" style={{ top: '44%', transform: 'translateY(-50%)' }}>
-                  <span
-                    className="pl-3 pr-5 py-[7px] text-[9px] font-black tracking-[0.13em] uppercase"
-                    style={{
-                      color: '#0A0A0D',
-                      background: 'linear-gradient(135deg, #EBCB76 0%, #C9A84C 58%, #AF8B3E 100%)',
-                      boxShadow: '3px 2px 10px rgba(0,0,0,0.32)',
-                      fontFamily: 'var(--font-orbitron)',
-                      clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%)',
-                    }}
-                  >
-                    {plan.badge}
-                  </span>
-                  <div style={{
-                    width: 0,
-                    height: 0,
-                    borderTop: '7px solid #7A5A1A',
-                    borderRight: '10px solid transparent',
-                  }} />
-                </div>
-              )}
               {/* Top accent bar */}
-              <div className="absolute left-0 top-0 right-0 h-[2px] overflow-hidden">
+              <div className="absolute left-0 top-0 right-0 h-[2px] overflow-hidden rounded-t-xl">
                 {plan.highlight
                   ? <div className="pricing-top-sweep" />
                   : <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)' }} />
                 }
               </div>
+
+              {/* Left-edge folded ribbon badge */}
+              {plan.badge && (
+                <div
+                  className="absolute z-20 pointer-events-none"
+                  style={{ left: '-8px', top: '20%' }}
+                >
+                  {/* Main ribbon tab */}
+                  <div
+                    className="flex items-center"
+                    style={{ position: 'relative' }}
+                  >
+                    <span
+                      className="pl-4 pr-4 py-[9px] text-[11px] font-black tracking-[0.18em] uppercase"
+                      style={{
+                        color: '#0A0A0D',
+                        background: 'linear-gradient(135deg, #EBCB76 0%, #C9A84C 58%, #AF8B3E 100%)',
+                        boxShadow: '4px 3px 14px rgba(0,0,0,0.5)',
+                        fontFamily: 'var(--font-orbitron)',
+                        clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%)',
+                        display: 'block',
+                      }}
+                    >
+                      {plan.badge}
+                    </span>
+                  </div>
+                  {/* Folded corner shadow (bottom-left curl) */}
+                  <div style={{
+                    width: 0,
+                    height: 0,
+                    borderTop: '8px solid #5A3F0E',
+                    borderLeft: '8px solid transparent',
+                  }} />
+                </div>
+              )}
 
               <div className="relative z-10 flex flex-col flex-1 p-5 sm:p-6">
                 {/* Plan name */}
