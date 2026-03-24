@@ -118,7 +118,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-3 mb-8 lg:mb-9"
+          className="flex items-center justify-center lg:justify-start gap-3 mb-8 lg:mb-9"
         >
           <div className="flex items-center gap-2 shrink-0" aria-hidden>
             <span
@@ -140,7 +140,7 @@ export default function Hero() {
         {/* Main headline — single-line chrome + warm metallic */}
         <div
           ref={titleRef}
-          className="filter-[drop-shadow(0_6px_24px_rgba(0,0,0,0.45))]"
+          className="filter-[drop-shadow(0_6px_24px_rgba(0,0,0,0.45))] text-center lg:text-left"
           style={{ opacity: 0 }}
         >
           <h1
@@ -193,7 +193,7 @@ export default function Hero() {
         {/* Tagline — editorial width, elegant contrast */}
         <p
           ref={subRef}
-          className="mt-4 mb-8 max-w-[min(100%,28rem)] lg:max-w-104 leading-[1.7] text-[15px] lg:text-[15px] xl:text-[0.97rem]"
+          className="mt-4 mb-8 mx-auto lg:mx-0 max-w-[min(100%,28rem)] lg:max-w-104 leading-[1.7] text-[15px] lg:text-[15px] xl:text-[0.97rem] text-center lg:text-left"
           style={{
             color: 'rgba(210, 212, 222, 0.82)',
             fontFamily: 'var(--font-inter)',
@@ -208,7 +208,7 @@ export default function Hero() {
         {/* CTAs — paired premium system */}
         <div
           ref={ctaRef}
-          className="flex flex-col sm:flex-row lg:flex-row lg:items-stretch gap-3 sm:gap-3.5"
+          className="flex flex-col sm:flex-row lg:flex-row lg:items-stretch gap-3 sm:gap-3.5 justify-center lg:justify-start"
           style={{ opacity: 0 }}
         >
           <button
@@ -231,7 +231,7 @@ export default function Hero() {
         </div>
 
         {/* Stats — editorial rhythm, not dashboard widgets */}
-        <div className="flex flex-wrap items-center gap-8 sm:gap-10 mt-12 lg:mt-14">
+        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 sm:gap-10 mt-12 lg:mt-14">
           {[
             { v: '500+', l: 'Cars Detailed' },
             { v: '5★', l: 'Rating' },
@@ -244,7 +244,7 @@ export default function Hero() {
                   aria-hidden
                 />
               )}
-              <div className="min-w-0">
+              <div className="min-w-0 text-center lg:text-left">
                 <p
                   className="text-[1.75rem] sm:text-[1.875rem] font-semibold tabular-nums tracking-tight text-[#cfa85a]"
                   style={{ fontFamily: 'var(--font-orbitron)' }}
