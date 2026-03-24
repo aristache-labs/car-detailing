@@ -119,7 +119,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed inset-y-0 right-0 z-40 w-72 flex flex-col pt-24 pb-8 px-8"
+            className="fixed inset-y-0 right-0 z-100 w-72 flex flex-col pt-24 pb-8 px-8"
             style={{
               background: 'rgba(13,13,18,0.98)',
               backdropFilter: 'blur(30px)',
