@@ -448,7 +448,7 @@ function ServiceRow({ service }: ServiceRowProps) {
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.75, ease: 'easeOut', delay: 0.1 }}
       >
-        <div className="max-w-sm">
+        <div className="max-w-sm mx-auto lg:mx-0 text-center lg:text-left">
           {/* Ghost number */}
           <div
             className="text-[3.5rem] leading-none font-black mb-1 select-none"
@@ -485,7 +485,7 @@ function ServiceRow({ service }: ServiceRowProps) {
           </p>
 
           {/* Gold rule */}
-          <div className="w-10 h-px mb-4" style={{ background: '#C9A84C' }} />
+          <div className="w-10 h-px mb-4 mx-auto lg:mx-0" style={{ background: '#C9A84C' }} />
 
           {/* Description */}
           <p
@@ -496,7 +496,7 @@ function ServiceRow({ service }: ServiceRowProps) {
           </p>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mb-6">
+          <div className="flex flex-wrap gap-1.5 mb-6 justify-center lg:justify-start">
             {service.tags.map((tag) => (
               <span
                 key={tag}
@@ -516,7 +516,7 @@ function ServiceRow({ service }: ServiceRowProps) {
           {/* CTA */}
           <button
             onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group inline-flex items-center gap-2 px-4 py-2 text-[10px] font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300"
+            className="group inline-flex items-center gap-2 px-4 py-2 mx-auto lg:mx-0 text-[10px] font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300"
             style={{
               color: '#E7C979',
               fontFamily: 'var(--font-inter)',
@@ -582,22 +582,43 @@ export default function ServicesDetail() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="flex items-center justify-end gap-4 px-8 md:px-14 py-8"
-        style={{ borderTop: '1px solid rgba(201,168,76,0.10)' }}
+        className="px-6 md:px-14 py-4 md:py-5"
+        style={{
+          borderTop: '1px solid rgba(201,168,76,0.14)',
+          background: 'linear-gradient(180deg, rgba(201,168,76,0.03) 0%, rgba(7,7,9,0.0) 100%)',
+        }}
       >
-        <button
-          onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-          className="btn-shimmer flex items-center gap-2 px-8 py-3 text-xs font-bold tracking-widest uppercase cursor-pointer transition-all duration-300"
-          style={{
-            background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-            color: '#070709',
-            fontFamily: 'var(--font-inter)',
-            clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 100%, 0 100%)',
-          }}
-        >
-          Book a Service
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        <div className="max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 md:gap-6">
+          <div className="text-center">
+            <p
+              className="text-sm md:text-base font-black tracking-[0.14em] uppercase"
+              style={{ color: '#E2C06A', fontFamily: 'var(--font-orbitron)' }}
+            >
+              Premium Detail Consultation
+            </p>
+            <p
+              className="text-[11px] md:text-xs mt-1"
+              style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
+            >
+              Tailored package for your vehicle and finish goals.
+            </p>
+          </div>
+          <button
+            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="btn-shimmer flex items-center gap-2 px-6 py-2.5 text-[10px] md:text-xs font-bold tracking-[0.16em] uppercase cursor-pointer transition-all duration-300"
+            style={{
+              background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
+              color: '#070709',
+              fontFamily: 'var(--font-inter)',
+              border: '1px solid rgba(255,215,0,0.35)',
+              boxShadow: '0 0 24px rgba(201,168,76,0.2)',
+              clipPath: 'polygon(0 0, calc(100% - 9px) 0, 100% 100%, 0 100%)',
+            }}
+          >
+            Book a Service
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </motion.div>
     </section>
   );
