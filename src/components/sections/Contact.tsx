@@ -70,7 +70,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-10"
+          className="mb-10 text-center lg:text-left"
         >
           <h2
             className="text-5xl md:text-7xl font-black leading-none"
@@ -88,8 +88,8 @@ export default function Contact() {
               SESSION
             </span>
           </h2>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-px" style={{ background: '#C9A84C' }} />
+          <div className="flex flex-col lg:flex-row items-center gap-2 lg:gap-3 mt-3">
+            <div className="w-20 lg:w-12 h-px" style={{ background: '#C9A84C' }} />
             <span
               className="text-xs tracking-[0.25em] uppercase"
               style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}

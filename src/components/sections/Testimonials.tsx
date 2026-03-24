@@ -91,8 +91,8 @@ export default function Testimonials() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-8 md:px-14 relative">
         {/* Section header */}
-        <div className="mb-10 flex items-end justify-between gap-4">
-          <div>
+        <div className="mb-10 flex flex-col md:flex-row md:items-end items-center justify-between gap-4">
+          <div className="text-center md:text-left">
             <h2
               className="text-5xl md:text-7xl font-black leading-none"
               style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
@@ -109,8 +109,8 @@ export default function Testimonials() {
                 VOICES
               </span>
             </h2>
-            <div className="flex items-center gap-3 mt-3">
-              <div className="w-12 h-px" style={{ background: '#C9A84C' }} />
+            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 mt-3">
+              <div className="w-20 md:w-12 h-px" style={{ background: '#C9A84C' }} />
               <span
                 className="text-xs tracking-[0.25em] uppercase"
                 style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
@@ -123,7 +123,7 @@ export default function Testimonials() {
           {/* Arrow navigation */}
           <button
             onClick={advance}
-            className="group flex items-center gap-2 px-5 py-3 transition-all duration-200 cursor-pointer"
+            className="group flex items-center gap-2 px-5 py-3 transition-all duration-200 cursor-pointer self-center md:self-auto"
             style={{
               border: '1px solid rgba(201,168,76,0.3)',
               background: 'transparent',

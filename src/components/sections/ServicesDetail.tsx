@@ -274,14 +274,17 @@ export default function ServicesDetail() {
   return (
     <section id="services" className="relative" style={{ background: 'var(--carbon-950)' }}>
       {/* Section label — top left */}
-      <div className="px-8 md:px-14 pt-16 pb-8 flex items-center gap-4">
+      <div className="px-8 md:px-14 pt-16 pb-8 flex flex-col md:flex-row md:items-center items-center gap-3 md:gap-4 text-center md:text-left">
         <span
           className="text-xs font-bold tracking-[0.3em] uppercase"
           style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
         >
           Our Services
         </span>
-        <div className="flex-1 h-px" style={{ background: 'rgba(201,168,76,0.15)' }} />
+        <div
+          className="h-px w-28 md:flex-1 md:w-auto"
+          style={{ background: 'rgba(201,168,76,0.15)' }}
+        />
         <span
           className="text-xs"
           style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}

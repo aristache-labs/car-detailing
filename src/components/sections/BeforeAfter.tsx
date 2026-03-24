@@ -196,7 +196,7 @@ export default function BeforeAfter() {
     >
       {/* Section label */}
       <div className="px-4 sm:px-8 md:px-14 mb-8 flex items-end justify-between gap-4">
-        <div>
+        <div className="text-center md:text-left mx-auto md:mx-0">
           <h2
             className="text-5xl md:text-6xl font-black leading-none"
             style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
@@ -213,8 +213,12 @@ export default function BeforeAfter() {
               & AFTER
             </span>
           </h2>
+          <div
+            className="h-px w-20 mx-auto md:mx-0 mt-3 mb-2"
+            style={{ background: 'rgba(201,168,76,0.5)' }}
+          />
           <p
-            className="text-sm mt-2"
+            className="text-sm"
             style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
           >
             Drag the slider to reveal the transformation

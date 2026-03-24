@@ -97,7 +97,7 @@ export default function Pricing() {
       />
 
       {/* Section title — overlaps card rail */}
-      <div className="px-4 sm:px-8 md:px-14 mb-10 relative z-10">
+      <div className="px-4 sm:px-8 md:px-14 mb-10 relative z-10 text-center md:text-left">
         <h2
           className="text-5xl md:text-7xl font-black leading-none"
           style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
@@ -114,8 +114,12 @@ export default function Pricing() {
             LEVEL
           </span>
         </h2>
+        <div
+          className="h-px w-20 mx-auto md:mx-0 mt-3 mb-2"
+          style={{ background: 'rgba(201,168,76,0.5)' }}
+        />
         <p
-          className="text-sm mt-3 max-w-md"
+          className="text-sm max-w-md mx-auto md:mx-0"
           style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
         >
           Scroll to explore all packages. Hover to reveal included services.

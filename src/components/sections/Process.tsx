@@ -89,7 +89,7 @@ export default function Process() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-16 text-center md:text-left"
         >
           <h2
             className="text-5xl md:text-7xl font-black leading-none"
@@ -107,8 +107,8 @@ export default function Process() {
               PROCESS
             </span>
           </h2>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-px" style={{ background: '#C9A84C' }} />
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 mt-3">
+            <div className="w-20 md:w-12 h-px" style={{ background: '#C9A84C' }} />
             <span
               className="text-xs tracking-[0.25em] uppercase"
               style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
