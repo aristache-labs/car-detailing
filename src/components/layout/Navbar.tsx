@@ -92,7 +92,7 @@ export default function Navbar() {
                 onClick={() => handleLanguage(option)}
                 className="flex w-full items-center justify-between px-3 py-2.5 text-left text-xs font-medium tracking-[0.12em] uppercase transition-colors duration-200 cursor-pointer"
                 style={{
-                  color: language === option ? '#C9A84C' : 'rgba(154,154,176,1)',
+                  color: language === option ? '#C9A84C' : 'var(--text-secondary)',
                   fontFamily: 'var(--font-inter)',
                 }}
               >
@@ -152,12 +152,12 @@ export default function Navbar() {
                 onClick={() => handleLink(link.href)}
                 className="text-sm font-medium tracking-widest uppercase transition-colors duration-200 cursor-pointer"
                 style={{
-                  color: 'rgba(154,154,176,1)',
+                  color: 'var(--text-secondary)',
                   fontFamily: 'var(--font-inter)',
                   letterSpacing: '0.1em',
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A84C')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(154,154,176,1)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
               >
                 {link.label}
               </button>
@@ -225,9 +225,9 @@ export default function Navbar() {
                   transition={{ delay: i * 0.06 }}
                   onClick={() => handleLink(link.href)}
                   className="text-left text-lg font-medium tracking-widest uppercase cursor-pointer"
-                  style={{ color: 'rgba(154,154,176,1)', fontFamily: 'var(--font-inter)' }}
+                  style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A84C')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(154,154,176,1)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
                 >
                   {link.label}
                 </motion.button>

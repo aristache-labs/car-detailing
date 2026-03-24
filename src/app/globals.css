@@ -20,9 +20,11 @@
   --gold-dark: #9a7b2e;
 
   /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #9a9ab0;
-  --text-muted: #5a5a72;
+  --text-primary: #f7f9fc;
+  --text-secondary: #dbe3ee;
+  --text-muted: #b7c0cf;
+  --text-soft: #96a1b3;
+  --text-micro: #aab4c3;
 
   /* Glow */
   --glow-gold: rgba(201, 168, 76, 0.35);
@@ -61,10 +63,31 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+  --color-text-soft: var(--text-soft);
+  --color-text-micro: var(--text-micro);
 
   --font-display: var(--font-bebas);
   --font-heading: var(--font-orbitron);
   --font-body: var(--font-inter);
+}
+
+/* ─── Readability helpers for dark/textured surfaces ─────────────────────── */
+.text-readable-muted {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.text-premium-micro {
+  color: var(--text-micro);
+  font-size: clamp(0.66rem, 0.63rem + 0.14vw, 0.74rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.text-on-texture {
+  color: var(--text-secondary);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
 /* ─── Base Reset ─────────────────────────────────────────────────────────── */
@@ -440,31 +463,39 @@ body {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(201, 168, 76, 0.25);
-  color: white;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.38);
+  color: var(--text-primary);
   font-family: var(--font-inter);
   font-size: 1rem;
   padding: 1.5rem 0 0.5rem;
   outline: none;
-  transition: border-color 0.3s;
+  transition: border-color 0.25s, box-shadow 0.25s, color 0.25s;
+}
+
+.float-input-wrap input::placeholder,
+.float-input-wrap textarea::placeholder {
+  color: var(--text-soft);
+  opacity: 0.9;
 }
 
 .float-input-wrap input:focus,
 .float-input-wrap select:focus,
 .float-input-wrap textarea:focus {
-  border-bottom-color: var(--gold-mid);
+  border-bottom-color: #d8bb6c;
+  box-shadow: inset 0 -1px 0 rgba(216, 187, 108, 0.24);
 }
 
 .float-input-wrap label {
   position: absolute;
   top: 1.5rem;
   left: 0;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  color: var(--text-micro);
+  font-size: 0.84rem;
   font-family: var(--font-inter);
   pointer-events: none;
   transition: all 0.25s ease;
   transform-origin: left top;
+  letter-spacing: 0.02em;
 }
 
 .float-input-wrap input:focus ~ label,
@@ -473,8 +504,9 @@ body {
 .float-input-wrap textarea:focus ~ label,
 .float-input-wrap textarea:not(:placeholder-shown) ~ label {
   top: 0.25rem;
-  font-size: 0.65rem;
-  color: var(--gold-mid);
+  font-size: 0.68rem;
+  color: #d8bb6c;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

@@ -90,10 +90,7 @@ export default function Contact() {
           </h2>
           <div className="flex flex-col lg:flex-row items-center gap-2 lg:gap-3 mt-3">
             <div className="w-20 lg:w-12 h-px" style={{ background: '#C9A84C' }} />
-            <span
-              className="text-xs tracking-[0.25em] uppercase"
-              style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-            >
+            <span className="text-premium-micro tracking-[0.25em]" style={{ fontFamily: 'var(--font-inter)' }}>
               Response within 24 hours
             </span>
           </div>
@@ -213,10 +210,7 @@ export default function Contact() {
                       Book My Appointment
                     </span>
                   </button>
-                  <p
-                    className="text-center text-xs mt-3"
-                    style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                  >
+                  <p className="text-center text-xs mt-3 text-readable-muted" style={{ fontFamily: 'var(--font-inter)' }}>
                     No commitment. Free inspection included.
                   </p>
                 </div>
@@ -255,10 +249,7 @@ export default function Contact() {
                   <Icon className="w-4 h-4" style={{ color: '#C9A84C' }} />
                 </div>
                 <div>
-                  <p
-                    className="text-[10px] font-bold tracking-widest uppercase mb-0.5"
-                    style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                  >
+                  <p className="text-premium-micro tracking-widest mb-0.5" style={{ fontFamily: 'var(--font-inter)' }}>
                     {label}
                   </p>
                   <p
@@ -267,10 +258,7 @@ export default function Contact() {
                   >
                     {value}
                   </p>
-                  <p
-                    className="text-xs mt-0.5"
-                    style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                  >
+                  <p className="text-xs mt-0.5 text-readable-muted" style={{ fontFamily: 'var(--font-inter)' }}>
                     {sub}
                   </p>
                 </div>
@@ -295,10 +283,7 @@ export default function Contact() {
                 <MapPin className="w-4 h-4" style={{ color: '#C9A84C' }} />
               </div>
               <div>
-                <p
-                  className="text-[10px] font-bold tracking-widest uppercase mb-0.5"
-                  style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                >
+                <p className="text-premium-micro tracking-widest mb-0.5" style={{ fontFamily: 'var(--font-inter)' }}>
                   Location
                 </p>
                 <p
@@ -352,10 +337,7 @@ export default function Contact() {
                 <Clock className="w-4 h-4" style={{ color: '#C9A84C' }} />
               </div>
               <div>
-                <p
-                  className="text-[10px] font-bold tracking-widest uppercase mb-2"
-                  style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                >
+                <p className="text-premium-micro tracking-widest mb-2" style={{ fontFamily: 'var(--font-inter)' }}>
                   Working Hours
                 </p>
                 {[

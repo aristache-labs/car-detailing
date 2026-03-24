@@ -304,10 +304,7 @@ export default function Process() {
 
           <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
             <div className="h-px w-20 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
-            <span
-              className="text-xs uppercase tracking-[0.26em]"
-              style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-            >
+            <span className="text-premium-micro tracking-[0.26em]" style={{ fontFamily: 'var(--font-inter)' }}>
               From booking to keys in hand
             </span>
           </div>
@@ -419,10 +416,7 @@ export default function Process() {
           >
             Start Your Booking
           </button>
-          <span
-            className="text-xs uppercase tracking-[0.18em]"
-            style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-          >
+          <span className="text-premium-micro tracking-[0.18em]" style={{ fontFamily: 'var(--font-inter)' }}>
             Same-day response guaranteed
           </span>
         </motion.div>

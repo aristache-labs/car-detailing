@@ -285,10 +285,7 @@ export default function ServicesDetail() {
           className="h-px w-28 md:flex-1 md:w-auto"
           style={{ background: 'rgba(201,168,76,0.15)' }}
         />
-        <span
-          className="text-xs"
-          style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-        >
+        <span className="text-premium-micro" style={{ fontFamily: 'var(--font-inter)' }}>
           {String(services.length).padStart(2, '0')} Specializations
         </span>
       </div>
@@ -309,10 +306,7 @@ export default function ServicesDetail() {
         className="flex flex-col sm:flex-row items-center justify-between gap-4 px-8 md:px-14 py-10"
         style={{ borderTop: '1px solid rgba(201,168,76,0.12)' }}
       >
-        <p
-          className="text-sm"
-          style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-        >
+        <p className="text-sm md:text-[0.95rem] leading-relaxed text-on-texture" style={{ fontFamily: 'var(--font-inter)' }}>
           Also offering: Interior Detailing · Leather Restoration · Wheel & Caliper Paint · Engine Bay
         </p>
         <button

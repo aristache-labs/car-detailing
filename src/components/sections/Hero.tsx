@@ -254,7 +254,7 @@ export default function Hero() {
                   {stat.v}
                 </p>
                 <p
-                  className="mt-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#6a6a7a]"
+                  className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-text-micro"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {stat.l}
@@ -310,8 +310,8 @@ export default function Hero() {
       >
         <div className="w-6 h-px" style={{ background: 'rgba(201,168,76,0.4)' }} />
         <span
-          className="text-[10px] tracking-[0.3em] uppercase"
-          style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+          className="text-premium-micro tracking-[0.3em]"
+          style={{ fontFamily: 'var(--font-inter)' }}
         >
           {t.hero.scroll}
         </span>

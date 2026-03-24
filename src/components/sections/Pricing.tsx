@@ -162,10 +162,7 @@ export default function Pricing() {
               )}
 
               <div className="flex flex-col flex-1 p-6 lg:p-7">
-                <p
-                  className="text-[10px] font-bold tracking-[0.26em] uppercase mb-2"
-                  style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                >
+                <p className="text-premium-micro tracking-[0.26em] mb-2" style={{ fontFamily: 'var(--font-inter)' }}>
                   Package
                 </p>
 
@@ -200,10 +197,7 @@ export default function Pricing() {
                     {plan.price}
                   </span>
                 </div>
-                <p
-                  className="text-xs mb-6"
-                  style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                >
+                <p className="text-xs mb-6 text-readable-muted" style={{ fontFamily: 'var(--font-inter)' }}>
                   Estimated duration: {plan.duration}
                 </p>
 
@@ -214,7 +208,7 @@ export default function Pricing() {
 
                 <p
                   className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3"
-                  style={{ color: plan.highlight ? '#C9A84C' : 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+                  style={{ color: plan.highlight ? '#C9A84C' : 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
                 >
                   Included Services
                 </p>
@@ -223,7 +217,7 @@ export default function Pricing() {
                     <li key={service} className="flex items-start gap-2">
                       <Check
                         className="w-3.5 h-3.5 mt-0.5 shrink-0"
-                        style={{ color: plan.highlight ? '#C9A84C' : '#7d7d95' }}
+                        style={{ color: plan.highlight ? '#C9A84C' : 'var(--text-muted)' }}
                       />
                       <span
                         className="text-sm leading-snug"
@@ -236,10 +230,7 @@ export default function Pricing() {
                 </ul>
 
                 {plan.services.length > 6 && (
-                  <p
-                    className="mt-3 text-xs"
-                    style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                  >
+                  <p className="mt-3 text-xs text-readable-muted" style={{ fontFamily: 'var(--font-inter)' }}>
                     +{plan.services.length - 6} more items included
                   </p>
                 )}

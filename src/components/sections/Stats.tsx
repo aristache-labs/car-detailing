@@ -193,10 +193,10 @@ function StatPanel({
       <div
         style={{
           fontFamily: 'var(--font-orbitron)',
-          fontSize: '0.6rem',
-          letterSpacing: '0.2em',
+          fontSize: '0.67rem',
+          letterSpacing: '0.18em',
           textTransform: 'uppercase',
-          color: 'white',
+          color: 'var(--text-secondary)',
           fontWeight: 700,
         }}
       >
@@ -208,8 +208,8 @@ function StatPanel({
         className="mt-1"
         style={{
           fontFamily: 'var(--font-inter)',
-          fontSize: '0.68rem',
-          color: 'var(--text-muted)',
+          fontSize: '0.72rem',
+          color: 'var(--text-micro)',
           letterSpacing: '0.02em',
         }}
       >
@@ -283,8 +283,8 @@ export default function Stats() {
           <div className="flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mt-3">
             <div className="w-20 md:w-16 h-px" style={{ background: '#C9A84C' }} />
             <span
-              className="text-xs tracking-[0.25em] uppercase"
-              style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+              className="text-premium-micro tracking-[0.25em]"
+              style={{ fontFamily: 'var(--font-inter)' }}
             >
               Proof of craft
             </span>
