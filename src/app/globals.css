@@ -290,6 +290,35 @@ body {
   pointer-events: none;
 }
 
+/* Stronger sweep for hero photo (read on dark paint + gold brand) */
+.shine-sweep--hero {
+  width: 48%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 38%,
+    rgba(255, 215, 120, 0.16) 50%,
+    rgba(255, 255, 255, 0.08) 62%,
+    transparent 100%
+  );
+  transform: skewX(-12deg);
+  animation: shine-sweep 4s ease-in-out infinite;
+}
+
+.shine-sweep--hero-delayed {
+  width: 32%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(201, 168, 76, 0.12),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: shine-sweep 5.5s ease-in-out infinite;
+  animation-delay: 1.8s;
+  opacity: 0.85;
+}
+
 /* ─── Hex bolt shape ─────────────────────────────────────────────────────── */
 .hex-bolt {
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);

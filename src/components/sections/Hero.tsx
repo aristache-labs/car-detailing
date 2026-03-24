@@ -1,12 +1,24 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, PhoneCall } from 'lucide-react';
 import gsap from 'gsap';
 
 const HERO_CAR = '/images/hero-car-no-bg.png';
+
+/** Matches <Image fill className="object-contain object-center" /> — shine only on car pixels */
+const shineMaskStyle: CSSProperties = {
+  WebkitMaskImage: `url(${HERO_CAR})`,
+  maskImage: `url(${HERO_CAR})`,
+  WebkitMaskSize: 'contain',
+  maskSize: 'contain',
+  WebkitMaskRepeat: 'no-repeat',
+  maskRepeat: 'no-repeat',
+  WebkitMaskPosition: 'center',
+  maskPosition: 'center',
+};
 
 export default function Hero() {
   const leftRef = useRef<HTMLDivElement>(null);
@@ -253,7 +265,7 @@ export default function Hero() {
       {/* ── RIGHT PANEL — cutout car (PNG w/ alpha) on studio gradient ── */}
       <div
         ref={carRef}
-        className="absolute right-0 top-0 bottom-0 w-full lg:w-[50%] flex items-center justify-center px-4 lg:px-10"
+        className="absolute right-0 top-0 bottom-0 w-full lg:w-[50%] flex items-center justify-center px-2 sm:px-4 lg:px-8"
         style={{ zIndex: 3, opacity: 0 }}
       >
         {/* Soft spotlight behind the car — no box, no photo edge */}
@@ -261,20 +273,29 @@ export default function Hero() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 65% 55% at 58% 55%, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.03) 45%, transparent 72%)',
+              'radial-gradient(ellipse 72% 58% at 50% 52%, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.04) 48%, transparent 75%)',
           }}
         />
 
-        <div className="relative flex h-[min(52vh,440px)] w-full max-w-[min(92vw,620px)] items-center justify-center lg:h-[min(62vh,520px)]">
+        <div className="relative flex h-[min(72vh,620px)] w-full max-w-[min(96vw,900px)] items-center justify-center overflow-hidden lg:h-[min(82vh,760px)] xl:h-[min(88vh,820px)]">
           <Image
             src={HERO_CAR}
             alt="Premium detailed sports car"
             fill
             priority
             unoptimized
-            sizes="(max-width: 1024px) 92vw, 620px"
-            className="object-contain object-center drop-shadow-[0_12px_48px_rgba(0,0,0,0.55)]"
+            sizes="(max-width: 1024px) 96vw, 900px"
+            className="relative z-0 object-contain object-center drop-shadow-[0_16px_56px_rgba(0,0,0,0.5)]"
           />
+          {/* Shine sweeps — masked to car alpha (no rectangular box) */}
+          <div
+            className="pointer-events-none absolute inset-0 z-1 overflow-hidden"
+            style={shineMaskStyle}
+            aria-hidden
+          >
+            <div className="shine-sweep shine-sweep--hero" />
+            <div className="shine-sweep shine-sweep--hero-delayed" />
+          </div>
         </div>
       </div>
 
