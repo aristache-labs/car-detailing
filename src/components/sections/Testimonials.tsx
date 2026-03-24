@@ -73,7 +73,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative py-20 md:py-24 overflow-hidden"
+      className="relative pt-20 pb-16 md:pt-24 md:pb-20 overflow-hidden"
       style={{ background: 'var(--carbon-950)' }}
     >
       {/* Ambient diagonal stripe */}

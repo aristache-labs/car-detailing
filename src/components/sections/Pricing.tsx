@@ -69,7 +69,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative py-20 md:py-24 overflow-hidden"
+      className="relative pt-16 pb-20 md:pt-20 md:pb-24 overflow-hidden"
       style={{ background: 'var(--carbon-900)' }}
     >
       {/* Subtle technical grid */}
