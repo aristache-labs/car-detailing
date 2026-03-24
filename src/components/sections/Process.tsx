@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
-import { CheckCircle2, ChevronDown, Droplets, Search, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Droplets, Search, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface Step {
   number: string;
@@ -16,37 +16,44 @@ interface Step {
 const steps: Step[] = [
   {
     number: '01',
-    title: 'Inspection & Quote',
-    desc: 'We assess paint condition, contamination level, and client goals. A detailed quote is issued within hours - no surprises.',
+    title: 'Inspection & Assessment',
+    desc: 'We assess paint condition, contamination, and finish goals before any work begins.',
     icon: Search,
-    tag: 'Assessment',
+    tag: 'Inspection',
     cue: 'START',
   },
   {
     number: '02',
-    title: 'Prep & Decon',
-    desc: 'Full wash, iron decontamination, clay bar treatment, and paint measurement before any polish or coating touches the vehicle.',
+    title: 'Safe Wash & Decontamination',
+    desc: 'A controlled wash, iron removal, and clay treatment prepare the surface properly.',
     icon: Droplets,
-    tag: 'Preparation',
+    tag: 'Wash',
   },
   {
     number: '03',
-    title: 'Treatment Applied',
-    desc: 'Multi-stage machine polishing, ceramic coating cure, or PPF installation - executed with professional equipment and zero shortcuts.',
-    icon: ShieldCheck,
-    tag: 'Execution',
+    title: 'Correction / Preparation',
+    desc: 'Paint correction or surface prep is performed based on the selected treatment plan.',
+    icon: Sparkles,
+    tag: 'Correction',
   },
   {
     number: '04',
+    title: 'Protection Application',
+    desc: 'Ceramic coating, PPF, or finishing protection is applied with precise technique.',
+    icon: ShieldCheck,
+    tag: 'Protection',
+  },
+  {
+    number: '05',
     title: 'Final Review',
-    desc: "Post-treatment inspection under LED and natural light. We don't release the vehicle until it meets our standard - and yours.",
+    desc: 'The vehicle is reviewed under proper lighting and delivered only when standards are met.',
     icon: CheckCircle2,
     tag: 'Delivery',
     cue: 'FINISH',
   },
 ];
 
-const desktopNodeX = [136, 102, 132, 112];
+const desktopNodeX = [136, 102, 132, 108, 128];
 
 function buildDesktopPath(index: number, total: number) {
   const currentX = desktopNodeX[index];
@@ -259,7 +266,7 @@ export default function Process() {
   return (
     <section
       id="process"
-      className="relative overflow-hidden py-24"
+      className="relative overflow-hidden py-20 md:py-22"
       style={{ background: 'var(--carbon-800)' }}
     >
       <div className="pointer-events-none absolute inset-0">
@@ -283,8 +290,19 @@ export default function Process() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: reduceMotion ? 0.3 : 0.55 }}
-          className="mb-14 max-w-3xl"
+          className="mb-10 md:mb-12 max-w-3xl text-center md:text-left"
         >
+          <span
+            className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-2"
+            style={{
+              color: '#E2C06A',
+              fontFamily: 'var(--font-orbitron)',
+              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+              border: '1px solid rgba(201,168,76,0.35)',
+            }}
+          >
+            Our Method
+          </span>
           <h2
             className="text-5xl font-black leading-none md:text-7xl"
             style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
@@ -302,10 +320,10 @@ export default function Process() {
             </span>
           </h2>
 
-          <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
-            <div className="h-px w-20 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
-            <span className="text-premium-micro tracking-[0.26em]" style={{ fontFamily: 'var(--font-inter)' }}>
-              From booking to keys in hand
+          <div className="mt-4 flex items-center justify-center md:justify-start gap-2.5 md:gap-3">
+            <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+            <span className="text-premium-micro tracking-[0.2em] text-center md:text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+              From inspection to final delivery
             </span>
           </div>
         </motion.div>
@@ -335,7 +353,7 @@ export default function Process() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.4 }}
                   transition={{ duration: reduceMotion ? 0.3 : 0.6, delay: index * 0.06, ease: 'easeOut' }}
-                  className={`relative py-8 lg:py-10 ${index === 0 ? '' : 'border-t border-white/5'}`}
+                  className={`relative py-6 lg:py-8 ${index === 0 ? '' : 'border-t border-white/5'}`}
                 >
                   <div
                     className="pointer-events-none absolute right-0 top-4 select-none"
@@ -344,7 +362,7 @@ export default function Process() {
                       fontSize: 'clamp(4.2rem, 9vw, 7.8rem)',
                       lineHeight: 0.9,
                       letterSpacing: '0.02em',
-                      color: index === 0 ? 'rgba(201,168,76,0.17)' : 'rgba(255,255,255,0.058)',
+                      color: index === 0 ? 'rgba(201,168,76,0.12)' : 'rgba(255,255,255,0.045)',
                     }}
                   >
                     {step.number}
@@ -352,7 +370,7 @@ export default function Process() {
 
                   <div className="relative z-10 max-w-2xl">
                     <span
-                      className="mb-4 inline-flex items-center gap-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em]"
+                      className="mb-3 inline-flex items-center gap-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em]"
                       style={{
                         color: '#cfb15d',
                         background: 'rgba(201,168,76,0.08)',
@@ -364,16 +382,16 @@ export default function Process() {
                       {step.tag}
                     </span>
 
-                    <div className="mb-3 flex items-center gap-3">
+                    <div className="mb-2 flex items-center gap-3">
                       <div
-                        className="flex h-9 w-9 shrink-0 items-center justify-center"
+                        className="flex h-11 w-11 shrink-0 items-center justify-center"
                         style={{
                           background: 'linear-gradient(180deg, rgba(201,168,76,0.13), rgba(201,168,76,0.04))',
                           border: '1px solid rgba(201,168,76,0.16)',
                           clipPath: 'polygon(18% 0, 100% 0, 82% 100%, 0 100%)',
                         }}
                       >
-                        <Icon className="h-4 w-4" style={{ color: '#d8bb6c' }} />
+                        <Icon className="h-5 w-5" style={{ color: '#d8bb6c' }} />
                       </div>
 
                       <h3
@@ -385,7 +403,7 @@ export default function Process() {
                     </div>
 
                     <p
-                      className="max-w-xl text-sm leading-relaxed md:text-base"
+                      className="max-w-xl text-sm leading-relaxed"
                       style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
                     >
                       {step.desc}
