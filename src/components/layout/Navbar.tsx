@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ChevronDown, Menu, X } from 'lucide-react';
+import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
 import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
 import Image from 'next/image';
 
@@ -179,37 +179,21 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8 h-[76px] flex items-center justify-between gap-8">
 
-          {/* ── Logo ── */}
-          <a href="#" className="flex items-center gap-3 shrink-0" aria-label="Apex Detailing — Home">
-            {/* Logomark: thin gold ring with a centred dot — minimal, intentional */}
-            <span
-              className="flex items-center justify-center rounded-[6px]"
-              style={{
-                width: 30,
-                height: 30,
-                border: `1.5px solid ${GOLD}`,
-                opacity: 0.85,
-              }}
+          {/* ── Logo (matches footer: gradient mark + Orbitron wordmark) ── */}
+          <a href="/" className="flex shrink-0 items-center gap-2" aria-label="Apex Detailing — Home">
+            <div
+              className="flex h-7 w-7 items-center justify-center rounded-full"
+              style={{ background: 'linear-gradient(135deg, #C9A84C, #FFD700)' }}
               aria-hidden
             >
-              <span
-                className="rounded-full"
-                style={{ width: 6, height: 6, background: GOLD, opacity: 0.9 }}
-              />
-            </span>
-
-            {/* Wordmark */}
+              <Zap className="h-3.5 w-3.5 fill-black text-black" />
+            </div>
             <span
-              style={{
-                fontFamily: 'var(--font-inter)',
-                fontSize: '0.9375rem',
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                color: '#ebebeb',
-              }}
+              className="text-base font-black uppercase tracking-[0.18em] md:text-[1.05rem]"
+              style={{ fontFamily: 'var(--font-orbitron)' }}
             >
-              APEX
-              <span style={{ color: GOLD, fontWeight: 500, letterSpacing: '0.04em' }}> DETAILING</span>
+              <span style={{ color: '#C9A84C' }}>APEX</span>
+              <span className="ml-1 text-white">DETAILING</span>
             </span>
           </a>
 
