@@ -2,20 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Zap } from 'lucide-react';
-
-const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Stats', href: '#stats' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Process', href: '#process' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Contact', href: '#contact' },
-];
+import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
+import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  const navLinks = [
+    { label: t.nav.services, href: '#services' },
+    { label: t.nav.stats, href: '#stats' },
+    { label: t.nav.gallery, href: '#gallery' },
+    { label: t.nav.process, href: '#process' },
+    { label: t.nav.pricing, href: '#pricing' },
+    { label: t.nav.contact, href: '#contact' },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -25,9 +28,69 @@ export default function Navbar() {
 
   const handleLink = (href: string) => {
     setMenuOpen(false);
+    setLangOpen(false);
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const handleLanguage = (nextLanguage: Language) => {
+    setLanguage(nextLanguage);
+    setLangOpen(false);
+  };
+
+  const renderLanguageDropdown = () => (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setLangOpen((open) => !open)}
+        className="flex items-center gap-2 rounded border px-3 py-2 text-xs font-semibold tracking-[0.14em] uppercase transition-colors duration-200 cursor-pointer"
+        style={{
+          borderColor: 'rgba(201,168,76,0.22)',
+          color: '#C9A84C',
+          background: 'rgba(7,7,9,0.65)',
+          fontFamily: 'var(--font-inter)',
+        }}
+        aria-label={t.nav.language}
+        aria-expanded={langOpen}
+      >
+        {language.toUpperCase()}
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      <AnimatePresence>
+        {langOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.18 }}
+            className="absolute right-0 top-full mt-2 min-w-[110px] overflow-hidden rounded border"
+            style={{
+              background: 'rgba(13,13,18,0.98)',
+              borderColor: 'rgba(201,168,76,0.15)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            {(['en', 'ro'] as const).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => handleLanguage(option)}
+                className="flex w-full items-center justify-between px-3 py-2.5 text-left text-xs font-medium tracking-[0.12em] uppercase transition-colors duration-200 cursor-pointer"
+                style={{
+                  color: language === option ? '#C9A84C' : 'rgba(154,154,176,1)',
+                  fontFamily: 'var(--font-inter)',
+                }}
+              >
+                <span>{option.toUpperCase()}</span>
+                {language === option && <Check className="h-3.5 w-3.5" />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 
   return (
     <>
@@ -79,6 +142,7 @@ export default function Navbar() {
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
+            {renderLanguageDropdown()}
             <button
               onClick={() => handleLink('#contact')}
               className="btn-shimmer px-6 py-2.5 text-sm font-semibold tracking-widest uppercase rounded cursor-pointer transition-all duration-300"
@@ -95,19 +159,21 @@ export default function Navbar() {
                 (e.currentTarget as HTMLElement).style.boxShadow = 'none';
               }}
             >
-              Book Now
+              {t.nav.bookNow}
             </button>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            className="lg:hidden p-2 cursor-pointer"
-            style={{ color: '#C9A84C' }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="lg:hidden flex items-center gap-2">
+            {renderLanguageDropdown()}
+            <button
+              className="p-2 cursor-pointer"
+              style={{ color: '#C9A84C' }}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -153,7 +219,7 @@ export default function Navbar() {
                   fontFamily: 'var(--font-inter)',
                 }}
               >
-                Book Now
+                {t.nav.bookNow}
               </button>
             </div>
           </motion.div>

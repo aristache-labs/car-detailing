@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, PhoneCall } from 'lucide-react';
 import gsap from 'gsap';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 const HERO_CAR = '/images/hero-car-no-bg.png';
 
@@ -26,6 +27,7 @@ export default function Hero() {
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const carRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const tl = gsap.timeline({ delay: 0.2 });
@@ -133,7 +135,7 @@ export default function Hero() {
             className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#B8924A]/90"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
-            Auto Detailing Studio
+            {t.hero.eyebrow}
           </span>
         </motion.div>
 
@@ -202,7 +204,7 @@ export default function Hero() {
             opacity: 0,
           }}
         >
-          Polish. Protect. Perfect. — Professional auto detailing that makes every vehicle impossible to ignore.
+          {t.hero.description}
         </p>
 
         {/* CTAs — paired premium system */}
@@ -216,7 +218,7 @@ export default function Hero() {
             onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
             className="hero-cta-primary group"
           >
-            Book a Service
+            {t.hero.primaryCta}
             <ArrowRight className="w-[15px] h-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={2.25} />
           </button>
 
@@ -226,16 +228,16 @@ export default function Hero() {
             className="hero-cta-secondary group"
           >
             <PhoneCall className="w-[15px] h-[15px] shrink-0 opacity-90" strokeWidth={2} />
-            Our Services
+            {t.hero.secondaryCta}
           </button>
         </div>
 
         {/* Stats — editorial rhythm, not dashboard widgets */}
         <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 sm:gap-10 mt-12 lg:mt-14">
           {[
-            { v: '500+', l: 'Cars Detailed' },
-            { v: '5★', l: 'Rating' },
-            { v: '5 Yrs', l: 'Experience' },
+            { v: '500+', l: t.hero.carsDetailed },
+            { v: '5★', l: t.hero.rating },
+            { v: '5 Yrs', l: t.hero.experience },
           ].map((stat, i) => (
             <div key={stat.l} className="flex items-center">
               {i > 0 && (
@@ -311,7 +313,7 @@ export default function Hero() {
           className="text-[10px] tracking-[0.3em] uppercase"
           style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
         >
-          Scroll to explore
+          {t.hero.scroll}
         </span>
         <motion.div
           animate={{ y: [0, 6, 0] }}

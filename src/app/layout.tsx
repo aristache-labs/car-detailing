@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Orbitron, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import LanguageProvider from "@/components/providers/LanguageProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FloatingCTA from "@/components/ui/FloatingCTA";
@@ -53,12 +54,14 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${orbitron.variable} ${inter.variable}`}
     >
       <body className="antialiased overflow-x-hidden">
-        <SmoothScrollProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <FloatingCTA />
-        </SmoothScrollProvider>
+        <LanguageProvider>
+          <SmoothScrollProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+            <FloatingCTA />
+          </SmoothScrollProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
