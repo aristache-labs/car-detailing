@@ -1,247 +1,200 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ChevronDown, ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, PhoneCall } from 'lucide-react';
 import gsap from 'gsap';
 
+const HERO_CAR = '/images/hero-car-no-bg.png';
+
 export default function Hero() {
-  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const badgesRef = useRef<HTMLDivElement>(null);
+  const carRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!headlineRef.current) return;
-
-    const tl = gsap.timeline({ delay: 0.3 });
-
-    // Split headline into spans for letter-by-letter animation
-    const h1 = headlineRef.current;
-    const words = h1.querySelectorAll('.hero-word');
+    const tl = gsap.timeline({ delay: 0.2 });
 
     tl.fromTo(
-      words,
-      { y: 80, opacity: 0, skewY: 4 },
-      {
-        y: 0,
-        opacity: 1,
-        skewY: 0,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: 'power3.out',
-      }
+      titleRef.current,
+      { x: -60, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }
     )
       .fromTo(
         subRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
-        '-=0.4'
-      )
-      .fromTo(
-        badgesRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
-        '-=0.3'
+        { x: -40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
+        '-=0.5'
       )
       .fromTo(
         ctaRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
-        '-=0.3'
+        { x: -30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
+        '-=0.4'
+      )
+      .fromTo(
+        carRef.current,
+        { x: 80, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.1, ease: 'power2.out' },
+        '-=0.8'
       );
   }, []);
-
-  const scrollToServices = () => {
-    document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-screen overflow-hidden flex items-center"
+      style={{ background: 'var(--carbon-950)' }}
     >
-      {/* Background: dark gradient simulating a studio-lit car environment */}
+      {/* Carbon grid bg */}
       <div
-        className="absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 60% at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%),
-            radial-gradient(ellipse 60% 40% at 20% 80%, rgba(200,212,222,0.04) 0%, transparent 60%),
-            linear-gradient(180deg, #070709 0%, #0d0d12 40%, #14141c 100%)
-          `,
-        }}
-      />
-
-      {/* Carbon fiber overlay */}
-      <div
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0 opacity-20"
         style={{
           backgroundImage: `
-            repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 6px),
-            repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 6px)
+            linear-gradient(rgba(201,168,76,0.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201,168,76,0.06) 1px, transparent 1px)
           `,
+          backgroundSize: '60px 60px',
         }}
       />
 
-      {/* Animated light streaks */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute left-0 top-1/3 w-px h-40 opacity-20"
-          style={{ background: 'linear-gradient(180deg, transparent, #C9A84C, transparent)' }}
-          animate={{ y: [-100, 400], opacity: [0, 0.4, 0] }}
-          transition={{ duration: 4, repeat: Infinity, repeatDelay: 3, ease: 'linear' }}
-        />
-        <motion.div
-          className="absolute right-1/4 top-0 w-px h-60 opacity-15"
-          style={{ background: 'linear-gradient(180deg, transparent, #C8D4DE, transparent)' }}
-          animate={{ y: [-200, 600], opacity: [0, 0.3, 0] }}
-          transition={{ duration: 5, repeat: Infinity, repeatDelay: 2, delay: 2, ease: 'linear' }}
-        />
-        <motion.div
-          className="absolute right-0 top-1/4 w-px h-32 opacity-15"
-          style={{ background: 'linear-gradient(180deg, transparent, #C9A84C, transparent)' }}
-          animate={{ y: [-80, 300], opacity: [0, 0.3, 0] }}
-          transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 4, delay: 1, ease: 'linear' }}
-        />
-      </div>
-
-      {/* Large background text */}
+      {/* Diagonal slash separator — visible on desktop */}
       <div
-        className="absolute bottom-0 left-0 right-0 flex items-end justify-center overflow-hidden pointer-events-none select-none"
-        style={{ height: '40%' }}
-      >
-        <span
-          className="text-[18vw] font-black leading-none tracking-tighter opacity-[0.025]"
-          style={{ fontFamily: 'var(--font-bebas)', color: '#C9A84C' }}
-        >
-          DETAILING
-        </span>
+        className="absolute inset-0 hidden lg:block pointer-events-none"
+        style={{
+          background: 'linear-gradient(105deg, var(--carbon-950) 52%, transparent 52%)',
+          zIndex: 2,
+        }}
+      />
+
+      {/* Right panel background */}
+      <div
+        className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2"
+        style={{
+          background: 'linear-gradient(135deg, #0d0d14 0%, #12121e 50%, #0a0a12 100%)',
+        }}
+      />
+
+      {/* Speed lines behind car */}
+      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
+        {[20, 35, 50, 65, 75].map((top, i) => (
+          <div
+            key={i}
+            className="absolute h-px"
+            style={{
+              top: `${top}%`,
+              right: 0,
+              width: `${40 + i * 10}%`,
+              background: `rgba(201,168,76,${0.04 + i * 0.015})`,
+              animation: `speed-slide ${3 + i * 0.4}s ease-in-out ${i * 0.6}s infinite`,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Main content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-
-        {/* Top badge */}
+      {/* ── LEFT PANEL — flush-left editorial ── */}
+      <div ref={leftRef} className="relative z-10 w-full lg:w-[55%] px-8 md:px-14 lg:px-20 py-32 lg:py-0">
+        {/* Eyebrow tag */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 text-xs font-semibold tracking-widest uppercase"
-          style={{
-            background: 'rgba(201,168,76,0.08)',
-            border: '1px solid rgba(201,168,76,0.25)',
-            color: '#C9A84C',
-            fontFamily: 'var(--font-inter)',
-          }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-3 mb-8"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-          Premium Auto Detailing Studio
+          <span
+            className="w-10 h-px"
+            style={{ background: '#C9A84C' }}
+          />
+          <span
+            className="text-xs font-bold tracking-[0.3em] uppercase"
+            style={{ color: '#C9A84C', fontFamily: 'var(--font-inter)' }}
+          >
+            Auto Detailing Studio
+          </span>
         </motion.div>
 
-        {/* Headline */}
-        <h1
-          ref={headlineRef}
-          className="overflow-hidden mb-2"
-          style={{ fontFamily: 'var(--font-bebas)', lineHeight: 0.9 }}
-        >
-          <div className="overflow-hidden">
-            <span
-              className="hero-word inline-block text-[clamp(4rem,12vw,11rem)] leading-none"
+        {/* Main headline — flush left, stacked */}
+        <div ref={titleRef} style={{ opacity: 0 }}>
+          <h1
+            className="leading-none mb-2"
+            style={{ fontFamily: 'var(--font-bebas)' }}
+          >
+            {/* APEX — chrome */}
+            <div
+              className="block text-[clamp(5rem,13vw,12rem)]"
               style={{
-                background: 'linear-gradient(135deg, #E8EEF4 0%, #C8D4DE 30%, #ffffff 50%, #C8D4DE 70%, #8E9EAB 100%)',
+                background: 'linear-gradient(135deg, #E8EEF4 0%, #C8D4DE 30%, #fff 50%, #C8D4DE 70%, #8E9EAB 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
+                lineHeight: 0.88,
               }}
             >
-              YOUR CAR
-            </span>
-          </div>
-          <div className="overflow-hidden">
-            <span
-              className="hero-word inline-block text-[clamp(4rem,12vw,11rem)] leading-none"
-              style={{
-                background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 40%, #9A7B2E 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              DESERVES
-            </span>
-          </div>
-          <div className="overflow-hidden">
-            <span
-              className="hero-word inline-block text-[clamp(4rem,12vw,11rem)] leading-none"
-              style={{
-                background: 'linear-gradient(135deg, #E8EEF4 0%, #C8D4DE 30%, #ffffff 50%, #C8D4DE 70%, #8E9EAB 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              PERFECTION
-            </span>
-          </div>
-        </h1>
-
-        {/* Subheadline */}
-        <p
-          ref={subRef}
-          className="text-lg md:text-xl max-w-2xl mx-auto mt-6 mb-8 italic"
-          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)', opacity: 0 }}
-        >
-          From paint correction to ceramic coating — we restore, protect, and perfect every surface with obsessive precision.
-        </p>
-
-        {/* Trust badges */}
-        <div
-          ref={badgesRef}
-          className="flex flex-wrap items-center justify-center gap-6 mb-10"
-          style={{ opacity: 0 }}
-        >
-          {[
-            { value: '500+', label: 'Cars Detailed' },
-            { value: '5★', label: 'Avg Rating' },
-            { value: '5 Yrs', label: 'Experience' },
-          ].map(({ value, label }) => (
-            <div key={label} className="flex flex-col items-center">
-              <span
-                className="text-2xl font-black"
-                style={{ fontFamily: 'var(--font-orbitron)', color: '#C9A84C' }}
-              >
-                {value}
-              </span>
-              <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
-                {label}
-              </span>
+              APEX
             </div>
-          ))}
+            {/* DETAIL — gold with slash accent */}
+            <div className="relative inline-block">
+              <span
+                className="block text-[clamp(5rem,13vw,12rem)]"
+                style={{
+                  background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 50%, #9A7B2E 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  lineHeight: 0.88,
+                }}
+              >
+                DETAIL
+              </span>
+              {/* Diagonal slash through DETAIL */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  top: '10%',
+                  left: '-4%',
+                  width: '108%',
+                  height: '8px',
+                  background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.7), transparent)',
+                  transform: 'rotate(-6deg)',
+                  filter: 'blur(1px)',
+                }}
+              />
+            </div>
+          </h1>
         </div>
 
-        {/* CTAs */}
+        {/* Tagline */}
+        <p
+          ref={subRef}
+          className="text-base md:text-lg mt-6 mb-10 max-w-md leading-relaxed"
+          style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)', opacity: 0 }}
+        >
+          Polish. Protect. Perfect. — Professional auto detailing that makes every vehicle impossible to ignore.
+        </p>
+
+        {/* CTAs — stacked left */}
         <div
           ref={ctaRef}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4"
           style={{ opacity: 0 }}
         >
           <button
-            onClick={scrollToServices}
-            className="btn-shimmer group flex items-center gap-2 px-8 py-4 rounded text-sm font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer"
+            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="btn-shimmer group flex items-center gap-3 px-8 py-4 text-sm font-bold tracking-[0.12em] uppercase cursor-pointer transition-all duration-300"
             style={{
               background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
               color: '#070709',
               fontFamily: 'var(--font-inter)',
-              letterSpacing: '0.1em',
+              clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 30px rgba(201,168,76,0.5), 0 0 60px rgba(201,168,76,0.2)';
-              (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 30px rgba(201,168,76,0.5)';
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-              (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
             }}
           >
             Book a Service
@@ -249,46 +202,100 @@ export default function Hero() {
           </button>
 
           <button
-            onClick={() => document.querySelector('#gallery')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group flex items-center gap-2 px-8 py-4 rounded text-sm font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer"
+            onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex items-center gap-3 px-8 py-4 text-sm font-bold tracking-[0.12em] uppercase cursor-pointer transition-all duration-300"
             style={{
-              border: '1px solid rgba(201,168,76,0.4)',
+              border: '1px solid rgba(201,168,76,0.35)',
               color: '#C9A84C',
-              fontFamily: 'var(--font-inter)',
-              letterSpacing: '0.1em',
               background: 'transparent',
+              fontFamily: 'var(--font-inter)',
+              clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.08)';
+              (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.06)';
               (e.currentTarget as HTMLElement).style.borderColor = '#C9A84C';
-              (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.background = 'transparent';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.4)';
-              (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.35)';
             }}
           >
-            <Play className="w-4 h-4" />
-            See Our Work
+            <PhoneCall className="w-4 h-4" />
+            Our Services
           </button>
+        </div>
+
+        {/* Mini stats row */}
+        <div className="flex gap-8 mt-14">
+          {[
+            { v: '500+', l: 'Cars Detailed' },
+            { v: '5★', l: 'Rating' },
+            { v: '5 Yrs', l: 'Experience' },
+          ].map(({ v, l }) => (
+            <div key={l}>
+              <div
+                className="text-2xl font-black"
+                style={{ fontFamily: 'var(--font-orbitron)', color: '#C9A84C' }}
+              >
+                {v}
+              </div>
+              <div
+                className="text-[10px] tracking-widest uppercase mt-0.5"
+                style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+              >
+                {l}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.button
-        onClick={scrollToServices}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+      {/* ── RIGHT PANEL — cutout car (PNG w/ alpha) on studio gradient ── */}
+      <div
+        ref={carRef}
+        className="absolute right-0 top-0 bottom-0 w-full lg:w-[50%] flex items-center justify-center px-4 lg:px-10"
+        style={{ zIndex: 3, opacity: 0 }}
       >
-        <span className="text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-          Scroll
+        {/* Soft spotlight behind the car — no box, no photo edge */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 65% 55% at 58% 55%, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.03) 45%, transparent 72%)',
+          }}
+        />
+
+        <div className="relative flex h-[min(52vh,440px)] w-full max-w-[min(92vw,620px)] items-center justify-center lg:h-[min(62vh,520px)]">
+          <Image
+            src={HERO_CAR}
+            alt="Premium detailed sports car"
+            fill
+            priority
+            unoptimized
+            sizes="(max-width: 1024px) 92vw, 620px"
+            className="object-contain object-center drop-shadow-[0_12px_48px_rgba(0,0,0,0.55)]"
+          />
+        </div>
+      </div>
+
+      {/* Bottom left corner tag */}
+      <div
+        className="absolute bottom-8 left-8 lg:left-20 flex items-center gap-3 z-10"
+      >
+        <div className="w-6 h-px" style={{ background: 'rgba(201,168,76,0.4)' }} />
+        <span
+          className="text-[10px] tracking-[0.3em] uppercase"
+          style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+        >
+          Scroll to explore
         </span>
-        <ChevronDown className="w-5 h-5" style={{ color: '#C9A84C' }} />
-      </motion.button>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-px h-8"
+          style={{ background: 'linear-gradient(180deg, #C9A84C, transparent)' }}
+        />
+      </div>
     </section>
   );
 }

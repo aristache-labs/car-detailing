@@ -1,285 +1,324 @@
 'use client';
 
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import SectionHeading from '@/components/ui/SectionHeading';
-import { GripVertical } from 'lucide-react';
 
-interface SliderPair {
-  label: string;
-  before: string;
-  after: string;
-  beforeLabel?: string;
-  afterLabel?: string;
-}
-
-// Using gradient placeholders — replace src values with real before/after images
-const pairs: SliderPair[] = [
+const panels = [
   {
-    label: 'Paint Correction',
-    before: '',
-    after: '',
-    beforeLabel: 'Before Polish',
-    afterLabel: 'After Polish',
+    id: 0,
+    label: 'Polish',
+    service: 'Paint Correction',
+    beforeLabel: 'Swirl Marks',
+    afterLabel: 'Mirror Finish',
+    beforeBg: 'linear-gradient(135deg, #1a1a24 0%, #0d0d12 100%)',
+    afterBg: 'linear-gradient(135deg, #1e2030 0%, #0d1020 100%)',
+    beforeAccent: '#3a3a4a',
+    afterAccent: '#C9A84C',
   },
   {
-    label: 'Interior Detail',
-    before: '',
-    after: '',
-    beforeLabel: 'Before Detail',
-    afterLabel: 'After Detail',
+    id: 1,
+    label: 'Ceramic',
+    service: 'Ceramic Coating',
+    beforeLabel: 'Dull Paint',
+    afterLabel: 'Hydrophobic Shield',
+    beforeBg: 'linear-gradient(135deg, #1a1820 0%, #0e0c14 100%)',
+    afterBg: 'linear-gradient(135deg, #101828 0%, #0a1018 100%)',
+    beforeAccent: '#3a3848',
+    afterAccent: '#4a8aa0',
   },
   {
-    label: 'Ceramic Coating',
-    before: '',
-    after: '',
-    beforeLabel: 'Before Ceramic',
-    afterLabel: 'After Ceramic',
+    id: 2,
+    label: 'PPF',
+    service: 'Paint Protection Film',
+    beforeLabel: 'Unprotected',
+    afterLabel: 'Invisible Armour',
+    beforeBg: 'linear-gradient(135deg, #1c1a18 0%, #100e0c 100%)',
+    afterBg: 'linear-gradient(135deg, #1a1c18 0%, #0e100c 100%)',
+    beforeAccent: '#3a3830',
+    afterAccent: '#6a8a50',
+  },
+  {
+    id: 3,
+    label: 'Interior',
+    service: 'Interior Detailing',
+    beforeLabel: 'Stained',
+    afterLabel: 'Showroom Ready',
+    beforeBg: 'linear-gradient(135deg, #1a1410 0%, #0e0c08 100%)',
+    afterBg: 'linear-gradient(135deg, #1a1814 0%, #0e0c0a 100%)',
+    beforeAccent: '#5a4030',
+    afterAccent: '#C9A84C',
   },
 ];
 
-function BeforeAfterSlider({ pair }: { pair: SliderPair }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState(50);
-  const isDragging = useRef(false);
+/* ── Inner drag slider ── */
+interface SliderProps {
+  panel: typeof panels[0];
+}
 
-  const getPosition = useCallback((clientX: number) => {
-    if (!containerRef.current) return 50;
+function DragSlider({ panel }: SliderProps) {
+  const [pos, setPos] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const update = useCallback((clientX: number) => {
+    if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    return (x / rect.width) * 100;
+    const pct = Math.min(Math.max(((clientX - rect.left) / rect.width) * 100, 0), 100);
+    setPos(pct);
   }, []);
 
-  const handleMove = useCallback((clientX: number) => {
-    if (!isDragging.current) return;
-    setPosition(getPosition(clientX));
-  }, [getPosition]);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => handleMove(e.clientX), [handleMove]);
-  const handleTouchMove = useCallback((e: TouchEvent) => handleMove(e.touches[0].clientX), [handleMove]);
-
-  const stopDrag = useCallback(() => { isDragging.current = false; }, []);
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', stopDrag);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', stopDrag);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', stopDrag);
-    };
-  }, [handleMouseMove, handleTouchMove, stopDrag]);
+  const onMouseDown = () => {
+    dragging.current = true;
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
+  const onMouseMove = (e: MouseEvent) => { if (dragging.current) update(e.clientX); };
+  const onMouseUp = () => {
+    dragging.current = false;
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+  };
+  const onTouchMove = (e: React.TouchEvent) => update(e.touches[0].clientX);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-4/3 rounded-xl overflow-hidden cursor-col-resize select-none"
-      style={{ border: '1px solid rgba(201,168,76,0.2)' }}
-      onMouseDown={(e) => {
-        isDragging.current = true;
-        setPosition(getPosition(e.clientX));
-      }}
-      onTouchStart={(e) => {
-        isDragging.current = true;
-        setPosition(getPosition(e.touches[0].clientX));
-      }}
+      className="relative w-full h-full overflow-hidden cursor-col-resize select-none"
+      onMouseDown={onMouseDown}
+      onTouchMove={onTouchMove}
+      onTouchStart={(e) => update(e.touches[0].clientX)}
     >
-      {/* BEFORE panel */}
+      {/* BEFORE layer */}
       <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(135deg, #1a1a24 0%, #2d2d3d 50%, #14141c 100%)',
-        }}
+        className="absolute inset-0 flex items-end p-4"
+        style={{ background: panel.beforeBg }}
       >
-        {/* Simulated "dirty/dull" car surface */}
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{
-            backgroundImage: `
-              radial-gradient(ellipse 60% 40% at 50% 60%, rgba(100,80,40,0.25) 0%, transparent 70%),
-              repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, transparent 2px, transparent 20px)
-            `,
-          }}
-        />
+        {/* Placeholder visual — swirl marks simulation */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  width: `${60 + i * 20}px`,
+                  height: '1px',
+                  background: panel.beforeAccent,
+                  top: `${30 + i * 6}%`,
+                  left: '10%',
+                  transform: `rotate(${-10 + i * 3}deg)`,
+                  opacity: 0.6,
+                }}
+              />
+            ))}
+          </div>
+        </div>
         <span
-          className="text-7xl font-black opacity-5 select-none"
-          style={{ fontFamily: 'var(--font-bebas)', color: '#8E9EAB', letterSpacing: '0.1em' }}
+          className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase"
+          style={{
+            background: 'rgba(0,0,0,0.7)',
+            color: 'rgba(255,255,255,0.5)',
+            fontFamily: 'var(--font-inter)',
+          }}
         >
-          BEFORE
+          {panel.beforeLabel}
         </span>
       </div>
 
-      {/* AFTER panel — clipped by position */}
+      {/* AFTER layer — clipped */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 flex items-end p-4"
         style={{
-          clipPath: `inset(0 ${100 - position}% 0 0)`,
-          background: 'linear-gradient(135deg, #0d0d12 0%, #1a1a28 50%, #0a0a10 100%)',
+          background: panel.afterBg,
+          clipPath: `polygon(${pos}% 0, 100% 0, 100% 100%, ${pos}% 100%)`,
         }}
       >
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{
-            backgroundImage: `
-              radial-gradient(ellipse 70% 50% at 50% 55%, rgba(201,168,76,0.12) 0%, transparent 60%),
-              radial-gradient(ellipse 40% 30% at 30% 40%, rgba(200,212,222,0.08) 0%, transparent 50%)
-            `,
-          }}
-        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          {/* Gloss effect simulation */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 80% 60% at 40% 40%, ${panel.afterAccent}22 0%, transparent 70%)`,
+            }}
+          />
+          <div
+            className="absolute w-1/3 h-full"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)',
+              left: '30%',
+            }}
+          />
+        </div>
         <span
-          className="text-7xl font-black opacity-5 select-none"
-          style={{ fontFamily: 'var(--font-bebas)', color: '#C9A84C', letterSpacing: '0.1em' }}
+          className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase ml-auto"
+          style={{
+            background: 'rgba(0,0,0,0.7)',
+            color: panel.afterAccent,
+            fontFamily: 'var(--font-inter)',
+          }}
         >
-          AFTER
+          {panel.afterLabel}
         </span>
       </div>
 
-      {/* Divider line */}
+      {/* Divider */}
       <div
-        className="absolute top-0 bottom-0 w-px"
+        className="absolute top-0 bottom-0 w-0.5 z-20"
         style={{
-          left: `${position}%`,
-          background: 'linear-gradient(180deg, transparent, #C9A84C 20%, #FFD700 50%, #C9A84C 80%, transparent)',
-          boxShadow: '0 0 12px rgba(201,168,76,0.6)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Drag handle */}
-      <div
-        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center"
-        style={{
-          left: `${position}%`,
-          background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-          boxShadow: '0 0 20px rgba(201,168,76,0.6)',
-          pointerEvents: 'none',
+          left: `${pos}%`,
+          background: '#C9A84C',
+          boxShadow: '0 0 8px rgba(201,168,76,0.6)',
         }}
       >
-        <GripVertical className="w-5 h-5 text-black" />
-      </div>
-
-      {/* Labels */}
-      <div
-        className="absolute top-4 left-4 px-2.5 py-1 text-xs font-bold tracking-widest uppercase rounded"
-        style={{
-          background: 'rgba(0,0,0,0.6)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          color: 'var(--text-secondary)',
-          fontFamily: 'var(--font-inter)',
-          opacity: position > 15 ? 1 : 0,
-          transition: 'opacity 0.2s',
-        }}
-      >
-        {pair.beforeLabel}
-      </div>
-      <div
-        className="absolute top-4 right-4 px-2.5 py-1 text-xs font-bold tracking-widest uppercase rounded"
-        style={{
-          background: 'rgba(0,0,0,0.6)',
-          border: '1px solid rgba(201,168,76,0.3)',
-          color: '#C9A84C',
-          fontFamily: 'var(--font-inter)',
-          opacity: position < 85 ? 1 : 0,
-          transition: 'opacity 0.2s',
-        }}
-      >
-        {pair.afterLabel}
-      </div>
-
-      {/* Instruction hint (fades after interaction) */}
-      <div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 text-xs tracking-widest rounded-full pointer-events-none"
-        style={{
-          background: 'rgba(0,0,0,0.5)',
-          color: 'var(--text-muted)',
-          fontFamily: 'var(--font-inter)',
-          opacity: position === 50 ? 0.8 : 0,
-          transition: 'opacity 0.4s',
-        }}
-      >
-        ← Drag to compare →
+        {/* Handle */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 flex items-center justify-center"
+          style={{ background: '#C9A84C', borderColor: '#FFD700' }}
+          onMouseDown={onMouseDown}
+        >
+          <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none">
+            <path d="M5 4L2 8L5 12M11 4L14 8L11 12" stroke="#070709" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
       </div>
     </div>
   );
 }
 
 export default function BeforeAfter() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [active, setActive] = useState(0);
 
   return (
-    <section id="gallery" className="relative py-28 px-6" style={{ background: 'var(--carbon-900)' }}>
-      <div className="absolute top-0 left-0 right-0 gold-divider" />
-
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading
-          eyebrow="Our Work"
-          title="The Difference"
-          highlight="Speaks Itself"
-          subtitle="Drag the handle to compare before and after. The proof is in the finish."
-        />
-
-        {/* Tab selectors */}
-        <div className="flex items-center justify-center gap-2 mb-10 flex-wrap">
-          {pairs.map((pair, i) => (
-            <button
-              key={pair.label}
-              onClick={() => setActiveIndex(i)}
-              className="px-5 py-2 rounded text-xs font-bold tracking-widest uppercase cursor-pointer transition-all duration-200"
+    <section
+      id="gallery"
+      className="relative py-16 overflow-hidden"
+      style={{ background: 'var(--carbon-900)' }}
+    >
+      {/* Section label */}
+      <div className="px-8 md:px-14 mb-10 flex items-end justify-between">
+        <div>
+          <h2
+            className="text-5xl md:text-6xl font-black leading-none"
+            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
+          >
+            BEFORE{' '}
+            <span
               style={{
-                fontFamily: 'var(--font-inter)',
-                background: activeIndex === i ? 'linear-gradient(135deg, #C9A84C, #FFD700)' : 'var(--carbon-800)',
-                color: activeIndex === i ? '#070709' : 'var(--text-secondary)',
-                border: activeIndex === i ? 'none' : '1px solid rgba(201,168,76,0.15)',
+                background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
               }}
             >
-              {pair.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Slider */}
-        <motion.div
-          key={activeIndex}
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="max-w-4xl mx-auto"
-        >
-          <BeforeAfterSlider pair={pairs[activeIndex]} />
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center mt-12"
-        >
-          <p className="text-sm mb-4" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-            Ready to see this transformation on your vehicle?
-          </p>
-          <button
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="btn-shimmer inline-flex items-center gap-2 px-8 py-3.5 rounded text-sm font-bold tracking-widest uppercase cursor-pointer transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-              color: '#070709',
-              fontFamily: 'var(--font-inter)',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 25px rgba(201,168,76,0.4)';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-            }}
+              & AFTER
+            </span>
+          </h2>
+          <p
+            className="text-sm mt-2"
+            style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
           >
-            Get Your Car Transformed
-          </button>
-        </motion.div>
+            Drag the slider to reveal the transformation
+          </p>
+        </div>
+        <span
+          className="hidden md:block text-xs tracking-[0.2em] uppercase"
+          style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+        >
+          Click any panel to expand
+        </span>
+      </div>
+
+      {/* Filmstrip */}
+      <div className="flex h-[420px] md:h-[520px] px-8 md:px-14 gap-2">
+        {panels.map((panel) => {
+          const isActive = panel.id === active;
+          return (
+            <motion.div
+              key={panel.id}
+              onClick={() => setActive(panel.id)}
+              className="relative overflow-hidden cursor-pointer"
+              style={{
+                flex: isActive ? '4 0 0%' : '1 0 0%',
+                transition: 'flex 0.55s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: 'skewX(-2deg)',
+                transformOrigin: 'bottom',
+                background: panel.beforeBg,
+                border: isActive ? '1px solid rgba(201,168,76,0.3)' : '1px solid rgba(255,255,255,0.04)',
+                boxShadow: isActive ? '0 0 30px rgba(201,168,76,0.1)' : 'none',
+              }}
+            >
+              {/* Inner content — unskew it */}
+              <div
+                className="absolute inset-0"
+                style={{ transform: 'skewX(2deg)' }}
+              >
+                {isActive ? (
+                  <DragSlider panel={panel} />
+                ) : (
+                  /* Collapsed panel — just show label */
+                  <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 gap-2">
+                    <div
+                      className="w-px flex-1"
+                      style={{ background: 'rgba(201,168,76,0.2)', maxHeight: 80 }}
+                    />
+                    <span
+                      className="text-xs font-bold tracking-[0.2em] uppercase"
+                      style={{
+                        color: 'rgba(201,168,76,0.7)',
+                        fontFamily: 'var(--font-orbitron)',
+                        writingMode: 'vertical-rl',
+                        textOrientation: 'mixed',
+                        transform: 'rotate(180deg)',
+                      }}
+                    >
+                      {panel.label}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Active badge */}
+              {isActive && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute top-4 left-4 z-30 px-3 py-1"
+                  style={{
+                    background: 'rgba(201,168,76,0.15)',
+                    border: '1px solid rgba(201,168,76,0.4)',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                >
+                  <span
+                    className="text-[10px] font-bold tracking-widest uppercase"
+                    style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
+                  >
+                    {panel.service}
+                  </span>
+                </motion.div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Panel selector dots */}
+      <div className="flex items-center gap-3 px-8 md:px-14 mt-6">
+        {panels.map((p) => (
+          <button
+            key={p.id}
+            onClick={() => setActive(p.id)}
+            className="transition-all duration-300"
+            style={{
+              width: active === p.id ? 32 : 8,
+              height: 3,
+              background: active === p.id ? '#C9A84C' : 'rgba(255,255,255,0.15)',
+              borderRadius: 2,
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          />
+        ))}
       </div>
     </section>
   );

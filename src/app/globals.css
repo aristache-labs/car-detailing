@@ -237,3 +237,135 @@ body {
   width: 24px !important;
   border-radius: 3px !important;
 }
+
+/* ─── Marquee ticker ─────────────────────────────────────────────────────── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Tyre spin ──────────────────────────────────────────────────────────── */
+@keyframes tyre-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.tyre-spin {
+  animation: tyre-spin 6s linear infinite;
+  transform-origin: center;
+}
+
+/* ─── Speed line slide ───────────────────────────────────────────────────── */
+@keyframes speed-slide {
+  0% { transform: translateX(120%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(-20%); opacity: 0; }
+}
+
+/* ─── Shine sweep ────────────────────────────────────────────────────────── */
+@keyframes shine-sweep {
+  0% { left: -80%; }
+  100% { left: 120%; }
+}
+
+.shine-sweep {
+  position: absolute;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  transform: skewX(-15deg);
+  animation: shine-sweep 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Hex bolt shape ─────────────────────────────────────────────────────── */
+.hex-bolt {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* ─── Diagonal slash divider ─────────────────────────────────────────────── */
+.diagonal-right {
+  clip-path: polygon(0 0, 94% 0, 100% 100%, 0 100%);
+}
+
+.diagonal-left {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%);
+}
+
+/* ─── Filmstrip skew ─────────────────────────────────────────────────────── */
+.film-panel {
+  transform: skewX(-2deg);
+  transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.film-panel > * {
+  transform: skewX(2deg);
+}
+
+/* ─── Floating label inputs ──────────────────────────────────────────────── */
+.float-input-wrap {
+  position: relative;
+}
+
+.float-input-wrap input,
+.float-input-wrap select,
+.float-input-wrap textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+  color: white;
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  padding: 1.5rem 0 0.5rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.float-input-wrap input:focus,
+.float-input-wrap select:focus,
+.float-input-wrap textarea:focus {
+  border-bottom-color: var(--gold-mid);
+}
+
+.float-input-wrap label {
+  position: absolute;
+  top: 1.5rem;
+  left: 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-family: var(--font-inter);
+  pointer-events: none;
+  transition: all 0.25s ease;
+  transform-origin: left top;
+}
+
+.float-input-wrap input:focus ~ label,
+.float-input-wrap input:not(:placeholder-shown) ~ label,
+.float-input-wrap select:focus ~ label,
+.float-input-wrap textarea:focus ~ label,
+.float-input-wrap textarea:not(:placeholder-shown) ~ label {
+  top: 0.25rem;
+  font-size: 0.65rem;
+  color: var(--gold-mid);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.float-input-wrap select option {
+  background: var(--carbon-800);
+  color: white;
+}

@@ -1,6 +1,7 @@
 import Hero from '@/components/sections/Hero';
-import Services from '@/components/sections/Services';
-import WhyUs from '@/components/sections/WhyUs';
+import ServicesMarquee from '@/components/sections/ServicesMarquee';
+import ServicesDetail from '@/components/sections/ServicesDetail';
+import Stats from '@/components/sections/Stats';
 import BeforeAfter from '@/components/sections/BeforeAfter';
 import Process from '@/components/sections/Process';
 import Testimonials from '@/components/sections/Testimonials';
@@ -11,8 +12,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Services />
-      <WhyUs />
+      <ServicesMarquee />
+      <ServicesDetail />
+      <Stats />
       <BeforeAfter />
       <Process />
       <Testimonials />
