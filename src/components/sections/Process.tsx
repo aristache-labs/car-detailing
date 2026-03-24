@@ -76,16 +76,18 @@ function buildMobilePath(index: number, total: number) {
 function ProcessNode({
   left,
   isLast,
+  icon: Icon,
   compact = false,
   reduceMotion,
 }: {
   left: number;
   isLast: boolean;
+  icon: LucideIcon;
   compact?: boolean;
   reduceMotion: boolean;
 }) {
-  const size = compact ? 30 : 40;
-  const innerSize = compact ? 7 : 9;
+  const size = compact ? 50 : 50;
+  const iconSize = compact ? 25 : 25;
 
   return (
     <motion.div
@@ -110,13 +112,11 @@ function ProcessNode({
           boxShadow: isLast ? '0 0 0 1px rgba(201,168,76,0.16), inset 0 0 18px rgba(201,168,76,0.08)' : '0 0 0 1px rgba(255,255,255,0.04)',
         }}
       >
-        <div
-          className="rounded-full"
+        <Icon
           style={{
-            width: innerSize,
-            height: innerSize,
-            background: isLast ? '#d8bb6c' : 'rgba(201,168,76,0.74)',
-            boxShadow: isLast ? '0 0 16px rgba(201,168,76,0.14)' : 'none',
+            width: iconSize,
+            height: iconSize,
+            color: isLast ? '#e2c06a' : 'rgba(201,168,76,0.86)',
           }}
         />
       </div>
@@ -134,12 +134,14 @@ function ProcessNode({
 function ProcessTrack({
   index,
   total,
+  icon,
   cue,
   isLast,
   reduceMotion,
 }: {
   index: number;
   total: number;
+  icon: LucideIcon;
   cue?: string;
   isLast: boolean;
   reduceMotion: boolean;
@@ -190,7 +192,7 @@ function ProcessTrack({
           </span>
         )}
 
-        <ProcessNode left={28} isLast={isLast} compact reduceMotion={reduceMotion} />
+        <ProcessNode left={28} isLast={isLast} icon={icon} compact reduceMotion={reduceMotion} />
 
         {!isLast && (
           <motion.div
@@ -243,7 +245,7 @@ function ProcessTrack({
           </span>
         )}
 
-        <ProcessNode left={desktopLeft} isLast={isLast} reduceMotion={reduceMotion} />
+        <ProcessNode left={desktopLeft} isLast={isLast} icon={icon} reduceMotion={reduceMotion} />
 
         {!isLast && (
           <motion.div
@@ -277,10 +279,6 @@ export default function Process() {
         <div
           className="absolute inset-x-0 top-[22%] h-px"
           style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
-        />
-        <div
-          className="absolute inset-x-0 top-[58%] h-px"
-          style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)' }}
         />
       </div>
 
@@ -342,6 +340,7 @@ export default function Process() {
                   <ProcessTrack
                     index={index}
                     total={steps.length}
+                    icon={Icon}
                     cue={step.cue}
                     isLast={isLast}
                     reduceMotion={reduceMotion}
@@ -353,7 +352,7 @@ export default function Process() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.4 }}
                   transition={{ duration: reduceMotion ? 0.3 : 0.6, delay: index * 0.06, ease: 'easeOut' }}
-                  className={`relative py-6 lg:py-8 ${index === 0 ? '' : 'border-t border-white/5'}`}
+                  className={`relative py-6 lg:py-8 flex items-center ${index === 0 ? '' : 'border-t border-white/5'}`}
                 >
                   <div
                     className="pointer-events-none absolute right-0 top-4 select-none"
@@ -369,33 +368,9 @@ export default function Process() {
                   </div>
 
                   <div className="relative z-10 max-w-2xl">
-                    <span
-                      className="mb-3 inline-flex items-center gap-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em]"
-                      style={{
-                        color: '#cfb15d',
-                        background: 'rgba(201,168,76,0.08)',
-                        border: '1px solid rgba(201,168,76,0.18)',
-                        fontFamily: 'var(--font-inter)',
-                      }}
-                    >
-                      <span className="h-1 w-1 rounded-full bg-[#cfb15d]" />
-                      {step.tag}
-                    </span>
-
                     <div className="mb-2 flex items-center gap-3">
-                      <div
-                        className="flex h-11 w-11 shrink-0 items-center justify-center"
-                        style={{
-                          background: 'linear-gradient(180deg, rgba(201,168,76,0.13), rgba(201,168,76,0.04))',
-                          border: '1px solid rgba(201,168,76,0.16)',
-                          clipPath: 'polygon(18% 0, 100% 0, 82% 100%, 0 100%)',
-                        }}
-                      >
-                        <Icon className="h-5 w-5" style={{ color: '#d8bb6c' }} />
-                      </div>
-
                       <h3
-                        className="text-2xl font-black md:text-3xl"
+                        className="text-xl font-black md:text-3xl"
                         style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
                       >
                         {step.title}
@@ -403,7 +378,7 @@ export default function Process() {
                     </div>
 
                     <p
-                      className="max-w-xl text-sm leading-relaxed"
+                      className="max-w-xl text-[0.95rem] md:text-sm leading-relaxed"
                       style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
                     >
                       {step.desc}
