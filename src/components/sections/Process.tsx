@@ -167,14 +167,16 @@ function ProcessTrack({
 
         {cue && (
           <span
-            className="absolute text-[9px] uppercase tracking-[0.32em]"
+            className="absolute rounded-sm border border-[#c9a84c]/15 px-2 py-[2px] text-[9px] uppercase tracking-[0.22em]"
             style={{
               left: 28,
               transform: 'translateX(-50%)',
-              top: index === 0 ? '0.1rem' : 'auto',
-              bottom: isLast ? '0.1rem' : 'auto',
+              top: index === 0 ? '-0.8rem' : 'auto',
+              bottom: isLast ? '-0.95rem' : 'auto',
               color: 'rgba(201,168,76,0.62)',
-              fontFamily: 'var(--font-inter)',
+              background: 'rgba(8,8,11,0.75)',
+              fontFamily: 'var(--font-orbitron)',
+              fontWeight: 600,
             }}
           >
             {cue}
@@ -218,14 +220,16 @@ function ProcessTrack({
 
         {cue && (
           <span
-            className="absolute text-[10px] uppercase tracking-[0.34em]"
+            className="absolute rounded-sm border border-[#c9a84c]/15 px-2 py-[2px] text-[10px] uppercase tracking-[0.24em]"
             style={{
               left: desktopLeft,
               transform: 'translateX(-50%)',
-              top: index === 0 ? '0.25rem' : 'auto',
-              bottom: isLast ? '0.5rem' : 'auto',
+              top: index === 0 ? '-0.85rem' : 'auto',
+              bottom: isLast ? '-1.05rem' : 'auto',
               color: 'rgba(201,168,76,0.62)',
-              fontFamily: 'var(--font-inter)',
+              background: 'rgba(8,8,11,0.78)',
+              fontFamily: 'var(--font-orbitron)',
+              fontWeight: 600,
             }}
           >
             {cue}
