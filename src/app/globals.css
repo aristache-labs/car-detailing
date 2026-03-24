@@ -28,6 +28,12 @@
   --glow-gold: rgba(201, 168, 76, 0.35);
   --glow-chrome: rgba(200, 212, 222, 0.2);
 
+  /* Hero left column — warm metallic gold (luxury, not harsh yellow) */
+  --hero-gold-light: #d6b36a;
+  --hero-gold-mid: #cfa85a;
+  --hero-gold-deep: #b8924a;
+  --hero-gold-muted: #9a7a45;
+
   /* Legacy compat */
   --background: var(--carbon-950);
   --foreground: var(--text-primary);
@@ -189,6 +195,85 @@ body {
 @keyframes shimmer {
   0% { left: -100%; }
   100% { left: 150%; }
+}
+
+/* ─── Hero left — premium CTAs (restrained, metallic, no neon) ─────────────── */
+.hero-cta-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1.5rem;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0a0a0c;
+  border-radius: 0.1875rem;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ddc48a 0%, #cfa85a 48%, #b8924a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+.hero-cta-primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero-cta-primary:active {
+  transform: translateY(0);
+}
+
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1.5rem;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d6b36a;
+  border-radius: 0.1875rem;
+  border: 1px solid rgba(207, 168, 90, 0.2);
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease,
+    color 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-cta-secondary:hover {
+  border-color: rgba(207, 168, 90, 0.42);
+  background: rgba(207, 168, 90, 0.05);
+  color: #e0c088;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(207, 168, 90, 0.08);
+  transform: translateY(-1px);
+}
+
+.hero-cta-secondary:active {
+  transform: translateY(0);
 }
 
 /* ─── Section Divider ─────────────────────────────────────────────────────── */
