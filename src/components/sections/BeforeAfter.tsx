@@ -172,7 +172,7 @@ function DragSlider({ panel }: SliderProps) {
       >
         {/* Handle */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 flex items-center justify-center"
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 md:w-8 md:h-8 rounded-full border-2 flex items-center justify-center"
           style={{ background: '#C9A84C', borderColor: '#FFD700' }}
           onMouseDown={onMouseDown}
         >
@@ -234,13 +234,35 @@ export default function BeforeAfter() {
 
       {/* ── Mobile: full-width single active panel ── */}
       <div className="md:hidden px-4">
+        {/* Mobile service switcher */}
+        <div className="mb-4 flex items-center justify-center gap-2">
+          {panels.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => setActive(p.id)}
+              className="px-3 py-1.5 text-[10px] font-bold tracking-[0.16em] uppercase transition-all duration-200"
+              style={{
+                color: active === p.id ? '#C9A84C' : 'rgba(154,154,176,0.9)',
+                background: active === p.id ? 'rgba(201,168,76,0.1)' : 'rgba(255,255,255,0.02)',
+                border: `1px solid ${active === p.id ? 'rgba(201,168,76,0.35)' : 'rgba(255,255,255,0.08)'}`,
+                fontFamily: 'var(--font-inter)',
+              }}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+
         <div
           className="relative overflow-hidden"
           style={{
-            height: '70vw',
-            maxHeight: '360px',
+            height: '82vw',
+            minHeight: '320px',
+            maxHeight: '430px',
             background: panels[active].beforeBg,
             border: '1px solid rgba(201,168,76,0.3)',
+            boxShadow: '0 12px 30px rgba(0,0,0,0.35)',
           }}
         >
           <DragSlider panel={panels[active]} />
@@ -338,7 +360,7 @@ export default function BeforeAfter() {
       </div>
 
       {/* Panel selector dots */}
-      <div className="flex items-center gap-3 px-4 sm:px-8 md:px-14 mt-5">
+      <div className="hidden md:flex items-center gap-3 px-4 sm:px-8 md:px-14 mt-5">
         {panels.map((p) => (
           <button
             key={p.id}
