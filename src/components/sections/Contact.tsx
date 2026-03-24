@@ -1,69 +1,218 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import {
-  PhoneCall,
-  Mail,
-  MapPinned,
-  Clock3,
-  CarFront,
-  ClipboardCheck,
-  ShieldCheck,
-  ArrowRight,
-  Route,
-} from 'lucide-react';
+import { ChevronDown, Clock, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
 
-const SERVICE_CHIPS = [
-  'Exterior Detail',
-  'Interior Detail',
-  'Ceramic Coating',
-  'PPF',
+const SERVICE_OPTIONS = [
+  'Exterior Detailing',
   'Paint Correction',
-  'Bespoke Quote',
+  'Ceramic Coating',
+  'PPF Protection',
+  'Interior Detailing',
+  'Leather Care & Restoration',
+  'Wheel & Caliper Detailing',
+  'Engine Bay Detailing',
+  'Not Sure / Need Guidance',
+] as const;
+
+const CONDITION_OPTIONS = [
+  'Excellent / Well Maintained',
+  'Light Swirls / Minor Wear',
+  'Moderate Defects / Visible Wear',
+  'Heavy Defects / Needs Assessment',
+  'Not Sure',
+] as const;
+
+const TRUST_BULLETS = [
+  'Free inspection available',
+  'Quote within 24 hours',
+  'No obligation',
+  'Premium products only',
+  'Written warranty on selected services',
 ];
 
-const NEXT_STEPS = [
-  {
-    icon: CarFront,
-    label: 'Tell us your vehicle',
-    desc: 'Share your car details and the service you have in mind.',
-  },
-  {
-    icon: ClipboardCheck,
-    label: 'We review & recommend',
-    desc: 'We assess your request and confirm the right package.',
-  },
-  {
-    icon: ShieldCheck,
-    label: 'Confirmed within 24h',
-    desc: 'Receive a tailored quote with free inspection included.',
-  },
+const TRUST_STUDIO_HOURS = [
+  { label: 'Mon – Fri', time: '09:00 – 19:00' },
+  { label: 'Saturday', time: '09:00 – 16:00' },
+  { label: 'Sunday', time: 'By appointment' },
+] as const;
+
+const SERVICE_SELECT_OPTIONS = SERVICE_OPTIONS.map((s) => ({ value: s, label: s }));
+
+const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
+  { value: '', label: 'Optional — select condition' },
+  ...CONDITION_OPTIONS.map((c) => ({ value: c, label: c })),
 ];
+
+const inputBase =
+  'w-full rounded-sm border border-white/[0.12] bg-white/[0.03] px-3 py-2.5 text-sm text-white outline-none transition-[border-color,box-shadow] [color-scheme:dark] placeholder:text-white/25 focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/35';
+
+const labelBase =
+  'mb-1.5 block text-[9px] font-bold uppercase tracking-[0.16em]';
+
+const trustAsideSectionTitle =
+  'mb-4 flex w-full items-center justify-center gap-3 text-center';
+
+function FieldLabel({
+  htmlFor,
+  children,
+  required,
+}: {
+  htmlFor: string;
+  children: ReactNode;
+  required?: boolean;
+}) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className={labelBase}
+      style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
+    >
+      {children}
+      {required ? (
+        <span className="ml-0.5 text-[#C9A84C]" aria-hidden>
+          *
+        </span>
+      ) : null}
+    </label>
+  );
+}
+
+function DarkSelect({
+  id,
+  name,
+  value,
+  onChange,
+  options,
+  placeholder,
+  error,
+}: {
+  id: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: readonly { value: string; label: string }[];
+  placeholder: string;
+  error?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const listId = `${id}-listbox`;
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const display = options.find((o) => o.value === value)?.label ?? placeholder;
+  const showPlaceholderStyle = value === '' && !options.some((o) => o.value === '');
+
+  return (
+    <div className="relative" ref={wrapRef}>
+      <input type="hidden" name={name} value={value} />
+      <button
+        type="button"
+        id={id}
+        className={`${inputBase} flex w-full cursor-pointer items-center justify-between gap-2 text-left`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listId}
+        onClick={() => setOpen((o) => !o)}
+        style={
+          error
+            ? { borderColor: 'rgba(251, 191, 36, 0.45)', boxShadow: '0 0 0 1px rgba(251, 191, 36, 0.2)' }
+            : undefined
+        }
+      >
+        <span className={showPlaceholderStyle ? 'text-white/40' : undefined}>{display}</span>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-white/45 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          aria-hidden
+        />
+      </button>
+      {open ? (
+        <ul
+          id={listId}
+          role="listbox"
+          className="absolute left-0 right-0 top-full z-60 mt-1 max-h-60 overflow-auto rounded-sm border border-white/12 bg-[#0c0c10] py-1 shadow-[0_16px_48px_rgba(0,0,0,0.55)]"
+          style={{ fontFamily: 'var(--font-inter)' }}
+        >
+          {options.map((opt) => (
+            <li key={opt.value === '' ? '__empty' : opt.value} role="presentation">
+              <button
+                type="button"
+                role="option"
+                aria-selected={value === opt.value}
+                className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                  value === opt.value
+                    ? 'bg-[#C9A84C]/15 text-[#f0d892]'
+                    : 'text-white/90 hover:bg-white/6'
+                }`}
+                onClick={() => {
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+              >
+                {opt.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
-  const [selectedChip, setSelectedChip] = useState('');
+  const [fileHint, setFileHint] = useState('');
+  const [service, setService] = useState('');
+  const [condition, setCondition] = useState('');
+  const [serviceError, setServiceError] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!service) {
+      setServiceError(true);
+      return;
+    }
+    setServiceError(false);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
   };
 
-  const handleChipClick = (chip: string) => {
-    setSelectedChip(prev => prev === chip ? '' : chip);
-    const sel = document.getElementById('service') as HTMLSelectElement | null;
-    if (sel) sel.value = chip === selectedChip ? '' : chip;
+  const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files;
+    if (!f || f.length === 0) {
+      setFileHint('');
+      return;
+    }
+    if (f.length > 3) {
+      setFileHint('Please choose up to 3 photos.');
+      e.target.value = '';
+      return;
+    }
+    setFileHint('');
   };
 
   return (
     <section
       id="contact"
-      className="relative py-16 md:py-20 overflow-hidden"
+      className="relative overflow-hidden py-14 md:py-18"
       style={{ background: 'var(--carbon-950)' }}
     >
-      {/* Blueprint grid */}
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
@@ -75,382 +224,444 @@ export default function Contact() {
         }}
       />
 
-      {/* Decorative vertical BOOK text */}
-      <div
-        className="absolute left-0 top-0 bottom-0 hidden lg:flex items-center justify-center pointer-events-none select-none"
-        style={{ width: '8rem' }}
-        aria-hidden="true"
-      >
-        <span
-          className="font-black"
-          style={{
-            fontFamily: 'var(--font-bebas)',
-            fontSize: '8rem',
-            lineHeight: 1,
-            color: 'rgba(201,168,76,0.04)',
-            letterSpacing: '0.02em',
-            writingMode: 'vertical-rl',
-            textOrientation: 'mixed',
-            transform: 'rotate(180deg)',
-          }}
-        >
-          BOOK
-        </span>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-14 lg:pl-32 relative">
-
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="mb-8 text-center lg:text-left"
-        >
-          <h2
-            className="text-5xl md:text-7xl font-black leading-none"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
+        <div className="mb-8 text-center md:mb-10 md:text-left">
+          <span
+            className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base"
+            style={{
+              color: '#E2C06A',
+              fontFamily: 'var(--font-orbitron)',
+              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+              border: '1px solid rgba(201,168,76,0.35)',
+            }}
           >
-            BOOK YOUR{' '}
+            Request a Quote
+          </span>
+          <h2
+            className="text-5xl font-black leading-none md:text-7xl"
+            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
+          >
+            TELL US ABOUT YOUR{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
               }}
             >
-              SESSION
+              VEHICLE
             </span>
           </h2>
-          <div className="flex flex-col lg:flex-row items-center gap-2 lg:gap-3 mt-2.5">
-            <div className="w-16 lg:w-10 h-px" style={{ background: '#C9A84C' }} />
-            <span className="text-premium-micro tracking-[0.22em]" style={{ fontFamily: 'var(--font-inter)' }}>
-              Tell us your vehicle and goals — we&apos;ll recommend the right package within 24 hours.
+          <div className="mt-4 flex items-center justify-center gap-2.5 md:justify-start md:gap-3">
+            <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+            <span
+              className="text-center text-premium-micro tracking-[0.2em] md:text-left"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              Tell us what your vehicle needs and we&apos;ll reply with a tailored recommendation within 24
+              hours.
             </span>
           </div>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6">
-
-          {/* ── LEFT: FORM ── */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-10">
           <motion.div
-            initial={{ opacity: 0, x: -28 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.65 }}
-            className="lg:col-span-3 relative overflow-hidden"
+            transition={{ duration: 0.55 }}
+            className="lg:col-span-8 overflow-hidden rounded-xl"
             style={{
               background: 'linear-gradient(160deg, rgba(17,17,26,0.92) 0%, rgba(10,10,15,0.96) 100%)',
               border: '1px solid rgba(255,255,255,0.07)',
               boxShadow: '0 16px 48px rgba(0,0,0,0.38)',
             }}
           >
-            {/* Top gold accent line */}
             <div
-              className="absolute left-0 top-0 right-0 h-[2px]"
+              className="h-[2px] w-full"
               style={{
-                background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.6) 50%, transparent 100%)',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.55) 50%, transparent 100%)',
               }}
             />
 
             {submitted ? (
               <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center justify-center py-16 px-8 text-center"
+                className="flex flex-col items-center justify-center px-6 py-14 text-center sm:px-10"
               >
                 <div
-                  className="w-14 h-14 flex items-center justify-center mb-5"
+                  className="mb-5 flex h-14 w-14 items-center justify-center"
                   style={{
                     background: 'rgba(201,168,76,0.1)',
                     border: '1px solid rgba(201,168,76,0.35)',
                   }}
                 >
-                  <ShieldCheck className="w-6 h-6" style={{ color: '#C9A84C' }} />
+                  <ShieldCheck className="h-7 w-7" style={{ color: '#C9A84C' }} />
                 </div>
                 <h3
-                  className="text-3xl font-black mb-2"
-                  style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
+                  className="mb-2 text-3xl font-black tracking-[0.05em]"
+                  style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
                 >
                   Request Received
                 </h3>
-                <p className="text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
-                  We&apos;ll review your vehicle and confirm the best package within 24 hours.
+                <p className="max-w-sm text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
+                  We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-3">
-                <p
-                  className="text-[8px] font-bold tracking-[0.2em] uppercase"
-                  style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
-                >
-                  Service Request
-                </p>
-
-                {/* Row 1: Name + Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="float-input-wrap">
-                    <input type="text" id="name" placeholder=" " required />
-                    <label htmlFor="name">Full Name</label>
+              <form onSubmit={handleSubmit} className="p-5 sm:p-6 lg:p-7">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-3">
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-name" required>
+                      Full Name
+                    </FieldLabel>
+                    <input id="contact-name" name="name" type="text" autoComplete="name" required className={inputBase} />
                   </div>
-                  <div className="float-input-wrap">
-                    <input type="tel" id="phone" placeholder=" " required />
-                    <label htmlFor="phone">Phone Number</label>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-phone" required>
+                      Phone Number
+                    </FieldLabel>
+                    <input
+                      id="contact-phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      required
+                      className={inputBase}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-email" required>
+                      Email
+                    </FieldLabel>
+                    <input
+                      id="contact-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      className={inputBase}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-vehicle" required>
+                      Vehicle Make / Model
+                    </FieldLabel>
+                    <input id="contact-vehicle" name="vehicle" type="text" required className={inputBase} />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-year">Vehicle Year</FieldLabel>
+                    <input
+                      id="contact-year"
+                      name="year"
+                      type="number"
+                      inputMode="numeric"
+                      min={1980}
+                      max={2030}
+                      placeholder=""
+                      className={inputBase}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-service" required>
+                      Service Needed
+                    </FieldLabel>
+                    <DarkSelect
+                      id="contact-service"
+                      name="service"
+                      value={service}
+                      onChange={(v) => {
+                        setService(v);
+                        setServiceError(false);
+                      }}
+                      options={SERVICE_SELECT_OPTIONS}
+                      placeholder="Select a service"
+                      error={serviceError}
+                    />
+                    {serviceError ? (
+                      <p className="mt-1 text-[11px] font-medium text-amber-400/95" role="alert">
+                        Please select a service.
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-condition">Paint / Interior Condition</FieldLabel>
+                    <DarkSelect
+                      id="contact-condition"
+                      name="condition"
+                      value={condition}
+                      onChange={setCondition}
+                      options={CONDITION_SELECT_OPTIONS}
+                      placeholder="Optional — select condition"
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <FieldLabel htmlFor="contact-date">Preferred Date</FieldLabel>
+                    <input id="contact-date" name="preferredDate" type="date" className={inputBase} />
                   </div>
                 </div>
 
-                {/* Row 2: Email */}
-                <div className="float-input-wrap">
-                  <input type="email" id="email" placeholder=" " required />
-                  <label htmlFor="email">Email Address</label>
-                </div>
-
-                {/* Row 3: Vehicle */}
-                <div className="float-input-wrap">
-                  <input type="text" id="car" placeholder=" " />
-                  <label htmlFor="car">Vehicle Make &amp; Model</label>
-                </div>
-
-                {/* Service chips */}
-                <div>
+                <div className="mt-3">
+                  <FieldLabel htmlFor="contact-message">Message / Goals</FieldLabel>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={3}
+                    className={`${inputBase} min-h-22 resize-y`}
+                    placeholder=""
+                  />
                   <p
-                    className="text-[8px] font-bold tracking-[0.2em] uppercase mb-1.5"
-                    style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
+                    className="mt-1.5 text-[11px] leading-snug"
+                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
                   >
-                    Quick select
+                    Tell us what you&apos;d like improved, protected, or restored.
                   </p>
-                  <div className="flex flex-wrap gap-1">
-                    {SERVICE_CHIPS.map((chip) => (
-                      <button
-                        key={chip}
-                        type="button"
-                        onClick={() => handleChipClick(chip)}
-                        className="px-2 py-[3px] text-[9px] font-semibold tracking-[0.12em] uppercase cursor-pointer transition-all duration-200"
-                        style={{
-                          fontFamily: 'var(--font-inter)',
-                          background: selectedChip === chip ? 'rgba(201,168,76,0.12)' : 'rgba(255,255,255,0.01)',
-                          border: `1px solid ${selectedChip === chip ? 'rgba(201,168,76,0.45)' : 'rgba(255,255,255,0.08)'}`,
-                          color: selectedChip === chip ? '#d8bb6c' : 'var(--text-soft)',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (selectedChip !== chip) {
-                            const el = e.currentTarget as HTMLElement;
-                            el.style.borderColor = 'rgba(201,168,76,0.22)';
-                            el.style.background = 'rgba(201,168,76,0.04)';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (selectedChip !== chip) {
-                            const el = e.currentTarget as HTMLElement;
-                            el.style.borderColor = 'rgba(255,255,255,0.08)';
-                            el.style.background = 'rgba(255,255,255,0.01)';
-                          }
-                        }}
-                      >
-                        {chip}
-                      </button>
-                    ))}
-                  </div>
                 </div>
 
-                {/* Service select */}
-                <div className="float-input-wrap">
-                  <select id="service" defaultValue="">
-                    <option value="" disabled> </option>
-                    {SERVICE_CHIPS.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                  <label htmlFor="service">Requested Service</label>
+                <div className="mt-4">
+                  <FieldLabel htmlFor="contact-photos">Photos</FieldLabel>
+                  <input
+                    id="contact-photos"
+                    name="photos"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFiles}
+                    className={`${inputBase} cursor-pointer py-2 text-xs file:mr-3 file:cursor-pointer file:rounded-sm file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:uppercase file:tracking-wider file:text-white`}
+                  />
+                  <p
+                    className="mt-1.5 text-[11px] leading-snug"
+                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
+                  >
+                    Optional: Upload 2–3 photos for a more accurate estimate — helpful for paint defects,
+                    swirl marks, interior wear, or PPF quotes.
+                  </p>
+                  {fileHint ? (
+                    <p className="mt-1 text-[11px] font-medium text-amber-400/90" role="status">
+                      {fileHint}
+                    </p>
+                  ) : null}
                 </div>
 
-                {/* Notes */}
-                <div className="float-input-wrap">
-                  <textarea id="message" rows={2} placeholder=" " />
-                  <label htmlFor="message">Project Notes</label>
-                </div>
-
-                {/* Submit */}
-                <div className="pt-0.5">
+                <div className="mt-6">
                   <button
                     type="submit"
-                    className="btn-shimmer relative w-full py-3 text-[11px] font-black tracking-[0.18em] uppercase overflow-hidden cursor-pointer transition-all duration-300 flex items-center justify-center gap-2"
+                    className="btn-shimmer relative w-full cursor-pointer overflow-hidden py-3.5 text-[11px] font-black uppercase tracking-[0.18em] transition-all duration-300"
                     style={{
                       background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
                       color: '#070709',
                       fontFamily: 'var(--font-inter)',
                       border: '1px solid rgba(255,255,255,0.08)',
-                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(80,56,22,0.22), 0 6px 20px rgba(0,0,0,0.4)',
-                    }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -1px 0 rgba(80,56,22,0.24), 0 8px 24px rgba(0,0,0,0.46), 0 0 16px rgba(201,168,76,0.16)';
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(80,56,22,0.22), 0 6px 20px rgba(0,0,0,0.4)';
+                      boxShadow:
+                        'inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(80,56,22,0.22), 0 6px 20px rgba(0,0,0,0.4)',
                     }}
                   >
-                    <span className="relative z-10">Request My Appointment</span>
-                    <ArrowRight className="relative z-10 w-3.5 h-3.5 shrink-0 translate-y-[0.5px]" />
+                    <span className="relative z-10">Request Your Quote</span>
                   </button>
                   <p
-                    className="text-center mt-2 text-readable-muted"
-                    style={{ fontSize: '0.67rem', fontFamily: 'var(--font-inter)' }}
+                    className="mt-2.5 text-center text-[11px] leading-relaxed"
+                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
                   >
-                    No commitment · Free visual inspection included
+                    We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
                   </p>
                 </div>
               </form>
             )}
           </motion.div>
 
-          {/* ── RIGHT: 3 PREMIUM PANELS ── */}
-          <motion.div
-            initial={{ opacity: 0, x: 28 }}
+          <motion.aside
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.65, delay: 0.12 }}
-            className="lg:col-span-2 flex flex-col gap-2.5"
+            transition={{ duration: 0.55, delay: 0.06 }}
+            className="flex flex-col overflow-hidden rounded-xl lg:col-span-4"
+            style={{
+              background: 'linear-gradient(165deg, rgba(17,17,26,0.92) 0%, rgba(10,10,15,0.97) 100%)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 16px 48px rgba(0,0,0,0.38)',
+            }}
+            aria-label="Why book with us and contact details"
           >
-
-            {/* Panel 1: Direct Line */}
             <div
-              className="p-3.5 sm:p-4.5"
+              className="h-[2px] w-full shrink-0"
               style={{
-                background: 'linear-gradient(160deg, rgba(17,17,26,0.88) 0%, rgba(10,10,15,0.92) 100%)',
-                border: '1px solid rgba(255,255,255,0.07)',
-                boxShadow: '0 8px 28px rgba(0,0,0,0.3)',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 50%, transparent 100%)',
               }}
-            >
-              <div className="flex items-center gap-2 mb-2.5">
-                <div
-                  className="w-8 h-8 shrink-0 flex items-center justify-center"
-                  style={{ background: 'rgba(201,168,76,0.09)', border: '1px solid rgba(201,168,76,0.22)' }}
-                >
-                  <PhoneCall className="w-3.5 h-3.5" style={{ color: '#C9A84C' }} />
-                </div>
-                <p className="text-premium-micro tracking-[0.18em]" style={{ fontFamily: 'var(--font-inter)' }}>
-                  Direct Line
-                </p>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2.5">
-                  <PhoneCall className="w-3.5 h-3.5 shrink-0" style={{ color: 'rgba(201,168,76,0.55)' }} />
-                  <div>
-                    <p className="text-sm font-semibold" style={{ color: 'white', fontFamily: 'var(--font-inter)' }}>+40 721 000 000</p>
-                    <p className="text-readable-muted" style={{ fontSize: '0.68rem', fontFamily: 'var(--font-inter)' }}>Mon – Sat, 09:00 – 18:00</p>
-                  </div>
-                </div>
-                <div className="h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
-                <div className="flex items-center gap-2.5">
-                  <Mail className="w-3.5 h-3.5 shrink-0" style={{ color: 'rgba(201,168,76,0.55)' }} />
-                  <div>
-                    <p className="text-sm font-semibold" style={{ color: 'white', fontFamily: 'var(--font-inter)' }}>contact@apexdetail.ro</p>
-                    <p className="text-readable-muted" style={{ fontSize: '0.68rem', fontFamily: 'var(--font-inter)' }}>24h response guaranteed</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            />
 
-            {/* Panel 2: Visit the Studio */}
-            <div
-              className="p-3.5 sm:p-4.5"
-              style={{
-                background: 'linear-gradient(160deg, rgba(17,17,26,0.88) 0%, rgba(10,10,15,0.92) 100%)',
-                border: '1px solid rgba(255,255,255,0.07)',
-                boxShadow: '0 8px 28px rgba(0,0,0,0.3)',
-              }}
-            >
-              <div className="flex items-center gap-2 mb-2.5">
-                <div
-                  className="w-8 h-8 shrink-0 flex items-center justify-center"
-                  style={{ background: 'rgba(201,168,76,0.09)', border: '1px solid rgba(201,168,76,0.22)' }}
+            <div className="flex flex-1 flex-col p-5 sm:p-6 lg:p-7">
+              <header className="mb-5">
+                <p
+                  className="mb-2 text-[10px] font-bold tracking-[0.22em]"
+                  style={{ color: '#C9A84C', fontFamily: 'var(--font-inter)' }}
                 >
-                  <MapPinned className="w-3.5 h-3.5" style={{ color: '#C9A84C' }} />
-                </div>
-                <p className="text-premium-micro tracking-[0.18em]" style={{ fontFamily: 'var(--font-inter)' }}>
-                  Visit the Studio
+                  WHY CLIENTS BOOK WITH US
                 </p>
-              </div>
-              <p className="text-sm font-semibold mb-0.5" style={{ color: 'white', fontFamily: 'var(--font-inter)' }}>
-                Str. Industriei 14, București
-              </p>
-              <div className="space-y-0.5 mb-2.5">
-                {[
-                  { day: 'Mon – Fri', time: '09:00 – 19:00' },
-                  { day: 'Saturday', time: '09:00 – 16:00' },
-                  { day: 'Sunday', time: 'By appointment' },
-                ].map(({ day, time }) => (
-                  <div key={day} className="flex items-center justify-between gap-4">
-                    <span className="text-readable-muted" style={{ fontSize: '0.7rem', fontFamily: 'var(--font-inter)' }}>{day}</span>
-                    <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>{time}</span>
-                  </div>
-                ))}
-              </div>
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-[0.14em] uppercase group transition-colors duration-200"
-                style={{ color: '#C9A84C', fontFamily: 'var(--font-inter)' }}
+                <h3
+                  className="text-[1.65rem] font-black leading-none tracking-[0.06em] sm:text-[1.85rem]"
+                  style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
+                >
+                  Fast, Clear, Professional
+                </h3>
+              </header>
+
+              <div
+                className="border-l-2 border-[#C9A84C]/35 pl-4"
+                style={{ fontFamily: 'var(--font-inter)' }}
               >
-                <Route className="w-3 h-3" />
-                Plan Your Visit
-                <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </a>
-            </div>
-
-            {/* Panel 3: What Happens Next */}
-            <div
-              className="p-3.5 sm:p-4.5"
-              style={{
-                background: 'linear-gradient(160deg, rgba(17,17,26,0.88) 0%, rgba(10,10,15,0.92) 100%)',
-                border: '1px solid rgba(255,255,255,0.07)',
-                boxShadow: '0 8px 28px rgba(0,0,0,0.3)',
-              }}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div
-                  className="w-8 h-8 shrink-0 flex items-center justify-center"
-                  style={{ background: 'rgba(201,168,76,0.09)', border: '1px solid rgba(201,168,76,0.22)' }}
-                >
-                  <Clock3 className="w-3.5 h-3.5" style={{ color: '#C9A84C' }} />
-                </div>
-                <p className="text-premium-micro tracking-[0.18em]" style={{ fontFamily: 'var(--font-inter)' }}>
-                  What Happens Next
-                </p>
+                <ul className="space-y-3">
+                  {TRUST_BULLETS.map((line) => (
+                    <li
+                      key={line}
+                      className="text-[13px] leading-snug"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
+                      {line}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="space-y-2.5">
-                {NEXT_STEPS.map(({ icon: Icon, label, desc }, idx) => (
-                  <div key={label} className="flex items-start gap-2.5">
-                    <div className="flex flex-col items-center shrink-0 pt-0.5">
-                      <div
-                        className="w-5 h-5 flex items-center justify-center"
-                        style={{ background: 'rgba(201,168,76,0.09)', border: '1px solid rgba(201,168,76,0.2)' }}
-                      >
-                        <Icon className="w-2.5 h-2.5" style={{ color: '#C9A84C' }} />
-                      </div>
-                      {idx < NEXT_STEPS.length - 1 && (
-                        <div className="w-px flex-1 mt-1.5" style={{ background: 'rgba(201,168,76,0.15)', minHeight: '12px' }} />
-                      )}
+
+              <div
+                className="my-6 h-px w-full shrink-0"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }}
+                aria-hidden
+              />
+
+              <div className="space-y-5" style={{ fontFamily: 'var(--font-inter)' }}>
+                <div>
+                  <div className={trustAsideSectionTitle}>
+                    <div
+                      className="h-px w-10 max-w-[32%] shrink-0"
+                      style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.65))' }}
+                      aria-hidden
+                    />
+                    <p
+                      className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-[#E2C06A]"
+                      style={{ textShadow: '0 0 24px rgba(201,168,76,0.15)' }}
+                    >
+                      Contact
+                    </p>
+                    <div
+                      className="h-px w-10 max-w-[32%] shrink-0"
+                      style={{ background: 'linear-gradient(270deg, transparent, rgba(201,168,76,0.65))' }}
+                      aria-hidden
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm"
+                      style={{
+                        background: 'rgba(201,168,76,0.08)',
+                        border: '1px solid rgba(201,168,76,0.22)',
+                      }}
+                      aria-hidden
+                    >
+                      <Phone className="h-4 w-4" style={{ color: '#C9A84C' }} />
                     </div>
-                    <div className="pb-1.5">
-                      <p className="text-[11px] font-semibold mb-0.5" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
-                        {label}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--text-soft)' }}>
+                        Phone
                       </p>
-                      <p className="text-readable-muted leading-relaxed" style={{ fontSize: '0.67rem', fontFamily: 'var(--font-inter)' }}>
-                        {desc}
+                      <a
+                        href="tel:+40721000000"
+                        className="mt-0.5 block text-base font-semibold tracking-wide text-white transition-colors hover:text-[#f0d892]"
+                      >
+                        +40 721 000 000
+                      </a>
+                      <p className="mt-1 text-[11px]" style={{ color: 'var(--text-soft)' }}>
+                        Mon – Sat · 09:00 – 18:00
                       </p>
                     </div>
                   </div>
-                ))}
+
+                  <a
+                    href="https://wa.me/40721000000"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-sm border border-[#C9A84C]/28 bg-[#C9A84C]/6 px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#e8d49a] transition-colors hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/10"
+                  >
+                    <MessageCircle className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
+                    WhatsApp — quick message
+                  </a>
+                </div>
+
+                <div className="border-t border-white/10 pt-5">
+                  <div className={trustAsideSectionTitle}>
+                    <div
+                      className="h-px w-10 max-w-[32%] shrink-0"
+                      style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.65))' }}
+                      aria-hidden
+                    />
+                    <p
+                      className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-[#E2C06A]"
+                      style={{ textShadow: '0 0 24px rgba(201,168,76,0.15)' }}
+                    >
+                      Address
+                    </p>
+                    <div
+                      className="h-px w-10 max-w-[32%] shrink-0"
+                      style={{ background: 'linear-gradient(270deg, transparent, rgba(201,168,76,0.65))' }}
+                      aria-hidden
+                    />
+                  </div>
+                  <div className="flex gap-3">
+                    <div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm"
+                      style={{
+                        background: 'rgba(201,168,76,0.08)',
+                        border: '1px solid rgba(201,168,76,0.22)',
+                      }}
+                      aria-hidden
+                    >
+                      <MapPin className="h-4 w-4" style={{ color: '#C9A84C' }} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-white">București</p>
+                      <p className="mt-0.5 text-[12px]" style={{ color: 'var(--text-soft)' }}>
+                        Studio by appointment
+                      </p>
+                      <p className="mt-2 text-[12px] leading-snug" style={{ color: 'var(--text-secondary)' }}>
+                        Str. Industriei 14
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex gap-3">
+                    <div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm"
+                      style={{
+                        background: 'rgba(201,168,76,0.08)',
+                        border: '1px solid rgba(201,168,76,0.22)',
+                      }}
+                      aria-hidden
+                    >
+                      <Clock className="h-4 w-4" style={{ color: '#C9A84C' }} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--text-soft)' }}>
+                        Opening hours
+                      </p>
+                      <ul className="mt-2 space-y-1.5">
+                        {TRUST_STUDIO_HOURS.map(({ label, time }) => (
+                          <li
+                            key={label}
+                            className="flex items-baseline justify-between gap-4 text-[12px] leading-tight"
+                            style={{ color: 'var(--text-secondary)' }}
+                          >
+                            <span style={{ color: 'var(--text-soft)' }}>{label}</span>
+                            <span className="shrink-0 font-medium tabular-nums text-white/85">{time}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-
-          </motion.div>
+          </motion.aside>
         </div>
       </div>
     </section>
