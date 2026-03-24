@@ -12,7 +12,7 @@ const panels = [
     afterLabel: 'Mirror Finish',
     beforeImage: '/images/before-after/before-paint-correction.png',
     afterImage: '/images/before-after/after-paint-correction.png',
-    vehicle: 'BMW 530e',
+    vehicle: 'Infiniti Q60',
     proofService: '2-stage paint correction + ceramic coating',
     time: '14 hours',
     outcome: 'Swirl removal, deeper gloss, hydrophobic finish',
@@ -29,7 +29,7 @@ const panels = [
     afterLabel: 'Hydrophobic Shield',
     beforeImage: '/images/before-after/before-ceramic-coating.png',
     afterImage: '/images/before-after/after-ceramic-coating.png',
-    vehicle: 'Audi RS5',
+    vehicle: 'BMW 3 Series',
     proofService: 'Paint decontamination + ceramic coating',
     time: '11 hours',
     outcome: 'Higher gloss, smoother finish, durable water repellency',
@@ -46,7 +46,7 @@ const panels = [
     afterLabel: 'Invisible Armour',
     beforeImage: '/images/before-after/before-PPF.png',
     afterImage: '/images/before-after/after-PPF.png',
-    vehicle: 'Porsche 911',
+    vehicle: 'BMW M4',
     proofService: 'Front-end PPF + finish correction prep',
     time: '16 hours',
     outcome: 'Impact protection, cleaner reflections, protected high-wear zones',
@@ -63,7 +63,7 @@ const panels = [
     afterLabel: 'Showroom Ready',
     beforeImage: '/images/before-after/before-Interior-deep-clean.png',
     afterImage: '/images/before-after/after-Interior-deep-clean.png',
-    vehicle: 'Mercedes C-Class',
+    vehicle: 'Mercedes-Benz GLC-Class',
     proofService: 'Interior deep clean + leather conditioning',
     time: '6 hours',
     outcome: 'Restored cabin finish, improved texture, refreshed interior feel',
@@ -204,13 +204,13 @@ export default function BeforeAfter() {
             Real Results
           </span>
           <h2
-            className="text-5xl md:text-6xl font-black leading-none"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
+            className="text-5xl font-black leading-none md:text-7xl"
+            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
           >
             BEFORE & AFTER{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -219,16 +219,15 @@ export default function BeforeAfter() {
               RESULTS
             </span>
           </h2>
-          <div
-            className="h-px w-16 mx-auto md:mx-0 mt-2 mb-2"
-            style={{ background: 'rgba(201,168,76,0.42)' }}
-          />
-          <p
-            className="text-sm"
-            style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-          >
-            See how proper correction, coating, and detailing transform the finish.
-          </p>
+          <div className="mt-4 flex flex-row items-center justify-center md:justify-start gap-2.5 md:gap-3">
+            <div className="h-px w-10 md:w-14 shrink-0" style={{ background: 'rgba(201,168,76,0.55)' }} />
+            <span
+              className="text-[10px] leading-snug tracking-[0.14em] md:text-premium-micro md:tracking-[0.26em] max-w-[290px] md:max-w-none text-left md:text-left"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              See how proper correction, coating, and detailing transform the finish.
+            </span>
+          </div>
         </div>
         <span
           className="hidden md:block text-xs tracking-[0.2em] uppercase"
@@ -387,7 +386,7 @@ export default function BeforeAfter() {
       {/* Slim proof strip */}
       <div className="px-4 sm:px-8 md:px-14 mt-4">
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-2 py-3"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-3 py-3"
           style={{ borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
         >
           {[
@@ -396,7 +395,7 @@ export default function BeforeAfter() {
             { label: 'Time', value: currentPanel.time },
             { label: 'Outcome', value: currentPanel.outcome },
           ].map((item) => (
-            <div key={item.label} className="min-w-0">
+            <div key={item.label} className="min-w-0 text-center">
               <p
                 className="inline-flex px-2.5 py-1 text-[9px] font-black tracking-[0.18em] uppercase"
                 style={{
@@ -408,7 +407,7 @@ export default function BeforeAfter() {
               >
                 {item.label}
               </p>
-              <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
+              <p className="text-[11px] md:text-xs mt-1 leading-relaxed text-center" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
                 {item.value}
               </p>
             </div>
