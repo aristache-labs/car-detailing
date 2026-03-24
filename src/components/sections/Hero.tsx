@@ -107,14 +107,18 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* ── LEFT PANEL — flush-left editorial ── */}
-      <div ref={leftRef} className="relative z-10 w-full lg:w-[55%] px-6 sm:px-8 md:px-14 lg:px-20 pt-28 pb-6 lg:py-0">
+      {/* ── LEFT PANEL — editorial; desktop: content block nudged toward car ── */}
+      <div
+        ref={leftRef}
+        className="relative z-10 w-full lg:w-[52%] xl:w-[50%] px-6 sm:px-8 md:px-14 lg:pl-10 lg:pr-4 xl:pl-14 xl:pr-8 pt-28 pb-6 lg:py-0"
+      >
+        <div className="lg:max-w-xl xl:max-w-2xl lg:ml-auto lg:mr-2 xl:mr-6 2xl:mr-10">
         {/* Eyebrow tag */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 mb-8"
+          className="flex items-center gap-3 mb-8 lg:mb-10"
         >
           <span
             className="w-10 h-px"
@@ -136,7 +140,7 @@ export default function Hero() {
           >
             {/* APEX — chrome */}
             <div
-              className="block text-[clamp(5rem,13vw,12rem)]"
+              className="block text-[clamp(5rem,13vw,12rem)] lg:text-[clamp(4.75rem,7.5vw,10.5rem)]"
               style={{
                 background: 'linear-gradient(135deg, #E8EEF4 0%, #C8D4DE 30%, #fff 50%, #C8D4DE 70%, #8E9EAB 100%)',
                 WebkitBackgroundClip: 'text',
@@ -150,7 +154,7 @@ export default function Hero() {
             {/* DETAIL — gold with slash accent */}
             <div className="relative inline-block">
               <span
-                className="block text-[clamp(5rem,13vw,12rem)]"
+                className="block text-[clamp(5rem,13vw,12rem)] lg:text-[clamp(4.75rem,7.5vw,10.5rem)]"
                 style={{
                   background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 50%, #9A7B2E 100%)',
                   WebkitBackgroundClip: 'text',
@@ -181,7 +185,7 @@ export default function Hero() {
         {/* Tagline */}
         <p
           ref={subRef}
-          className="text-base md:text-lg mt-6 mb-10 max-w-md leading-relaxed"
+          className="text-base md:text-lg mt-6 mb-10 max-w-md lg:max-w-none leading-relaxed lg:leading-[1.65] lg:text-base xl:text-lg"
           style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)', opacity: 0 }}
         >
           Polish. Protect. Perfect. — Professional auto detailing that makes every vehicle impossible to ignore.
@@ -190,7 +194,7 @@ export default function Hero() {
         {/* CTAs — stacked left */}
         <div
           ref={ctaRef}
-          className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4"
+          className="flex flex-col sm:flex-row lg:flex-row lg:items-center lg:gap-5 gap-4"
           style={{ opacity: 0 }}
         >
           <button
@@ -238,15 +242,22 @@ export default function Hero() {
         </div>
 
         {/* Mini stats row */}
-        <div className="flex gap-6 sm:gap-8 mt-10 lg:mt-14">
+        <div className="flex flex-wrap gap-6 sm:gap-8 mt-10 lg:mt-16 lg:gap-0">
           {[
             { v: '500+', l: 'Cars Detailed' },
             { v: '5★', l: 'Rating' },
             { v: '5 Yrs', l: 'Experience' },
-          ].map(({ v, l }) => (
-            <div key={l}>
+          ].map(({ v, l }, i) => (
+            <div
+              key={l}
+              className={
+                i > 0
+                  ? 'lg:border-l lg:border-white/10 lg:pl-10 xl:pl-12'
+                  : ''
+              }
+            >
               <div
-                className="text-2xl font-black"
+                className="text-2xl font-black tabular-nums"
                 style={{ fontFamily: 'var(--font-orbitron)', color: '#C9A84C' }}
               >
                 {v}
@@ -259,6 +270,7 @@ export default function Hero() {
               </div>
             </div>
           ))}
+        </div>
         </div>
       </div>
 
@@ -302,7 +314,7 @@ export default function Hero() {
 
       {/* Bottom left corner tag — desktop only */}
       <div
-        className="hidden lg:flex absolute bottom-8 left-20 items-center gap-3 z-10"
+        className="hidden lg:flex absolute bottom-8 left-10 xl:left-14 items-center gap-3 z-10"
       >
         <div className="w-6 h-px" style={{ background: 'rgba(201,168,76,0.4)' }} />
         <span
