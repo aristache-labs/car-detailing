@@ -1,19 +1,60 @@
 'use client';
 
-const items = [
-  { label: 'Polish Exterior', icon: '◈' },
-  { label: 'Ceramic Coating', icon: '◆' },
-  { label: 'PPF Wrapping', icon: '◉' },
-  { label: 'Interior Detailing', icon: '◈' },
-  { label: 'Leather Restoration', icon: '◆' },
-  { label: 'Wheel & Caliper Paint', icon: '◉' },
-  { label: 'Paint Correction', icon: '◈' },
-  { label: 'Engine Bay Clean', icon: '◆' },
-];
+import { Diamond } from 'lucide-react';
+
+const ITEMS = [
+  'Polish Exterior',
+  'Ceramic Coating',
+  'PPF Wrapping',
+  'Interior Detailing',
+  'Leather Restoration',
+  'Wheel & Caliper Paint',
+  'Paint Correction',
+  'Engine Bay Clean',
+] as const;
+
+/** Hairline rule with centered diamond — editorial / luxury separator */
+function MarqueeDivider() {
+  return (
+    <svg
+      viewBox="0 0 88 18"
+      className="h-4 w-22 shrink-0 text-[#C9A84C]"
+      fill="none"
+      aria-hidden
+    >
+      <line
+        x1="2"
+        y1="9"
+        x2="34"
+        y2="9"
+        stroke="currentColor"
+        strokeOpacity={0.32}
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+      <path
+        d="M44 5.2 48.8 9 44 12.8 39.2 9 44 5.2z"
+        stroke="currentColor"
+        strokeOpacity={0.88}
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="54"
+        y1="9"
+        x2="86"
+        y2="9"
+        stroke="currentColor"
+        strokeOpacity={0.32}
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 export default function ServicesMarquee() {
-  // Duplicate items for seamless loop
-  const repeated = [...items, ...items];
+  const repeated = [...ITEMS, ...ITEMS];
 
   return (
     <div
@@ -25,34 +66,26 @@ export default function ServicesMarquee() {
       }}
     >
       <div className="marquee-track">
-        {repeated.map((item, i) => (
+        {repeated.map((label, i) => (
           <div
-            key={i}
+            key={`${label}-${i}`}
             className="flex items-center gap-4 px-8 whitespace-nowrap select-none"
           >
-            <span
-              className="text-xs"
-              style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
-            >
-              {item.icon}
-            </span>
+            <Diamond
+              className="h-3 w-3 shrink-0 text-[#C9A84C]"
+              strokeWidth={1.35}
+              aria-hidden
+            />
             <span
               className="text-sm font-bold tracking-[0.2em] uppercase"
-              style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-inter)' }}
+              style={{
+                color: 'rgba(255,255,255,0.72)',
+                fontFamily: 'var(--font-inter)',
+              }}
             >
-              {item.label}
+              {label}
             </span>
-            {/* Car micro-icon SVG */}
-            <svg viewBox="0 0 32 16" fill="none" className="w-8 h-4 opacity-30" aria-hidden="true">
-              <path
-                d="M2 12 L4 7 L8 4 L20 4 L26 7 L30 10 L30 12 Z"
-                stroke="#C9A84C"
-                strokeWidth="1"
-                fill="none"
-              />
-              <circle cx="9" cy="12" r="2.5" stroke="#C9A84C" strokeWidth="1" fill="none" />
-              <circle cx="23" cy="12" r="2.5" stroke="#C9A84C" strokeWidth="1" fill="none" />
-            </svg>
+            <MarqueeDivider />
           </div>
         ))}
       </div>
