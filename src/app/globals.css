@@ -79,15 +79,15 @@
 
 .text-premium-micro {
   color: var(--text-micro);
-  font-size: clamp(0.66rem, 0.63rem + 0.14vw, 0.74rem);
+  font-size: clamp(0.67rem, 0.64rem + 0.14vw, 0.75rem);
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
 }
 
 .text-on-texture {
   color: var(--text-secondary);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
 }
 
 /* ─── Base Reset ─────────────────────────────────────────────────────────── */
@@ -514,6 +514,55 @@ body {
 .float-input-wrap select option {
   background: var(--carbon-800);
   color: white;
+}
+
+/* ─── Pricing card premium animations ───────────────────────────────────── */
+@keyframes pricing-glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(201,168,76,0.1),
+      0 18px 48px rgba(0,0,0,0.48),
+      0 0 30px rgba(201,168,76,0.06);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(201,168,76,0.26),
+      0 18px 48px rgba(0,0,0,0.48),
+      0 0 56px rgba(201,168,76,0.17);
+  }
+}
+
+@keyframes pricing-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.pricing-highlight-card {
+  border: 1px solid rgba(201,168,76,0.46) !important;
+  animation: pricing-glow-pulse 3.5s ease-in-out infinite;
+}
+
+.pricing-highlight-card:hover {
+  animation-play-state: paused;
+  box-shadow:
+    0 0 0 1px rgba(201,168,76,0.32),
+    0 24px 64px rgba(0,0,0,0.55),
+    0 0 64px rgba(201,168,76,0.22) !important;
+}
+
+.pricing-top-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201,168,76,0.35) 30%,
+    rgba(255,215,0,0.92) 50%,
+    rgba(201,168,76,0.35) 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: pricing-sweep 2.8s linear infinite;
 }
 
 /* ─── Service row clip-path — only on desktop ────────────────────────────── */

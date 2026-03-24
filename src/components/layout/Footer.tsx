@@ -51,7 +51,7 @@ export default function Footer() {
                 <span className="text-white ml-1">DETAIL</span>
               </span>
             </div>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)', textShadow: '0 1px 0 rgba(0,0,0,0.22)' }}>
               Precision auto detailing that transforms vehicles into works of art. Every detail matters.
             </p>
             {/* Social icons */}
@@ -96,9 +96,9 @@ export default function Footer() {
                   <a
                     href="#services"
                     className="text-sm transition-colors duration-200 flex items-center gap-1.5 group"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: 'var(--text-muted)' }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}
                   >
                     <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all duration-200" />
                     {s}
@@ -120,9 +120,9 @@ export default function Footer() {
                   <a
                     href={href}
                     className="text-sm transition-colors duration-200 flex items-center gap-1.5 group"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: 'var(--text-muted)' }}
                     onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}
                   >
                     <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all duration-200" />
                     {label}
@@ -159,12 +159,12 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email"
-                className="flex-1 px-3 py-2 text-sm outline-none rounded-l"
+                className="flex-1 px-3 py-2 text-sm outline-none rounded-l placeholder:text-text-soft"
                 style={{
                   background: 'var(--carbon-800)',
-                  border: '1px solid rgba(201,168,76,0.2)',
+                  border: '1px solid rgba(201,168,76,0.26)',
                   borderRight: 'none',
-                  color: 'white',
+                  color: 'var(--text-secondary)',
                 }}
               />
               <button
@@ -183,7 +183,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="gold-divider mb-6" />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-xs" style={{ color: 'var(--text-soft)' }}>
             © 2026 Apex Detail. All rights reserved.
           </p>
           <div className="flex gap-6">
@@ -192,9 +192,9 @@ export default function Footer() {
                 key={item}
                 href="#"
                 className="text-xs transition-colors duration-200"
-                style={{ color: 'var(--text-muted)' }}
+                style={{ color: 'var(--text-soft)' }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-soft)')}
               >
                 {item}
               </a>

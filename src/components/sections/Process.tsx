@@ -344,7 +344,7 @@ export default function Process() {
                       fontSize: 'clamp(4.2rem, 9vw, 7.8rem)',
                       lineHeight: 0.9,
                       letterSpacing: '0.02em',
-                      color: index === 0 ? 'rgba(201,168,76,0.14)' : 'rgba(255,255,255,0.045)',
+                      color: index === 0 ? 'rgba(201,168,76,0.17)' : 'rgba(255,255,255,0.058)',
                     }}
                   >
                     {step.number}
