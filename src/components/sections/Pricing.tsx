@@ -304,120 +304,110 @@ export default function Pricing() {
                   </p>
                 )}
 
-                {/* CTA */}
-                <button
-                  type="button"
-                  onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="mt-auto pt-4 w-full flex items-center justify-center gap-1.5 py-2 text-[10px] font-bold tracking-[0.14em] uppercase cursor-pointer group transition-all duration-300"
-                  style={{
-                    background: plan.highlight
-                      ? 'linear-gradient(135deg, #C9A84C, #FFD700)'
-                      : 'transparent',
-                    color: plan.highlight ? '#070709' : '#C9A84C',
-                    border: plan.highlight ? 'none' : '1px solid rgba(201,168,76,0.28)',
-                    fontFamily: 'var(--font-inter)',
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    if (plan.highlight) {
-                      el.style.boxShadow = '0 4px 18px rgba(201,168,76,0.32)';
-                    } else {
-                      el.style.borderColor = 'rgba(201,168,76,0.55)';
-                      el.style.background = 'rgba(201,168,76,0.06)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    if (plan.highlight) {
-                      el.style.boxShadow = 'none';
-                    } else {
-                      el.style.borderColor = 'rgba(201,168,76,0.28)';
-                      el.style.background = 'transparent';
-                    }
-                  }}
-                >
-                  Request Quote
-                  <ArrowRight className="w-3 h-3 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
-                </button>
+                {/* CTA — same premium system as hero CTAs */}
+                <div className="mt-auto w-full pt-4">
+                  <div
+                    aria-hidden
+                    className="mb-3.5 h-px w-full"
+                    style={{
+                      opacity: plan.highlight ? 0.85 : 0.55,
+                      background: plan.highlight
+                        ? 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 45%, rgba(240,216,146,0.35) 50%, rgba(201,168,76,0.5) 55%, transparent 100%)'
+                        : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 50%, transparent 100%)',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    className={`w-full ${plan.highlight ? 'hero-cta-primary' : 'hero-cta-secondary'} group`}
+                  >
+                    Request Quote
+                    <ArrowRight
+                      className="w-[15px] h-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5"
+                      strokeWidth={2.25}
+                    />
+                  </button>
+                </div>
               </div>
             </motion.article>
           ))}
         </div>
 
-        <p
-          className="mt-4 text-[11px] text-center md:text-left tracking-[0.04em]"
-          style={{ color: 'rgba(188,197,211,0.9)', fontFamily: 'var(--font-inter)' }}
-        >
-          All packages are tailored after vehicle inspection and condition assessment.
-        </p>
-
-        {/* PPF add-on strip */}
+        {/* PPF add-on card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 lg:mt-4 p-4 sm:p-4.5 md:p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+          className="relative mt-3 rounded-xl overflow-hidden"
           style={{
-            background: 'linear-gradient(145deg, rgba(16,16,24,0.86) 0%, rgba(11,11,16,0.92) 100%)',
-            border: '1px solid rgba(201,168,76,0.2)',
-            boxShadow: '0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.03)',
+            background: 'linear-gradient(160deg, rgba(20,20,30,0.97) 0%, rgba(12,12,18,0.98) 100%)',
+            border: '1px solid rgba(201,168,76,0.22)',
+            boxShadow: '0 10px 28px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.03)',
           }}
         >
-          <div className="flex items-start gap-3">
-            <div
-              className="w-10 h-10 shrink-0 flex items-center justify-center"
-              style={{
-                background: 'rgba(201,168,76,0.09)',
-                border: '1px solid rgba(201,168,76,0.25)',
-              }}
-            >
-              <Sparkles className="w-4 h-4" style={{ color: '#C9A84C' }} />
-            </div>
-            <div>
-              <p
-                className="inline-flex px-2 py-1 text-[9px] font-black uppercase tracking-[0.18em] mb-2"
+          {/* Subtle radial glow top-right — mirrors price cards */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at top right, rgba(201,168,76,0.06), transparent 60%)' }}
+          />
+          {/* Top accent line */}
+          <div
+            className="absolute left-0 top-0 right-0 h-[2px]"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.18), transparent)' }}
+          />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5 p-5 sm:p-6">
+            {/* Left: icon + copy */}
+            <div className="flex items-start gap-4">
+              <div
+                className="w-10 h-10 shrink-0 flex items-center justify-center rounded"
                 style={{
-                  color: '#E2C06A',
-                  fontFamily: 'var(--font-orbitron)',
-                  border: '1px solid rgba(201,168,76,0.24)',
-                  background: 'linear-gradient(135deg, rgba(201,168,76,0.09), rgba(201,168,76,0.03))',
+                  background: 'rgba(201,168,76,0.09)',
+                  border: '1px solid rgba(201,168,76,0.28)',
                 }}
               >
-                Need PPF protection?
-              </p>
-              <p
-                className="text-sm leading-relaxed max-w-2xl"
-                style={{ color: 'rgba(221,229,239,0.92)', fontFamily: 'var(--font-inter)' }}
+                <Sparkles className="w-4 h-4" style={{ color: '#C9A84C' }} />
+              </div>
+              <div>
+                <p
+                  className="inline-flex px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.18em] mb-2"
+                  style={{
+                    color: '#E2C06A',
+                    fontFamily: 'var(--font-orbitron)',
+                    border: '1px solid rgba(201,168,76,0.26)',
+                    background: 'linear-gradient(135deg, rgba(201,168,76,0.09), rgba(201,168,76,0.03))',
+                  }}
+                >
+                  Add-on — PPF Protection
+                </p>
+                <p
+                  className="text-[13px] sm:text-sm leading-relaxed max-w-xl"
+                  style={{ color: 'rgba(221,229,239,0.88)', fontFamily: 'var(--font-inter)' }}
+                >
+                  Front-end, partial, and full-body film packages are quoted after inspection.
+                </p>
+                <p
+                  className="mt-1.5 text-[10px] tracking-[0.04em]"
+                  style={{ color: 'rgba(188,197,211,0.6)', fontFamily: 'var(--font-inter)' }}
+                >
+                  All packages are tailored after vehicle inspection and condition assessment.
+                </p>
+              </div>
+            </div>
+
+            {/* Right: CTA */}
+            <div className="shrink-0">
+              <button
+                type="button"
+                onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+                className="hero-cta-secondary group w-full md:w-auto"
               >
-                Front-end, partial, and full-body film packages are quoted after inspection.
-              </p>
+                Request PPF Assessment
+                <ArrowRight className="w-[15px] h-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={2.25} />
+              </button>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="w-full md:w-auto md:min-w-52 px-5 py-2.5 flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.16em] uppercase cursor-pointer group transition-all duration-300"
-            style={{
-              border: '1px solid rgba(201,168,76,0.34)',
-              background: 'rgba(201,168,76,0.04)',
-              color: '#C9A84C',
-              fontFamily: 'var(--font-inter)',
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = 'rgba(201,168,76,0.58)';
-              el.style.background = 'rgba(201,168,76,0.1)';
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = 'rgba(201,168,76,0.34)';
-              el.style.background = 'rgba(201,168,76,0.04)';
-            }}
-          >
-            Request a PPF Assessment
-            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-          </button>
         </motion.div>
       </div>
     </section>
