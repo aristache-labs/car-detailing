@@ -285,16 +285,6 @@ export default function Process() {
           transition={{ duration: reduceMotion ? 0.3 : 0.55 }}
           className="mb-14 max-w-3xl"
         >
-          <div className="mb-4 flex items-center gap-3">
-            <div className="h-px w-12" style={{ background: 'rgba(201,168,76,0.7)' }} />
-            <span
-              className="text-[11px] uppercase tracking-[0.32em]"
-              style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-            >
-              Technical workflow
-            </span>
-          </div>
-
           <h2
             className="text-5xl font-black leading-none md:text-7xl"
             style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
