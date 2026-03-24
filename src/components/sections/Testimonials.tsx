@@ -1,36 +1,36 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const testimonials = [
   {
-    quote: "The ceramic coating they applied is genuinely unbelievable. Six months later and water still beads like the day I picked it up. No exaggeration.",
+    quote: 'Attention to detail was exceptional. The finish and depth of gloss exceeded expectations.',
     name: 'Andrei M.',
     car: 'BMW M4 Competition',
-    service: 'Ceramic Coating',
+    service: 'Ceramic Coating + Paint Correction',
     rating: 5,
   },
   {
-    quote: "I've been to three detailing shops before. None of them came close. The paint correction removed swirl marks I'd had for two years in a single session.",
-    name: 'Cristina V.',
-    car: 'Mercedes GLC 300',
-    service: 'Paint Correction',
+    quote: 'The paint looked noticeably deeper and the wheel finish was spotless. Very professional process.',
+    name: 'Radu T.',
+    car: 'Audi RS5',
+    service: 'Exterior Detail + Wheel Finish',
     rating: 5,
   },
   {
-    quote: "Brought in a company car that looked ten years old. Got it back looking like it just rolled out of the showroom. Worth every leu.",
-    name: 'Bogdan T.',
-    car: 'Audi A6 Avant',
-    service: 'Full Detail Package',
+    quote: 'Clean application, sharp edges, and excellent communication from start to finish.',
+    name: 'Mihai D.',
+    car: 'Porsche 911 Carrera',
+    service: 'PPF Front Package',
     rating: 5,
   },
   {
-    quote: "The PPF application is invisible — exactly what I wanted. Not a single visible edge, and the hood feels like it has a skin of glass over it.",
-    name: 'Radu I.',
-    car: 'Porsche Cayenne',
-    service: 'PPF Full Front',
+    quote: 'The cabin felt refreshed without looking overdone. Premium work and clear attention to detail.',
+    name: 'Alex C.',
+    car: 'Mercedes C-Class',
+    service: 'Interior Detail + Leather Care',
     rating: 5,
   },
 ];
@@ -41,6 +41,9 @@ export default function Testimonials() {
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
   const [dragStart, setDragStart] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isInteracted, setIsInteracted] = useState(false);
+  const interactedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const advance = useCallback(() => {
     setDir(1);
@@ -57,12 +60,38 @@ export default function Testimonials() {
     setCurrent(i);
   }, [current]);
 
+  const markInteracted = useCallback(() => {
+    setIsInteracted(true);
+    if (interactedTimerRef.current) clearTimeout(interactedTimerRef.current);
+    interactedTimerRef.current = setTimeout(() => setIsInteracted(false), 12000);
+  }, []);
+
+  useEffect(() => {
+    if (isHovered || isInteracted) return;
+    const id = setInterval(() => {
+      setDir(1);
+      setCurrent((c) => (c + 1) % testimonials.length);
+    }, 7000);
+    return () => clearInterval(id);
+  }, [isHovered, isInteracted]);
+
+  useEffect(() => {
+    return () => {
+      if (interactedTimerRef.current) clearTimeout(interactedTimerRef.current);
+    };
+  }, []);
+
   const onPointerDown = (e: React.PointerEvent) => setDragStart(e.clientX);
   const onPointerUp = (e: React.PointerEvent) => {
     if (dragStart === null) return;
     const delta = e.clientX - dragStart;
-    if (delta < -50) advance();
-    else if (delta > 50) back();
+    if (delta < -50) {
+      markInteracted();
+      advance();
+    } else if (delta > 50) {
+      markInteracted();
+      back();
+    }
     setDragStart(null);
   };
 
@@ -73,7 +102,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative pt-20 pb-16 md:pt-24 md:pb-20 overflow-hidden"
+      className="relative pt-16 pb-14 md:pt-20 md:pb-16 overflow-hidden"
       style={{ background: 'var(--carbon-950)' }}
     >
       {/* Ambient diagonal stripe */}
@@ -92,7 +121,7 @@ export default function Testimonials() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-14 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-7 lg:gap-10 items-center">
 
           {/* ── LEFT: header + counter + nav ── */}
           <motion.div
@@ -112,7 +141,7 @@ export default function Testimonials() {
 
             {/* Heading */}
             <h2
-              className="text-5xl md:text-6xl xl:text-7xl font-black leading-none mb-6"
+              className="text-5xl md:text-6xl xl:text-7xl font-black leading-none mb-5"
               style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
             >
               CLIENT{' '}
@@ -129,10 +158,10 @@ export default function Testimonials() {
             </h2>
 
             <p
-              className="text-sm leading-relaxed max-w-120 mb-8"
+              className="text-sm leading-relaxed max-w-120 mb-6"
               style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
             >
-              Real feedback from clients who trust us with high-value vehicles and expect flawless results.
+              Real feedback from owners who expect premium results.
             </p>
 
             {/* Premium counter */}
@@ -168,7 +197,10 @@ export default function Testimonials() {
             <div className="flex items-center gap-3">
               {/* Prev */}
               <button
-                onClick={back}
+                onClick={() => {
+                  markInteracted();
+                  back();
+                }}
                 className="w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{
                   border: '1px solid rgba(201,168,76,0.25)',
@@ -196,7 +228,10 @@ export default function Testimonials() {
                 {testimonials.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => goTo(i)}
+                    onClick={() => {
+                      markInteracted();
+                      goTo(i);
+                    }}
                     className="cursor-pointer transition-all duration-300"
                     style={{
                       width: i === current ? '24px' : '6px',
@@ -212,7 +247,10 @@ export default function Testimonials() {
 
               {/* Next */}
               <button
-                onClick={advance}
+                onClick={() => {
+                  markInteracted();
+                  advance();
+                }}
                 className="w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{
                   border: '1px solid rgba(201,168,76,0.25)',
@@ -237,14 +275,14 @@ export default function Testimonials() {
             </div>
 
             <p
-              className="mt-5 text-xs"
+              className="mt-4 text-xs"
               style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)', letterSpacing: '0.04em' }}
             >
               4.9 / 5 average · Ceramic · PPF · Correction
             </p>
 
             {/* Progress track */}
-            <div className="mt-5 h-px w-full max-w-xs" style={{ background: 'rgba(255,255,255,0.07)' }}>
+            <div className="mt-4 h-px w-full max-w-xs" style={{ background: 'rgba(255,255,255,0.07)' }}>
               <motion.div
                 className="h-full"
                 style={{ background: 'linear-gradient(90deg, #C9A84C, #FFD700)' }}
@@ -261,6 +299,8 @@ export default function Testimonials() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-3 relative"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             {/* Ambient glow behind showcase card */}
             <div
@@ -275,12 +315,12 @@ export default function Testimonials() {
 
             {/* Large decorative quote mark */}
             <div
-              className="absolute -top-5 -left-2 pointer-events-none select-none leading-none font-black"
+              className="hidden md:block absolute -top-5 -left-2 pointer-events-none select-none leading-none font-black"
               aria-hidden="true"
               style={{
                 fontFamily: 'Georgia, serif',
-                fontSize: 'clamp(7rem, 14vw, 11rem)',
-                color: 'rgba(201,168,76,0.07)',
+                fontSize: 'clamp(5.8rem, 11vw, 8.4rem)',
+                color: 'rgba(201,168,76,0.055)',
                 lineHeight: 1,
               }}
             >
@@ -306,8 +346,8 @@ export default function Testimonials() {
                     background: 'linear-gradient(162deg, rgba(20,20,30,0.97) 0%, rgba(12,12,18,0.985) 100%)',
                     border: '1px solid rgba(201,168,76,0.2)',
                     borderTop: '2px solid rgba(201,168,76,0.52)',
-                    boxShadow: '0 30px 72px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.045)',
-                    minHeight: '360px',
+                    boxShadow: '0 20px 48px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.045)',
+                    minHeight: '318px',
                   }}
                 >
                   {/* Subtle top-right glow */}
@@ -320,7 +360,7 @@ export default function Testimonials() {
                     }}
                   />
 
-                  <div className="relative p-7 md:p-12">
+                  <div className="relative p-6 md:p-9">
                     {/* Top row: stars + service tag */}
                     <div className="flex items-center justify-between gap-4 mb-6">
                       <motion.div
@@ -353,14 +393,14 @@ export default function Testimonials() {
 
                     {/* Quote */}
                     <motion.blockquote
-                      className="leading-relaxed mb-8 max-w-3xl"
+                      className="leading-relaxed mb-6 max-w-3xl"
                       style={{
                         fontFamily: 'var(--font-inter)',
-                        fontSize: 'clamp(1.08rem, 2.2vw, 1.36rem)',
+                        fontSize: 'clamp(1rem, 1.9vw, 1.2rem)',
                         color: 'rgba(255,255,255,0.88)',
                         fontWeight: 300,
                         letterSpacing: '0.01em',
-                        lineHeight: 1.75,
+                        lineHeight: 1.65,
                       }}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
