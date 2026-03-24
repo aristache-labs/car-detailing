@@ -23,13 +23,14 @@ type TranslationShape = {
     language: string;
   };
   hero: {
-    eyebrow: string;
+    headlineTop: string;
+    headlineBottom: string;
     description: string;
     primaryCta: string;
     secondaryCta: string;
-    carsDetailed: string;
-    rating: string;
-    experience: string;
+    trust1: string;
+    trust2: string;
+    trust3: string;
     scroll: string;
   };
 };
@@ -47,14 +48,15 @@ const translations: Record<Language, TranslationShape> = {
       language: 'Language',
     },
     hero: {
-      eyebrow: 'Auto Detailing Studio',
+      headlineTop: 'Premium Auto',
+      headlineBottom: 'Detailing & Paint Protection',
       description:
-        'Polish. Protect. Perfect. — Professional auto detailing that makes every vehicle impossible to ignore.',
-      primaryCta: 'Book a Service',
-      secondaryCta: 'Our Services',
-      carsDetailed: 'Cars Detailed',
-      rating: 'Rating',
-      experience: 'Experience',
+        'Paint correction, ceramic coating, PPF and interior restoration — delivered with professional-grade products and meticulous attention to detail.',
+      primaryCta: 'Book a Free Inspection',
+      secondaryCta: 'View Our Results',
+      trust1: 'Certified premium products',
+      trust2: 'Quote within 24 hours',
+      trust3: 'Written warranty available',
       scroll: 'Scroll to explore',
     },
   },
@@ -70,14 +72,15 @@ const translations: Record<Language, TranslationShape> = {
       language: 'Limba',
     },
     hero: {
-      eyebrow: 'Studio de detailing auto',
+      headlineTop: 'Auto Premium',
+      headlineBottom: 'Detailing & Protectie Vopsea',
       description:
-        'Polisare. Protectie. Perfectiune. — Servicii profesionale de detailing auto care fac orice masina imposibil de ignorat.',
-      primaryCta: 'Programeaza',
-      secondaryCta: 'Serviciile Noastre',
-      carsDetailed: 'Masini Detaliate',
-      rating: 'Rating',
-      experience: 'Experienta',
+        'Corectie lac, coating ceramic, PPF si restaurare interior — realizate cu produse profesionale premium si atentie meticuloasa la detalii.',
+      primaryCta: 'Programeaza o inspectie gratuita',
+      secondaryCta: 'Vezi rezultatele noastre',
+      trust1: 'Produse premium certificate',
+      trust2: 'Oferta in maximum 24 de ore',
+      trust3: 'Garantie scrisa disponibila',
       scroll: 'Deruleaza pentru explorare',
     },
   },

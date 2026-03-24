@@ -1,36 +1,150 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
+import { Check, ChevronDown, Menu, X } from 'lucide-react';
 import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
 import Image from 'next/image';
 
 const LANGUAGE_META: Record<Language, { code: string; flagSrc: string }> = {
-  en: { code: 'EN', flagSrc: '/images/flags/en.svg' },
-  ro: { code: 'RO', flagSrc: '/images/flags/ro.svg' },
+  en: { code: 'En', flagSrc: '/images/flags/en.svg' },
+  ro: { code: 'Ro', flagSrc: '/images/flags/ro.svg' },
 };
 
+// Centralised gold palette so changes propagate everywhere
+const GOLD = '#C6A35A';
+const GOLD_HOVER = '#D0AE68';
+const TEXT_MUTED = 'var(--text-secondary)';
+
+// ── Language Dropdown ─────────────────────────────────────────────────────────
+function LanguageDropdown({
+  language,
+  langOpen,
+  setLangOpen,
+  langRef,
+  ariaLabel,
+  onSelect,
+}: {
+  language: Language;
+  langOpen: boolean;
+  setLangOpen: (v: boolean | ((prev: boolean) => boolean)) => void;
+  langRef: React.RefObject<HTMLDivElement | null>;
+  ariaLabel: string;
+  onSelect: (lang: Language) => void;
+}) {
+  return (
+    <div ref={langRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setLangOpen((v) => !v)}
+        aria-label={ariaLabel}
+        aria-expanded={langOpen}
+        className="flex items-center gap-1.5 cursor-pointer py-1.5 px-2 rounded transition-colors duration-200"
+        style={{ color: TEXT_MUTED, fontFamily: 'var(--font-inter)', fontSize: '0.8125rem' }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = '#d0d0d0')}
+        onMouseLeave={(e) => (e.currentTarget.style.color = TEXT_MUTED)}
+      >
+        <Image
+          src={LANGUAGE_META[language].flagSrc}
+          alt=""
+          aria-hidden
+          width={16}
+          height={11}
+          className="rounded-[2px] object-cover"
+          style={{ width: 16, height: 11 }}
+        />
+        <span style={{ letterSpacing: '0.02em' }}>{LANGUAGE_META[language].code}</span>
+        <ChevronDown
+          className={`transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`}
+          style={{ width: 12, height: 12, opacity: 0.45 }}
+        />
+      </button>
+
+      <AnimatePresence>
+        {langOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.15 }}
+            className="absolute right-0 top-full mt-1.5 min-w-[100px] overflow-hidden rounded-[6px]"
+            style={{
+              background: '#17171a',
+              border: '1px solid rgba(255,255,255,0.09)',
+            }}
+          >
+            {(['en', 'ro'] as const).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => onSelect(option)}
+                className="flex w-full items-center justify-between px-3 py-2.5 text-left cursor-pointer transition-colors duration-150"
+                style={{
+                  fontFamily: 'var(--font-inter)',
+                  fontSize: '0.8125rem',
+                  color: language === option ? GOLD : TEXT_MUTED,
+                  background: 'transparent',
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
+              >
+                <span className="flex items-center gap-2">
+                  <Image
+                    src={LANGUAGE_META[option].flagSrc}
+                    alt=""
+                    aria-hidden
+                    width={16}
+                    height={11}
+                    className="rounded-[2px] object-cover"
+                    style={{ width: 16, height: 11 }}
+                  />
+                  <span>{LANGUAGE_META[option].code}</span>
+                </span>
+                {language === option && <Check style={{ width: 12, height: 12, color: GOLD }} />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ── Main Navbar ───────────────────────────────────────────────────────────────
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
     { label: t.nav.services, href: '#services' },
-    { label: t.nav.stats, href: '#stats' },
     { label: t.nav.gallery, href: '#gallery' },
-    { label: t.nav.process, href: '#process' },
-    { label: t.nav.pricing, href: '#pricing' },
+    { label: language === 'ro' ? 'Pachete' : 'Packages', href: '#pricing' },
+    { label: language === 'ro' ? 'Recenzii' : 'Reviews', href: '#testimonials' },
     { label: t.nav.contact, href: '#contact' },
   ];
+
+  const ctaLabel = language === 'ro' ? 'Solicită ofertă' : 'Get a Quote';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Close lang dropdown on outside click
+  useEffect(() => {
+    if (!langOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [langOpen]);
 
   const handleLink = (href: string) => {
     setMenuOpen(false);
@@ -39,229 +153,234 @@ export default function Navbar() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleLanguage = (nextLanguage: Language) => {
-    setLanguage(nextLanguage);
+  const handleLanguage = (next: Language) => {
+    setLanguage(next);
     setLangOpen(false);
   };
 
-  const renderLanguageDropdown = () => (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => setLangOpen((open) => !open)}
-        className="flex items-center gap-2 rounded border px-3 py-2 text-xs font-semibold tracking-[0.14em] uppercase transition-colors duration-200 cursor-pointer"
-        style={{
-          borderColor: 'rgba(201,168,76,0.22)',
-          color: '#C9A84C',
-          background: 'rgba(7,7,9,0.65)',
-          fontFamily: 'var(--font-inter)',
-        }}
-        aria-label={t.nav.language}
-        aria-expanded={langOpen}
-      >
-        <Image
-          src={LANGUAGE_META[language].flagSrc}
-          alt=""
-          aria-hidden
-          width={18}
-          height={12}
-          className="h-3 w-[18px] rounded-[2px] object-cover"
-        />
-        <span>{LANGUAGE_META[language].code}</span>
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
-      </button>
-
-      <AnimatePresence>
-        {langOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.18 }}
-            className="absolute right-0 top-full mt-2 min-w-[110px] overflow-hidden rounded border"
-            style={{
-              background: 'rgba(13,13,18,0.98)',
-              borderColor: 'rgba(201,168,76,0.15)',
-              backdropFilter: 'blur(20px)',
-            }}
-          >
-            {(['en', 'ro'] as const).map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => handleLanguage(option)}
-                className="flex w-full items-center justify-between px-3 py-2.5 text-left text-xs font-medium tracking-[0.12em] uppercase transition-colors duration-200 cursor-pointer"
-                style={{
-                  color: language === option ? '#C9A84C' : 'var(--text-secondary)',
-                  fontFamily: 'var(--font-inter)',
-                }}
-              >
-                <span className="flex items-center gap-2">
-                  <Image
-                    src={LANGUAGE_META[option].flagSrc}
-                    alt=""
-                    aria-hidden
-                    width={18}
-                    height={12}
-                    className="h-3 w-[18px] rounded-[2px] object-cover"
-                  />
-                  <span>{LANGUAGE_META[option].code}</span>
-                </span>
-                {language === option && <Check className="h-3.5 w-3.5" />}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+  const langDropdownProps = {
+    language,
+    langOpen,
+    setLangOpen,
+    langRef,
+    ariaLabel: t.nav.language,
+    onSelect: handleLanguage,
+  };
 
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-400"
         style={{
-          background: scrolled
-            ? 'rgba(7,7,9,0.92)'
-            : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(201,168,76,0.15)' : 'none',
+          background: scrolled ? 'rgba(9,9,11,0.97)' : 'rgba(9,9,11,0.88)',
+          backdropFilter: scrolled ? 'blur(6px)' : 'none',
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #C9A84C, #FFD700)' }}>
-              <Zap className="w-4 h-4 text-black fill-black" />
-            </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-[76px] flex items-center justify-between gap-8">
+
+          {/* ── Logo ── */}
+          <a href="#" className="flex items-center gap-3 shrink-0" aria-label="Apex Detailing — Home">
+            {/* Logomark: thin gold ring with a centred dot — minimal, intentional */}
             <span
-              className="text-xl font-black tracking-widest uppercase"
-              style={{ fontFamily: 'var(--font-orbitron)', letterSpacing: '0.15em' }}
+              className="flex items-center justify-center rounded-[6px]"
+              style={{
+                width: 30,
+                height: 30,
+                border: `1.5px solid ${GOLD}`,
+                opacity: 0.85,
+              }}
+              aria-hidden
             >
-              <span style={{ color: '#C9A84C' }}>APEX</span>
-              <span className="text-white ml-1">DETAIL</span>
+              <span
+                className="rounded-full"
+                style={{ width: 6, height: 6, background: GOLD, opacity: 0.9 }}
+              />
+            </span>
+
+            {/* Wordmark */}
+            <span
+              style={{
+                fontFamily: 'var(--font-inter)',
+                fontSize: '0.9375rem',
+                fontWeight: 600,
+                letterSpacing: '0.04em',
+                color: '#ebebeb',
+              }}
+            >
+              APEX
+              <span style={{ color: GOLD, fontWeight: 500, letterSpacing: '0.04em' }}> Detailing</span>
             </span>
           </a>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          {/* ── Desktop nav ── */}
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Primary navigation">
             {navLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => handleLink(link.href)}
-                className="text-sm font-medium tracking-widest uppercase transition-colors duration-200 cursor-pointer"
-                style={{
-                  color: 'var(--text-secondary)',
-                  fontFamily: 'var(--font-inter)',
-                  letterSpacing: '0.1em',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A84C')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-              >
+              <NavLink key={link.href} onClick={() => handleLink(link.href)}>
                 {link.label}
-              </button>
+              </NavLink>
             ))}
           </nav>
 
-          {/* CTA */}
-          <div className="hidden lg:flex items-center gap-4">
-            {renderLanguageDropdown()}
+          {/* ── Desktop right controls ── */}
+          <div className="hidden lg:flex items-center gap-5 shrink-0">
+            <LanguageDropdown {...langDropdownProps} />
             <button
               onClick={() => handleLink('#contact')}
-              className="btn-shimmer px-6 py-2.5 text-sm font-semibold tracking-widest uppercase rounded cursor-pointer transition-all duration-300"
+              className="cursor-pointer rounded-[8px] transition-colors duration-200"
               style={{
-                background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-                color: '#070709',
+                background: GOLD,
+                color: '#0a0a0c',
                 fontFamily: 'var(--font-inter)',
-                letterSpacing: '0.1em',
+                fontSize: '0.8125rem',
+                fontWeight: 600,
+                letterSpacing: '0.03em',
+                padding: '10px 20px',
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 25px rgba(201,168,76,0.5)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD_HOVER)}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD)}
             >
-              {t.nav.bookNow}
+              {ctaLabel}
             </button>
           </div>
 
-          <div className="lg:hidden flex items-center gap-2">
-            {renderLanguageDropdown()}
+          {/* ── Mobile controls ── */}
+          <div className="lg:hidden flex items-center gap-3">
+            <LanguageDropdown {...langDropdownProps} />
             <button
-              className="p-2 cursor-pointer"
-              style={{ color: '#C9A84C' }}
-              onClick={() => setMenuOpen(!menuOpen)}
+              className="cursor-pointer p-1.5 rounded"
+              style={{ color: '#c8c8c8', lineHeight: 0 }}
+              onClick={() => setMenuOpen((v) => !v)}
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
             >
-              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
+
         </div>
       </header>
 
-      {/* Mobile Drawer */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed inset-y-0 right-0 z-100 w-72 flex flex-col pt-24 pb-8 px-8"
-            style={{
-              background: 'rgba(13,13,18,0.98)',
-              backdropFilter: 'blur(30px)',
-              borderLeft: '1px solid rgba(201,168,76,0.15)',
-            }}
-          >
-            <nav className="flex flex-col gap-6">
-              {navLinks.map((link, i) => (
-                <motion.button
-                  key={link.href}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
-                  onClick={() => handleLink(link.href)}
-                  className="text-left text-lg font-medium tracking-widest uppercase cursor-pointer"
-                  style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#C9A84C')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                >
-                  {link.label}
-                </motion.button>
-              ))}
-            </nav>
-            <div className="mt-auto">
-              <button
-                onClick={() => handleLink('#contact')}
-                className="btn-shimmer w-full py-3 text-sm font-semibold tracking-widest uppercase rounded cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-                  color: '#070709',
-                  fontFamily: 'var(--font-inter)',
-                }}
-              >
-                {t.nav.bookNow}
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile overlay */}
+      {/* ── Mobile overlay ── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 bg-black/60 lg:hidden"
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-30 lg:hidden"
+            style={{ background: 'rgba(0,0,0,0.55)' }}
             onClick={() => setMenuOpen(false)}
           />
         )}
       </AnimatePresence>
+
+      {/* ── Mobile drawer ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'tween', ease: [0.32, 0, 0.67, 0], duration: 0.22 }}
+            className="fixed inset-y-0 right-0 z-40 w-[86vw] max-w-[320px] flex flex-col"
+            style={{
+              background: '#0d0d10',
+              borderLeft: '1px solid rgba(255,255,255,0.08)',
+            }}
+          >
+            {/* Drawer header */}
+            <div
+              className="flex items-center justify-between px-6 shrink-0"
+              style={{ height: 76, borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+            >
+              <span />
+              <button
+                className="cursor-pointer p-1 rounded"
+                style={{ color: '#c8c8c8', lineHeight: 0 }}
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Drawer links */}
+            <nav className="flex flex-col px-6 py-8 gap-1 flex-1" aria-label="Mobile navigation">
+              {navLinks.map((link) => (
+                <button
+                  key={link.href}
+                  onClick={() => handleLink(link.href)}
+                  className="text-left cursor-pointer py-3 transition-colors duration-150"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    color: TEXT_MUTED,
+                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                  }}
+                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#e8e8e8')}
+                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = TEXT_MUTED)}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </nav>
+
+            {/* Drawer CTA */}
+            <div className="px-6 pb-10">
+              <button
+                onClick={() => handleLink('#contact')}
+                className="w-full cursor-pointer rounded-[8px] transition-colors duration-200"
+                style={{
+                  background: GOLD,
+                  color: '#0a0a0c',
+                  fontFamily: 'var(--font-inter)',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.03em',
+                  padding: '12px 0',
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD_HOVER)}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD)}
+              >
+                {ctaLabel}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
+  );
+}
+
+// ── Extracted NavLink to avoid repeated inline style logic ──
+function NavLink({
+  onClick,
+  children,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="cursor-pointer pb-px"
+      style={{
+        fontFamily: 'var(--font-inter)',
+        fontSize: '0.875rem',
+        fontWeight: 500,
+        color: hovered ? '#e3e3e3' : 'rgba(212,212,212,0.88)',
+        borderBottom: hovered ? '1px solid rgba(201,168,76,0.5)' : '1px solid transparent',
+        transition: 'color 0.18s, border-color 0.18s',
+        background: 'none',
+      }}
+    >
+      {children}
+    </button>
   );
 }

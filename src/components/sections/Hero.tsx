@@ -3,7 +3,7 @@
 import { useEffect, useRef, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, PhoneCall } from 'lucide-react';
+import { ArrowRight, CheckCircle, Eye } from 'lucide-react';
 import gsap from 'gsap';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 
@@ -63,15 +63,12 @@ export default function Hero() {
       className="relative overflow-hidden flex flex-col lg:flex-row lg:items-center min-h-screen"
       style={{ background: 'var(--carbon-950)' }}
     >
-      {/* Carbon grid bg */}
+      {/* Subtle left radial accent */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `
-            linear-gradient(rgba(201,168,76,0.06) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201,168,76,0.06) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
+          background:
+            'radial-gradient(ellipse 60% 50% at 30% 50%, rgba(201,168,76,0.04) 0%, transparent 70%)',
         }}
       />
 
@@ -92,65 +89,24 @@ export default function Hero() {
         }}
       />
 
-      {/* Speed lines behind car — desktop only */}
-      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none hidden lg:block" style={{ zIndex: 1 }}>
-        {[20, 35, 50, 65, 75].map((top, i) => (
-          <div
-            key={i}
-            className="absolute h-px"
-            style={{
-              top: `${top}%`,
-              right: 0,
-              width: `${40 + i * 10}%`,
-              background: `rgba(201,168,76,${0.04 + i * 0.015})`,
-              animation: `speed-slide ${3 + i * 0.4}s ease-in-out ${i * 0.6}s infinite`,
-            }}
-          />
-        ))}
-      </div>
-
       {/* ── LEFT PANEL — editorial; desktop: content block nudged toward car ── */}
       <div
         ref={leftRef}
         className="relative z-10 w-full lg:w-[52%] xl:w-[50%] px-6 sm:px-8 md:px-14 lg:pl-10 lg:pr-4 xl:pl-14 xl:pr-8 pt-28 pb-6 lg:py-0"
       >
         <div className="lg:max-w-xl xl:max-w-2xl lg:ml-auto lg:mr-2 xl:mr-6 2xl:mr-10">
-        {/* Eyebrow — refined metallic divider */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center justify-center lg:justify-start gap-3 mb-8 lg:mb-9"
-        >
-          <div className="flex items-center gap-2 shrink-0" aria-hidden>
-            <span
-              className="block h-px w-8 bg-[#CFA85A]/40"
-              style={{ boxShadow: '0 0 20px rgba(207,168,90,0.12)' }}
-            />
-            <span
-              className="block h-px w-10 bg-linear-to-r from-[#CFA85A]/40 to-transparent"
-            />
-          </div>
-          <span
-            className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[#B8924A]/90"
-            style={{ fontFamily: 'var(--font-inter)' }}
-          >
-            {t.hero.eyebrow}
-          </span>
-        </motion.div>
-
-        {/* Main headline — single-line chrome + warm metallic */}
+        {/* Main headline — two-line premium value proposition */}
         <div
           ref={titleRef}
           className="filter-[drop-shadow(0_6px_24px_rgba(0,0,0,0.45))] text-center lg:text-left"
           style={{ opacity: 0 }}
         >
           <h1
-            className="leading-[0.92] tracking-[0.01em] mb-0 whitespace-nowrap"
+            className="leading-[0.94] tracking-[0.01em] mb-0"
             style={{ fontFamily: 'var(--font-bebas)' }}
           >
             <span
-              className="inline-block text-[clamp(5rem,13vw,12rem)] lg:text-[clamp(4.75rem,7.5vw,10.5rem)]"
+              className="block text-[clamp(3.5rem,6vw,7rem)]"
               style={{
                 background:
                   'linear-gradient(165deg, #f0f4f8 0%, #dce0e0 35%, #ffffff 48%, #c8d0d0 58%, #8a9aa8 100%)',
@@ -160,34 +116,20 @@ export default function Hero() {
                 lineHeight: 0.92,
               }}
             >
-              APEX
+              {t.hero.headlineTop}
             </span>
-            <span className="relative inline-block ml-[2.0em] lg:ml-[2.0em]">
-              <span
-                className="inline-block text-[clamp(5rem,13vw,12rem)] lg:text-[clamp(4.75rem,7.5vw,10.5rem)]"
-                style={{
-                  background:
-                    'linear-gradient(165deg, #ead8b8 0%, #d6b36a 28%, #cfa85a 52%, #b8924a 78%, #8a6a38 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  lineHeight: 0.92,
-                }}
-              >
-                DETAIL
-              </span>
-              <div
-                className="absolute pointer-events-none"
-                style={{
-                  top: '10%',
-                  left: '-4%',
-                  width: '108%',
-                  height: '8px',
-                  background: 'linear-gradient(90deg, transparent, rgba(207,168,90,0.22), transparent)',
-                  transform: 'rotate(-6deg)',
-                  filter: 'blur(1px)',
-                }}
-              />
+            <span
+              className="block text-[clamp(2.8rem,4.5vw,5.5rem)]"
+              style={{
+                background:
+                  'linear-gradient(165deg, #ead8b8 0%, #d6b36a 28%, #cfa85a 52%, #b8924a 78%, #8a6a38 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                lineHeight: 0.92,
+              }}
+            >
+              {t.hero.headlineBottom}
             </span>
           </h1>
         </div>
@@ -224,45 +166,31 @@ export default function Hero() {
 
           <button
             type="button"
-            onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => document.querySelector('#gallery')?.scrollIntoView({ behavior: 'smooth' })}
             className="hero-cta-secondary group"
           >
-            <PhoneCall className="w-[15px] h-[15px] shrink-0 opacity-90" strokeWidth={2} />
+            <Eye className="w-[15px] h-[15px] shrink-0 opacity-90" strokeWidth={2} />
             {t.hero.secondaryCta}
           </button>
         </div>
 
-        {/* Stats — editorial rhythm, not dashboard widgets */}
-        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 sm:gap-10 mt-12 lg:mt-14">
-          {[
-            { v: '500+', l: t.hero.carsDetailed },
-            { v: '5★', l: t.hero.rating },
-            { v: '5 Yrs', l: t.hero.experience },
-          ].map((stat, i) => (
-            <div key={stat.l} className="flex items-center">
-              {i > 0 && (
-                <div
-                  className="hidden sm:block w-px h-11 mr-8 sm:mr-10 shrink-0 bg-linear-to-b from-transparent via-white/15 to-transparent"
-                  aria-hidden
-                />
-              )}
-              <div className="min-w-0 text-center lg:text-left">
-                <p
-                  className="text-[1.75rem] sm:text-[1.875rem] font-semibold tabular-nums tracking-tight text-[#cfa85a]"
-                  style={{ fontFamily: 'var(--font-orbitron)' }}
-                >
-                  {stat.v}
-                </p>
-                <p
-                  className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-text-micro"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {stat.l}
-                </p>
-              </div>
-            </div>
+        {/* Trust bullets */}
+        <ul className="flex flex-col gap-2.5 mt-10 lg:mt-12">
+          {[t.hero.trust1, t.hero.trust2, t.hero.trust3].map((item) => (
+            <li
+              key={item}
+              className="flex items-center justify-center lg:justify-start gap-2.5 text-[13px]"
+              style={{
+                color: 'rgba(210, 212, 222, 0.82)',
+                fontFamily: 'var(--font-inter)',
+                letterSpacing: '0.01em',
+              }}
+            >
+              <CheckCircle className="w-3.5 h-3.5 shrink-0 text-[#cfa85a]" strokeWidth={2} />
+              <span>{item}</span>
+            </li>
           ))}
-        </div>
+        </ul>
         </div>
       </div>
 

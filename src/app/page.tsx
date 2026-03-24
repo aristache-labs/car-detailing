@@ -12,9 +12,9 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <Stats />
       <ServicesMarquee />
       <ServicesDetail />
-      <Stats />
       <BeforeAfter />
       <Process />
       <Testimonials />
