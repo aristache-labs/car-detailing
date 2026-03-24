@@ -30,7 +30,7 @@ const plans = [
     currency: 'RON',
     duration: '',
     highlight: true,
-    badge: 'Top Choice',
+    badge: 'Most Popular',
     services: [
       'Paint preparation included',
       'Ceramic coating application',
@@ -127,7 +127,7 @@ export default function Pricing() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -3, transition: { duration: 0.24, ease: 'easeOut' } }}
-              className={`relative flex flex-col rounded-xl ${plan.highlight ? 'pricing-highlight-card' : ''}`}
+              className={`relative flex min-h-112 sm:min-h-120 lg:min-h-128 flex-col rounded-xl ${plan.highlight ? 'pricing-highlight-card' : ''}`}
               style={{
                 background: plan.highlight
                   ? 'linear-gradient(160deg, rgba(27,24,15,0.98) 0%, rgba(15,13,9,0.99) 100%)'
@@ -162,7 +162,11 @@ export default function Pricing() {
 {plan.badge && (
   <div
     className="absolute z-20 pointer-events-none"
-    style={{ left: '-8px', top: '20%' }}
+    style={{
+      left: '-8px',
+      top: '5%',
+      filter: 'drop-shadow(0 0 12px rgba(201,168,76,0.08))',
+    }}
   >
     {/* Main ribbon tab */}
     <div
@@ -201,7 +205,7 @@ export default function Pricing() {
   </div>
 )}
 
-              <div className="relative z-10 flex flex-col flex-1 p-5 sm:p-6">
+              <div className="relative z-10 flex flex-col flex-1 px-6 pb-6 pt-14 sm:px-7 sm:pb-7 sm:pt-16 md:px-8 md:pb-8 md:pt-20">
                 {/* Plan name */}
                 <h3
                   className="font-black leading-[0.95] mb-2 text-center"
@@ -218,7 +222,7 @@ export default function Pricing() {
 
                 {/* Tagline */}
                 <p
-                  className="text-[0.73rem] leading-relaxed mb-4 text-center"
+                  className="text-[0.73rem] leading-relaxed mb-5 text-center"
                   style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
                 >
                   Best for: {plan.tagline}
@@ -226,7 +230,7 @@ export default function Pricing() {
 
                 {/* Price block */}
                 <div
-                  className="flex items-end justify-center gap-2 pb-3 mb-4"
+                  className="flex items-end justify-center gap-2 pb-4 mb-5"
                   style={{
                     borderBottom: plan.highlight
                       ? '1px solid rgba(201,168,76,0.2)'
@@ -269,7 +273,7 @@ export default function Pricing() {
                 </p>
 
                 {/* Service list */}
-                <ul className="space-y-2 flex-1">
+                <ul className="space-y-3">
                   {plan.services.slice(0, 5).map((service) => (
                     <li key={service} className="flex items-start gap-2">
                       <Check
@@ -304,7 +308,7 @@ export default function Pricing() {
                 <button
                   type="button"
                   onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="mt-5 w-full flex items-center justify-center gap-2 py-3 text-[10px] font-bold tracking-[0.14em] uppercase cursor-pointer group transition-all duration-300"
+                  className="mt-auto pt-4 w-full flex items-center justify-center gap-1.5 py-2 text-[10px] font-bold tracking-[0.14em] uppercase cursor-pointer group transition-all duration-300"
                   style={{
                     background: plan.highlight
                       ? 'linear-gradient(135deg, #C9A84C, #FFD700)'
@@ -333,7 +337,7 @@ export default function Pricing() {
                   }}
                 >
                   Request Quote
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  <ArrowRight className="w-3 h-3 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </button>
               </div>
             </motion.article>
