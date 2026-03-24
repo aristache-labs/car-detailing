@@ -10,8 +10,14 @@ const panels = [
     service: 'Paint Correction',
     beforeLabel: 'Swirl Marks',
     afterLabel: 'Mirror Finish',
-    beforeBg: 'linear-gradient(135deg, #1a1a24 0%, #0d0d12 100%)',
-    afterBg: 'linear-gradient(135deg, #1e2030 0%, #0d1020 100%)',
+    beforeImage: '/images/before-after/before-paint-correction.png',
+    afterImage: '/images/before-after/after-paint-correction.png',
+    vehicle: 'BMW 530e',
+    proofService: '2-stage paint correction + ceramic coating',
+    time: '14 hours',
+    outcome: 'Swirl removal, deeper gloss, hydrophobic finish',
+    beforeBg: 'linear-gradient(135deg, #121218 0%, #0c0c10 100%)',
+    afterBg: 'linear-gradient(135deg, #151720 0%, #0d0f16 100%)',
     beforeAccent: '#3a3a4a',
     afterAccent: '#C9A84C',
   },
@@ -21,7 +27,13 @@ const panels = [
     service: 'Ceramic Coating',
     beforeLabel: 'Dull Paint',
     afterLabel: 'Hydrophobic Shield',
-    beforeBg: 'linear-gradient(135deg, #1a1820 0%, #0e0c14 100%)',
+    beforeImage: '/images/before-after/before-ceramic-coating.png',
+    afterImage: '/images/before-after/after-ceramic-coating.png',
+    vehicle: 'Audi RS5',
+    proofService: 'Paint decontamination + ceramic coating',
+    time: '11 hours',
+    outcome: 'Higher gloss, smoother finish, durable water repellency',
+    beforeBg: 'linear-gradient(135deg, #171521 0%, #0d0b14 100%)',
     afterBg: 'linear-gradient(135deg, #101828 0%, #0a1018 100%)',
     beforeAccent: '#3a3848',
     afterAccent: '#4a8aa0',
@@ -32,8 +44,14 @@ const panels = [
     service: 'Paint Protection Film',
     beforeLabel: 'Unprotected',
     afterLabel: 'Invisible Armour',
-    beforeBg: 'linear-gradient(135deg, #1c1a18 0%, #100e0c 100%)',
-    afterBg: 'linear-gradient(135deg, #1a1c18 0%, #0e100c 100%)',
+    beforeImage: '/images/before-after/before-PPF.png',
+    afterImage: '/images/before-after/after-PPF.png',
+    vehicle: 'Porsche 911',
+    proofService: 'Front-end PPF + finish correction prep',
+    time: '16 hours',
+    outcome: 'Impact protection, cleaner reflections, protected high-wear zones',
+    beforeBg: 'linear-gradient(135deg, #161411 0%, #0f0d0b 100%)',
+    afterBg: 'linear-gradient(135deg, #171a14 0%, #0d100b 100%)',
     beforeAccent: '#3a3830',
     afterAccent: '#6a8a50',
   },
@@ -43,7 +61,13 @@ const panels = [
     service: 'Interior Detailing',
     beforeLabel: 'Stained',
     afterLabel: 'Showroom Ready',
-    beforeBg: 'linear-gradient(135deg, #1a1410 0%, #0e0c08 100%)',
+    beforeImage: '/images/before-after/before-Interior-deep-clean.png',
+    afterImage: '/images/before-after/after-Interior-deep-clean.png',
+    vehicle: 'Mercedes C-Class',
+    proofService: 'Interior deep clean + leather conditioning',
+    time: '6 hours',
+    outcome: 'Restored cabin finish, improved texture, refreshed interior feel',
+    beforeBg: 'linear-gradient(135deg, #17120e 0%, #0d0b08 100%)',
     afterBg: 'linear-gradient(135deg, #1a1814 0%, #0e0c0a 100%)',
     beforeAccent: '#5a4030',
     afterAccent: '#C9A84C',
@@ -91,28 +115,12 @@ function DragSlider({ panel }: SliderProps) {
       {/* BEFORE layer */}
       <div
         className="absolute inset-0 flex items-end p-4"
-        style={{ background: panel.beforeBg }}
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(5,5,8,0.08), rgba(5,5,8,0.4)), url(${panel.beforeImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
-        {/* Placeholder visual — swirl marks simulation */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute"
-                style={{
-                  width: `${60 + i * 20}px`,
-                  height: '1px',
-                  background: panel.beforeAccent,
-                  top: `${30 + i * 6}%`,
-                  left: '10%',
-                  transform: `rotate(${-10 + i * 3}deg)`,
-                  opacity: 0.6,
-                }}
-              />
-            ))}
-          </div>
-        </div>
         <span
           className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase"
           style={{
@@ -129,26 +137,12 @@ function DragSlider({ panel }: SliderProps) {
       <div
         className="absolute inset-0 flex items-end p-4"
         style={{
-          background: panel.afterBg,
+          backgroundImage: `linear-gradient(180deg, rgba(5,5,8,0.04), rgba(5,5,8,0.3)), url(${panel.afterImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           clipPath: `polygon(${pos}% 0, 100% 0, 100% 100%, ${pos}% 100%)`,
         }}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          {/* Gloss effect simulation */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: `radial-gradient(ellipse 80% 60% at 40% 40%, ${panel.afterAccent}22 0%, transparent 70%)`,
-            }}
-          />
-          <div
-            className="absolute w-1/3 h-full"
-            style={{
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)',
-              left: '30%',
-            }}
-          />
-        </div>
         <span
           className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase ml-auto"
           style={{
@@ -187,21 +181,33 @@ function DragSlider({ panel }: SliderProps) {
 
 export default function BeforeAfter() {
   const [active, setActive] = useState(0);
+  const currentPanel = panels[active];
 
   return (
     <section
       id="gallery"
-      className="relative py-16 overflow-hidden"
+      className="relative py-12 md:py-13 overflow-hidden"
       style={{ background: 'var(--carbon-900)' }}
     >
       {/* Section label */}
-      <div className="px-4 sm:px-8 md:px-14 mb-8 flex items-end justify-between gap-4">
+      <div className="px-4 sm:px-8 md:px-14 mb-5 md:mb-6 flex items-end justify-between gap-4">
         <div className="text-center md:text-left mx-auto md:mx-0">
+          <span
+            className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-2"
+            style={{
+              color: '#E2C06A',
+              fontFamily: 'var(--font-orbitron)',
+              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+              border: '1px solid rgba(201,168,76,0.35)',
+            }}
+          >
+            Real Results
+          </span>
           <h2
             className="text-5xl md:text-6xl font-black leading-none"
             style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
           >
-            BEFORE{' '}
+            BEFORE & AFTER{' '}
             <span
               style={{
                 background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
@@ -210,18 +216,18 @@ export default function BeforeAfter() {
                 backgroundClip: 'text',
               }}
             >
-              & AFTER
+              RESULTS
             </span>
           </h2>
           <div
-            className="h-px w-20 mx-auto md:mx-0 mt-3 mb-2"
-            style={{ background: 'rgba(201,168,76,0.5)' }}
+            className="h-px w-16 mx-auto md:mx-0 mt-2 mb-2"
+            style={{ background: 'rgba(201,168,76,0.42)' }}
           />
           <p
             className="text-sm"
             style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
           >
-            Drag the slider to reveal the transformation
+            See how proper correction, coating, and detailing transform the finish.
           </p>
         </div>
         <span
@@ -257,12 +263,12 @@ export default function BeforeAfter() {
         <div
           className="relative overflow-hidden"
           style={{
-            height: '82vw',
-            minHeight: '320px',
-            maxHeight: '430px',
+            height: '88vw',
+            minHeight: '280px',
+            maxHeight: '470px',
             background: panels[active].beforeBg,
-            border: '1px solid rgba(201,168,76,0.3)',
-            boxShadow: '0 12px 30px rgba(0,0,0,0.35)',
+            border: '1px solid rgba(201,168,76,0.25)',
+            boxShadow: '0 10px 24px rgba(0,0,0,0.32)',
           }}
         >
           <DragSlider panel={panels[active]} />
@@ -288,7 +294,7 @@ export default function BeforeAfter() {
       </div>
 
       {/* ── Desktop: filmstrip ── */}
-      <div className="hidden md:flex h-[520px] px-14 gap-2">
+      <div className="hidden md:flex h-[500px] px-14 gap-1.5">
         {panels.map((panel) => {
           const isActive = panel.id === active;
           return (
@@ -297,13 +303,13 @@ export default function BeforeAfter() {
               onClick={() => setActive(panel.id)}
               className="relative overflow-hidden cursor-pointer"
               style={{
-                flex: isActive ? '4 0 0%' : '1 0 0%',
+                flex: isActive ? '3.2 0 0%' : '1.2 0 0%',
                 transition: 'flex 0.55s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: 'skewX(-2deg)',
                 transformOrigin: 'bottom',
                 background: panel.beforeBg,
-                border: isActive ? '1px solid rgba(201,168,76,0.3)' : '1px solid rgba(255,255,255,0.04)',
-                boxShadow: isActive ? '0 0 30px rgba(201,168,76,0.1)' : 'none',
+                border: isActive ? '1px solid rgba(201,168,76,0.24)' : '1px solid rgba(255,255,255,0.03)',
+                boxShadow: isActive ? '0 0 18px rgba(201,168,76,0.07)' : 'none',
               }}
             >
               {/* Inner content — unskew it */}
@@ -322,7 +328,7 @@ export default function BeforeAfter() {
                     <span
                       className="text-xs font-bold tracking-[0.2em] uppercase"
                       style={{
-                        color: 'rgba(201,168,76,0.7)',
+                        color: 'rgba(201,168,76,0.58)',
                         fontFamily: 'var(--font-orbitron)',
                         writingMode: 'vertical-rl',
                         textOrientation: 'mixed',
@@ -339,10 +345,10 @@ export default function BeforeAfter() {
                 <motion.div
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-4 left-4 z-30 px-3 py-1"
+                  className="absolute top-3 left-3 z-30 px-2.5 py-1"
                   style={{
-                    background: 'rgba(201,168,76,0.15)',
-                    border: '1px solid rgba(201,168,76,0.4)',
+                    background: 'rgba(201,168,76,0.12)',
+                    border: '1px solid rgba(201,168,76,0.28)',
                     backdropFilter: 'blur(8px)',
                   }}
                 >
@@ -360,7 +366,7 @@ export default function BeforeAfter() {
       </div>
 
       {/* Panel selector dots */}
-      <div className="hidden md:flex items-center gap-3 px-4 sm:px-8 md:px-14 mt-5">
+      <div className="hidden md:flex items-center gap-2.5 px-4 sm:px-8 md:px-14 mt-3">
         {panels.map((p) => (
           <button
             key={p.id}
@@ -376,6 +382,38 @@ export default function BeforeAfter() {
             }}
           />
         ))}
+      </div>
+
+      {/* Slim proof strip */}
+      <div className="px-4 sm:px-8 md:px-14 mt-4">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-2 py-3"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+        >
+          {[
+            { label: 'Vehicle', value: currentPanel.vehicle },
+            { label: 'Service', value: currentPanel.proofService },
+            { label: 'Time', value: currentPanel.time },
+            { label: 'Outcome', value: currentPanel.outcome },
+          ].map((item) => (
+            <div key={item.label} className="min-w-0">
+              <p
+                className="inline-flex px-2.5 py-1 text-[9px] font-black tracking-[0.18em] uppercase"
+                style={{
+                  color: '#E2C06A',
+                  fontFamily: 'var(--font-orbitron)',
+                  background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+                  border: '1px solid rgba(201,168,76,0.32)',
+                }}
+              >
+                {item.label}
+              </p>
+              <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
