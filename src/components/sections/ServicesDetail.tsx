@@ -516,13 +516,27 @@ function ServiceRow({ service }: ServiceRowProps) {
           {/* CTA */}
           <button
             onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase cursor-pointer transition-colors duration-200"
-            style={{ color: '#C9A84C', fontFamily: 'var(--font-inter)' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#FFD700')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
+            className="group inline-flex items-center gap-2 px-4 py-2 text-[10px] font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300"
+            style={{
+              color: '#E7C979',
+              fontFamily: 'var(--font-inter)',
+              border: '1px solid rgba(201,168,76,0.45)',
+              background: 'linear-gradient(135deg, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.06) 100%)',
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.color = '#0A0A0D';
+              (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, #C9A84C 0%, #E8C768 100%)';
+              (e.currentTarget as HTMLElement).style.borderColor = '#E8C768';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.color = '#E7C979';
+              (e.currentTarget as HTMLElement).style.background =
+                'linear-gradient(135deg, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.06) 100%)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.45)';
+            }}
           >
-            Get a Quote
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
+            Request Consultation
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" />
           </button>
         </div>
       </motion.div>
@@ -534,18 +548,23 @@ export default function ServicesDetail() {
   return (
     <section id="services" className="relative" style={{ background: 'var(--carbon-950)' }}>
       {/* Section header */}
-      <div className="px-8 md:px-14 pt-14 pb-6 flex flex-col md:flex-row md:items-center items-center gap-3 md:gap-4 text-center md:text-left">
+      <div className="px-8 md:px-14 pt-16 pb-8 flex flex-col md:flex-row md:items-center items-center gap-4 md:gap-5 text-center md:text-left">
         <span
-          className="text-xs font-bold tracking-[0.3em] uppercase"
-          style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
+          className="px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase"
+          style={{
+            color: '#E2C06A',
+            fontFamily: 'var(--font-orbitron)',
+            background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+            border: '1px solid rgba(201,168,76,0.35)',
+          }}
         >
           Our Services
         </span>
         <div
-          className="h-px w-28 md:flex-1 md:w-auto"
-          style={{ background: 'rgba(201,168,76,0.15)' }}
+          className="h-px w-32 md:flex-1 md:w-auto"
+          style={{ background: 'rgba(201,168,76,0.28)' }}
         />
-        <span className="text-premium-micro" style={{ fontFamily: 'var(--font-inter)' }}>
+        <span className="text-[10px] md:text-xs font-semibold tracking-[0.22em] uppercase" style={{ fontFamily: 'var(--font-inter)' }}>
           {String(services.length).padStart(2, '0')} Specializations
         </span>
       </div>
