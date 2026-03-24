@@ -10,6 +10,7 @@ const testimonials = [
     name: 'Andrei M.',
     car: 'BMW M4 Competition',
     service: 'Ceramic Coating + Paint Correction',
+    serviceBadge: 'Ceramic + Correction',
     rating: 5,
   },
   {
@@ -17,6 +18,7 @@ const testimonials = [
     name: 'Radu T.',
     car: 'Audi RS5',
     service: 'Exterior Detail + Wheel Finish',
+    serviceBadge: 'Exterior + Wheel',
     rating: 5,
   },
   {
@@ -24,6 +26,7 @@ const testimonials = [
     name: 'Mihai D.',
     car: 'Porsche 911 Carrera',
     service: 'PPF Front Package',
+    serviceBadge: 'PPF Front Package',
     rating: 5,
   },
   {
@@ -31,6 +34,7 @@ const testimonials = [
     name: 'Alex C.',
     car: 'Mercedes C-Class',
     service: 'Interior Detail + Leather Care',
+    serviceBadge: 'Interior + Leather',
     rating: 5,
   },
 ];
@@ -132,22 +136,27 @@ export default function Testimonials() {
             className="lg:col-span-2 flex flex-col items-center lg:items-start text-center lg:text-left"
           >
             {/* Eyebrow */}
-            <div className="flex items-center gap-2 justify-center lg:justify-start mb-4">
-              <div className="h-px w-6" style={{ background: '#C9A84C' }} />
-              <span className="text-premium-micro tracking-[0.22em]" style={{ fontFamily: 'var(--font-inter)' }}>
-                Verified Owner Reviews
-              </span>
-            </div>
+            <span
+              className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-3"
+              style={{
+                color: '#E2C06A',
+                fontFamily: 'var(--font-orbitron)',
+                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+                border: '1px solid rgba(201,168,76,0.35)',
+              }}
+            >
+              Verified Owner Reviews
+            </span>
 
             {/* Heading */}
             <h2
-              className="text-5xl md:text-6xl xl:text-7xl font-black leading-none mb-5"
-              style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
+              className="text-5xl font-black leading-none md:text-7xl mb-5"
+              style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
             >
               CLIENT{' '}
               <span
                 style={{
-                  background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                  background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -157,12 +166,12 @@ export default function Testimonials() {
               </span>
             </h2>
 
-            <p
-              className="text-sm leading-relaxed max-w-120 mb-6"
-              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
-            >
-              Real feedback from owners who expect premium results.
-            </p>
+            <div className="mb-6 flex items-center justify-center lg:justify-start gap-2.5 md:gap-3">
+              <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+              <span className="text-premium-micro tracking-[0.2em] text-center lg:text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+                Real feedback from owners who expect premium results.
+              </span>
+            </div>
 
             {/* Premium counter */}
             <div className="mb-6">
@@ -341,7 +350,7 @@ export default function Testimonials() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative overflow-hidden"
+                  className="relative overflow-hidden lg:max-w-[90%] xl:max-w-[88%] lg:ml-auto"
                   style={{
                     background: 'linear-gradient(162deg, rgba(20,20,30,0.97) 0%, rgba(12,12,18,0.985) 100%)',
                     border: '1px solid rgba(201,168,76,0.2)',
@@ -387,13 +396,13 @@ export default function Testimonials() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.14 }}
                       >
-                        {t.service.toUpperCase()}
+                        {t.serviceBadge.toUpperCase()}
                       </motion.span>
                     </div>
 
                     {/* Quote */}
                     <motion.blockquote
-                      className="leading-relaxed mb-6 max-w-3xl"
+                      className="leading-relaxed mb-6 max-w-[620px]"
                       style={{
                         fontFamily: 'var(--font-inter)',
                         fontSize: 'clamp(1rem, 1.9vw, 1.2rem)',
@@ -419,7 +428,7 @@ export default function Testimonials() {
                     />
 
                     {/* Author block */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-start gap-3">
                       {/* Initials avatar */}
                       <motion.div
                         className="w-10 h-10 shrink-0 flex items-center justify-center font-black text-[11px] tracking-wider"
@@ -437,22 +446,28 @@ export default function Testimonials() {
                       </motion.div>
                       <div>
                         <p
-                          className="font-bold text-[11px] tracking-widest uppercase"
+                          className="font-bold text-[11px] tracking-widest uppercase leading-tight"
                           style={{ color: 'white', fontFamily: 'var(--font-orbitron)' }}
                         >
                           {t.name}
                         </p>
                         <p
-                          className="text-xs mt-0.5 font-medium"
+                          className="text-xs mt-1 font-medium leading-tight"
                           style={{ color: 'rgba(201,168,76,0.75)', fontFamily: 'var(--font-inter)' }}
                         >
                           {t.car}
                         </p>
                         <p
-                          className="text-[10px] mt-1 uppercase tracking-[0.12em]"
+                          className="text-[10px] mt-1 uppercase tracking-[0.12em] leading-tight"
                           style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
                         >
-                          {t.service} · Verified Owner
+                          {t.service}
+                        </p>
+                        <p
+                          className="text-[10px] mt-1 uppercase tracking-[0.14em] leading-tight"
+                          style={{ color: 'rgba(201,168,76,0.72)', fontFamily: 'var(--font-inter)' }}
+                        >
+                          Verified Owner
                         </p>
                       </div>
                     </div>

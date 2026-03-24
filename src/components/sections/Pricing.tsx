@@ -6,60 +6,55 @@ import { ArrowRight, Check, Sparkles } from 'lucide-react';
 const plans = [
   {
     id: 'essential',
-    name: 'Polish Exterior',
-    tagline: 'Paint correction finish',
-    price: '149',
-    currency: 'RON',
-    duration: '~3h',
+    name: 'Essential Detail',
+    tagline: 'Regular maintenance and a refreshed overall appearance',
+    price: '180',
+    currency: 'EUR',
+    duration: 'From',
     highlight: false,
     badge: null,
     services: [
-      'Exterior hand wash',
-      'Wheel & tire clean',
-      'Interior vacuum',
-      'Dashboard wipe',
-      'Glass clean (interior)',
+      'Safe wash & decontamination',
+      'Exterior gloss enhancement',
+      'Wheel and trim cleaning',
+      'Interior refresh included',
+      'Ideal for regularly driven vehicles',
     ],
-    excludes: ['Machine polish', 'Ceramic coating', 'Engine bay', 'Leather treatment'],
+    excludes: [],
   },
   {
     id: 'premium',
-    name: 'Ceramic Coating',
-    tagline: 'Long-term gloss protection',
-    price: '490',
-    currency: 'RON',
-    duration: '~8h',
+    name: 'Protection Package',
+    tagline: 'Long-term gloss, easier maintenance, and durable protection',
+    price: '350',
+    currency: 'EUR',
+    duration: 'From',
     highlight: true,
-    badge: 'Most Popular',
+    badge: 'Most Requested',
     services: [
-      'Full exterior detail',
-      'Single-stage machine polish',
-      'Clay bar decontamination',
-      'Full interior deep clean',
-      'Leather conditioning',
-      'Engine bay detail',
-      'Tyre dressing',
+      'Paint preparation included',
+      'Ceramic coating application',
+      'Hydrophobic surface protection',
+      'Easier washing and upkeep',
+      'Warranty available',
     ],
-    excludes: ['Ceramic coating', 'PPF installation'],
+    excludes: [],
   },
   {
     id: 'elite',
-    name: 'PPF Wrapping',
-    tagline: 'Impact protection layer',
-    price: '1,200',
-    currency: 'RON',
-    duration: '~2 days',
+    name: 'Correction & Protection',
+    tagline: 'Swirl removal, gloss depth, and a premium long-term finish',
+    price: '750',
+    currency: 'EUR',
+    duration: 'From',
     highlight: false,
-    badge: 'Complete Package',
+    badge: null,
     services: [
       'Multi-stage paint correction',
-      'Professional ceramic coating',
-      'SiO₂ nano glass coating',
-      'Full interior sanitize',
-      'Leather restoration',
-      'Engine bay detail',
-      'Wheel ceramic coating',
-      '3-year warranty certificate',
+      'Surface refinement and prep',
+      'Ceramic protection applied',
+      'Improved clarity and gloss depth',
+      'Tailored aftercare guidance',
     ],
     excludes: [],
   },
@@ -69,7 +64,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative pt-16 pb-20 md:pt-20 md:pb-24 overflow-hidden"
+      className="relative pt-14 pb-16 md:pt-18 md:pb-20 overflow-hidden"
       style={{ background: 'var(--carbon-900)' }}
     >
       {/* Subtle technical grid */}
@@ -86,15 +81,26 @@ export default function Pricing() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         {/* Section header */}
-        <div className="mb-10 md:mb-12 text-center md:text-left">
+        <div className="mb-8 md:mb-10 text-center md:text-left">
+          <span
+            className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-3"
+            style={{
+              color: '#E2C06A',
+              fontFamily: 'var(--font-orbitron)',
+              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+              border: '1px solid rgba(201,168,76,0.35)',
+            }}
+          >
+            Our Packages
+          </span>
           <h2
-            className="text-5xl md:text-7xl font-black leading-none"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
+            className="text-5xl font-black leading-none md:text-7xl"
+            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
           >
             CHOOSE YOUR{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -103,14 +109,16 @@ export default function Pricing() {
               LEVEL
             </span>
           </h2>
-          <div className="h-px w-20 mx-auto md:mx-0 mt-3 mb-2" style={{ background: 'rgba(201,168,76,0.45)' }} />
-          <p className="text-sm max-w-md mx-auto md:mx-0" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
-            Select the package that matches your vehicle goals.
-          </p>
+          <div className="mt-4 flex items-center justify-center md:justify-start gap-2.5 md:gap-3">
+            <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+            <span className="text-premium-micro tracking-[0.2em] text-center md:text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+              Select the package direction that best matches your finish goals.
+            </span>
+          </div>
         </div>
 
         {/* Main package cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
           {plans.map((plan, i) => (
             <motion.article
               key={plan.id}
@@ -118,15 +126,15 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5, transition: { duration: 0.28, ease: 'easeOut' } }}
+              whileHover={{ y: -3, transition: { duration: 0.24, ease: 'easeOut' } }}
               className={`relative flex flex-col overflow-hidden ${plan.highlight ? 'pricing-highlight-card' : ''}`}
               style={{
                 background: plan.highlight
-                  ? 'linear-gradient(160deg, rgba(26,24,14,0.98) 0%, rgba(16,14,8,0.99) 100%)'
+                  ? 'linear-gradient(160deg, rgba(24,22,14,0.96) 0%, rgba(14,13,9,0.98) 100%)'
                   : 'linear-gradient(160deg, rgba(18,18,28,0.96) 0%, rgba(12,12,18,0.97) 100%)',
                 ...(!plan.highlight && {
                   border: '1px solid rgba(255,255,255,0.07)',
-                  boxShadow: '0 10px 32px rgba(0,0,0,0.35)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
                 }),
               }}
             >
@@ -134,14 +142,14 @@ export default function Pricing() {
               <div className="absolute left-0 top-0 right-0 h-[2px] overflow-hidden">
                 {plan.highlight
                   ? <div className="pricing-top-sweep" />
-                  : <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)' }} />
+                  : <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)' }} />
                 }
               </div>
 
               {/* Badge */}
               {plan.badge && (
                 <div
-                  className="absolute top-2.5 right-2.5 px-2 py-[2px] text-[8px] font-bold tracking-[0.16em] uppercase"
+                  className="absolute top-2.5 right-2.5 px-2 py-[2px] text-[8px] font-bold tracking-[0.15em] uppercase"
                   style={{
                     color: plan.highlight ? '#d8bb6c' : 'var(--text-micro)',
                     border: `1px solid ${plan.highlight ? 'rgba(201,168,76,0.32)' : 'rgba(255,255,255,0.11)'}`,
@@ -153,7 +161,7 @@ export default function Pricing() {
                 </div>
               )}
 
-              <div className="flex flex-col flex-1 p-4.5 sm:p-5">
+              <div className="flex flex-col flex-1 p-4 sm:p-4.5">
                 {/* Plan name */}
                 <h3
                   className="font-black leading-[0.9] mb-1"
@@ -169,21 +177,27 @@ export default function Pricing() {
 
                 {/* Tagline */}
                 <p
-                  className="text-[0.68rem] leading-snug mb-3.5"
+                  className="text-[0.68rem] leading-snug mb-3"
                   style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
                 >
-                  {plan.tagline}
+                  Best for: {plan.tagline}
                 </p>
 
                 {/* Price block */}
                 <div
-                  className="flex items-end gap-1.5 pb-2.5 mb-3.5"
+                  className="flex items-end gap-1.5 pb-2 mb-3"
                   style={{
                     borderBottom: plan.highlight
                       ? '1px solid rgba(201,168,76,0.2)'
                       : '1px solid rgba(255,255,255,0.07)',
                   }}
                 >
+                  <span
+                    className="text-[9px] font-semibold tracking-[0.14em] uppercase pb-[2px]"
+                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
+                  >
+                    {plan.duration}
+                  </span>
                   <span
                     className="font-black tabular-nums leading-none"
                     style={{
@@ -201,10 +215,7 @@ export default function Pricing() {
                   >
                     {plan.price}
                   </span>
-                  <span
-                    className="text-[9px] font-semibold tracking-[0.12em] uppercase pb-[2px]"
-                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
-                  >
+                  <span className="text-[9px] font-semibold tracking-[0.12em] uppercase pb-[2px]" style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}>
                     {plan.currency}
                   </span>
                 </div>
@@ -214,7 +225,7 @@ export default function Pricing() {
                   className="text-[8px] font-bold tracking-[0.2em] uppercase mb-2"
                   style={{ color: plan.highlight ? '#C9A84C' : 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
                 >
-                  Included
+                  Package Includes
                 </p>
 
                 {/* Service list */}
@@ -281,7 +292,7 @@ export default function Pricing() {
                     }
                   }}
                 >
-                  Book {plan.name}
+                  Request Quote
                   <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </button>
               </div>
@@ -289,17 +300,21 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Fleet & bespoke strip */}
+        <p className="mt-4 text-[11px] text-center md:text-left" style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}>
+          All packages are tailored after vehicle inspection and condition assessment.
+        </p>
+
+        {/* PPF add-on strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4 lg:mt-5 p-4 sm:p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+          className="mt-3 lg:mt-4 p-4 sm:p-4.5 md:p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
           style={{
             background: 'linear-gradient(145deg, rgba(16,16,24,0.86) 0%, rgba(11,11,16,0.92) 100%)',
             border: '1px solid rgba(201,168,76,0.2)',
-            boxShadow: '0 12px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.03)',
+            boxShadow: '0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.03)',
           }}
         >
           <div className="flex items-start gap-3">
@@ -317,13 +332,13 @@ export default function Pricing() {
                 className="text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
                 style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
               >
-                Fleet & Bespoke
+                Need PPF protection?
               </p>
               <p
                 className="text-sm leading-relaxed max-w-2xl"
                 style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
               >
-                Tailored quotes for fleet vehicles, special projects, and multi-car packages with custom treatment scope and scheduling.
+                Front-end, partial, and full-body film packages are quoted after inspection.
               </p>
             </div>
           </div>
@@ -348,7 +363,7 @@ export default function Pricing() {
               el.style.background = 'rgba(201,168,76,0.04)';
             }}
           >
-            Request Bespoke Quote
+            Request a PPF Assessment
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
           </button>
         </motion.div>
