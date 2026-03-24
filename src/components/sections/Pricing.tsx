@@ -9,8 +9,8 @@ const plans = [
     name: 'Essential Detail',
     tagline: 'Regular maintenance and a refreshed overall appearance',
     price: '180',
-    currency: 'EUR',
-    duration: 'From',
+    currency: 'RON',
+    duration: '',
     highlight: false,
     badge: null,
     services: [
@@ -27,8 +27,8 @@ const plans = [
     name: 'Protection Package',
     tagline: 'Long-term gloss, easier maintenance, and durable protection',
     price: '350',
-    currency: 'EUR',
-    duration: 'From',
+    currency: 'RON',
+    duration: '',
     highlight: true,
     badge: 'Most Requested',
     services: [
@@ -45,8 +45,8 @@ const plans = [
     name: 'Correction & Protection',
     tagline: 'Swirl removal, gloss depth, and a premium long-term finish',
     price: '750',
-    currency: 'EUR',
-    duration: 'From',
+    currency: 'RON',
+    duration: '',
     highlight: false,
     badge: null,
     services: [
@@ -118,7 +118,7 @@ export default function Pricing() {
         </div>
 
         {/* Main package cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
           {plans.map((plan, i) => (
             <motion.article
               key={plan.id}
@@ -127,17 +127,52 @@ export default function Pricing() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -3, transition: { duration: 0.24, ease: 'easeOut' } }}
-              className={`relative flex flex-col overflow-hidden ${plan.highlight ? 'pricing-highlight-card' : ''}`}
+              className={`relative flex flex-col overflow-hidden rounded-xl ${plan.highlight ? 'pricing-highlight-card' : ''}`}
               style={{
                 background: plan.highlight
-                  ? 'linear-gradient(160deg, rgba(24,22,14,0.96) 0%, rgba(14,13,9,0.98) 100%)'
-                  : 'linear-gradient(160deg, rgba(18,18,28,0.96) 0%, rgba(12,12,18,0.97) 100%)',
+                  ? 'linear-gradient(160deg, rgba(27,24,15,0.98) 0%, rgba(15,13,9,0.99) 100%)'
+                  : 'linear-gradient(160deg, rgba(20,20,30,0.97) 0%, rgba(12,12,18,0.98) 100%)',
                 ...(!plan.highlight && {
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 10px 28px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.03)',
+                }),
+                ...(plan.highlight && {
+                  border: '1px solid rgba(201,168,76,0.34)',
+                  boxShadow: '0 14px 32px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.05)',
                 }),
               }}
             >
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: plan.highlight
+                    ? 'radial-gradient(ellipse at top right, rgba(201,168,76,0.08), transparent 55%)'
+                    : 'radial-gradient(ellipse at top right, rgba(255,255,255,0.03), transparent 60%)',
+                }}
+              />
+              {/* Left-edge ribbon badge */}
+              {plan.badge && (
+                <div className="absolute left-0 z-20 pointer-events-none flex flex-col items-start" style={{ top: '44%', transform: 'translateY(-50%)' }}>
+                  <span
+                    className="pl-3 pr-5 py-[7px] text-[9px] font-black tracking-[0.13em] uppercase"
+                    style={{
+                      color: '#0A0A0D',
+                      background: 'linear-gradient(135deg, #EBCB76 0%, #C9A84C 58%, #AF8B3E 100%)',
+                      boxShadow: '3px 2px 10px rgba(0,0,0,0.32)',
+                      fontFamily: 'var(--font-orbitron)',
+                      clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%)',
+                    }}
+                  >
+                    {plan.badge}
+                  </span>
+                  <div style={{
+                    width: 0,
+                    height: 0,
+                    borderTop: '7px solid #7A5A1A',
+                    borderRight: '10px solid transparent',
+                  }} />
+                </div>
+              )}
               {/* Top accent bar */}
               <div className="absolute left-0 top-0 right-0 h-[2px] overflow-hidden">
                 {plan.highlight
@@ -146,30 +181,16 @@ export default function Pricing() {
                 }
               </div>
 
-              {/* Badge */}
-              {plan.badge && (
-                <div
-                  className="absolute top-2.5 right-2.5 px-2 py-[2px] text-[8px] font-bold tracking-[0.15em] uppercase"
-                  style={{
-                    color: plan.highlight ? '#d8bb6c' : 'var(--text-micro)',
-                    border: `1px solid ${plan.highlight ? 'rgba(201,168,76,0.32)' : 'rgba(255,255,255,0.11)'}`,
-                    background: plan.highlight ? 'rgba(201,168,76,0.09)' : 'rgba(255,255,255,0.03)',
-                    fontFamily: 'var(--font-inter)',
-                  }}
-                >
-                  {plan.badge}
-                </div>
-              )}
-
-              <div className="flex flex-col flex-1 p-4 sm:p-4.5">
+              <div className="relative z-10 flex flex-col flex-1 p-5 sm:p-6">
                 {/* Plan name */}
                 <h3
-                  className="font-black leading-[0.9] mb-1"
+                  className="font-black leading-[0.95] mb-2 text-center"
                   style={{
                     fontFamily: 'var(--font-bebas)',
-                    fontSize: 'clamp(1.7rem, 2.9vw, 2.05rem)',
-                    letterSpacing: '0.045em',
-                    color: plan.highlight ? '#C9A84C' : 'white',
+                    fontSize: 'clamp(1.58rem, 2.55vw, 1.95rem)',
+                    letterSpacing: '0.04em',
+                    color: plan.highlight ? '#E2C06A' : 'rgba(238,243,250,0.95)',
+                    textShadow: plan.highlight ? '0 0 12px rgba(201,168,76,0.16)' : '0 0 10px rgba(255,255,255,0.05)',
                   }}
                 >
                   {plan.name}
@@ -177,7 +198,7 @@ export default function Pricing() {
 
                 {/* Tagline */}
                 <p
-                  className="text-[0.68rem] leading-snug mb-3"
+                  className="text-[0.73rem] leading-relaxed mb-4 text-center"
                   style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
                 >
                   Best for: {plan.tagline}
@@ -185,7 +206,7 @@ export default function Pricing() {
 
                 {/* Price block */}
                 <div
-                  className="flex items-end gap-1.5 pb-2 mb-3"
+                  className="flex items-end justify-center gap-2 pb-3 mb-4"
                   style={{
                     borderBottom: plan.highlight
                       ? '1px solid rgba(201,168,76,0.2)'
@@ -193,54 +214,53 @@ export default function Pricing() {
                   }}
                 >
                   <span
-                    className="text-[9px] font-semibold tracking-[0.14em] uppercase pb-[2px]"
-                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
-                  >
-                    {plan.duration}
-                  </span>
-                  <span
                     className="font-black tabular-nums leading-none"
                     style={{
                       fontFamily: 'var(--font-orbitron)',
                       fontSize: 'clamp(1.95rem, 3.5vw, 2.35rem)',
                       ...(plan.highlight
                         ? {
-                            background: 'linear-gradient(135deg, #FFD700 0%, #D4A84C 55%, #b8924a 100%)',
+                            background: 'linear-gradient(135deg, #F6E0A0 0%, #D4A84C 55%, #b8924a 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text',
                           }
-                        : { color: 'white' }),
+                        : { color: 'rgba(238,243,250,0.95)' }),
                     }}
                   >
                     {plan.price}
                   </span>
-                  <span className="text-[9px] font-semibold tracking-[0.12em] uppercase pb-[2px]" style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}>
+                  <span className="text-[12px] font-black tracking-[0.12em] uppercase pb-[5px]" style={{ color: '#E6C978', fontFamily: 'var(--font-orbitron)' }}>
                     {plan.currency}
                   </span>
                 </div>
 
                 {/* Included label */}
                 <p
-                  className="text-[8px] font-bold tracking-[0.2em] uppercase mb-2"
-                  style={{ color: plan.highlight ? '#C9A84C' : 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
+                  className="inline-flex items-center self-center px-3 py-1 text-[10px] font-bold tracking-[0.12em] uppercase mb-3"
+                  style={{
+                    color: plan.highlight ? '#E2C06A' : 'rgba(207,177,93,0.9)',
+                    fontFamily: 'var(--font-inter)',
+                    border: '1px solid rgba(201,168,76,0.24)',
+                    background: 'linear-gradient(135deg, rgba(201,168,76,0.09), rgba(201,168,76,0.03))',
+                  }}
                 >
                   Package Includes
                 </p>
 
                 {/* Service list */}
-                <ul className="space-y-[5px] flex-1">
+                <ul className="space-y-2 flex-1">
                   {plan.services.slice(0, 5).map((service) => (
                     <li key={service} className="flex items-start gap-2">
                       <Check
-                        className="w-[11px] h-[11px] mt-[2px] shrink-0"
+                        className="w-3.5 h-3.5 mt-[2px] shrink-0"
                         strokeWidth={2.5}
                         style={{ color: plan.highlight ? '#C9A84C' : 'var(--text-muted)' }}
                       />
                       <span
                         className="leading-snug"
                         style={{
-                          fontSize: '0.7rem',
+                          fontSize: '0.78rem',
                           color: 'var(--text-secondary)',
                           fontFamily: 'var(--font-inter)',
                         }}
@@ -264,7 +284,7 @@ export default function Pricing() {
                 <button
                   type="button"
                   onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 text-[10px] font-bold tracking-[0.14em] uppercase cursor-pointer group transition-all duration-300"
+                  className="mt-5 w-full flex items-center justify-center gap-2 py-3 text-[10px] font-bold tracking-[0.14em] uppercase cursor-pointer group transition-all duration-300"
                   style={{
                     background: plan.highlight
                       ? 'linear-gradient(135deg, #C9A84C, #FFD700)'
@@ -300,7 +320,10 @@ export default function Pricing() {
           ))}
         </div>
 
-        <p className="mt-4 text-[11px] text-center md:text-left" style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}>
+        <p
+          className="mt-4 text-[11px] text-center md:text-left tracking-[0.04em]"
+          style={{ color: 'rgba(188,197,211,0.9)', fontFamily: 'var(--font-inter)' }}
+        >
           All packages are tailored after vehicle inspection and condition assessment.
         </p>
 
@@ -329,14 +352,19 @@ export default function Pricing() {
             </div>
             <div>
               <p
-                className="text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
-                style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
+                className="inline-flex px-2 py-1 text-[9px] font-black uppercase tracking-[0.18em] mb-2"
+                style={{
+                  color: '#E2C06A',
+                  fontFamily: 'var(--font-orbitron)',
+                  border: '1px solid rgba(201,168,76,0.24)',
+                  background: 'linear-gradient(135deg, rgba(201,168,76,0.09), rgba(201,168,76,0.03))',
+                }}
               >
                 Need PPF protection?
               </p>
               <p
                 className="text-sm leading-relaxed max-w-2xl"
-                style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+                style={{ color: 'rgba(221,229,239,0.92)', fontFamily: 'var(--font-inter)' }}
               >
                 Front-end, partial, and full-body film packages are quoted after inspection.
               </p>
