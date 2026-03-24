@@ -159,39 +159,47 @@ export default function Pricing() {
               </div>
 
               {/* Left-edge folded ribbon badge */}
-              {plan.badge && (
-                <div
-                  className="absolute z-20 pointer-events-none"
-                  style={{ left: '-8px', top: '20%' }}
-                >
-                  {/* Main ribbon tab */}
-                  <div
-                    className="flex items-center"
-                    style={{ position: 'relative' }}
-                  >
-                    <span
-                      className="pl-4 pr-4 py-[9px] text-[11px] font-black tracking-[0.18em] uppercase"
-                      style={{
-                        color: '#0A0A0D',
-                        background: 'linear-gradient(135deg, #EBCB76 0%, #C9A84C 58%, #AF8B3E 100%)',
-                        boxShadow: '4px 3px 14px rgba(0,0,0,0.5)',
-                        fontFamily: 'var(--font-orbitron)',
-                        clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%)',
-                        display: 'block',
-                      }}
-                    >
-                      {plan.badge}
-                    </span>
-                  </div>
-                  {/* Folded corner shadow (bottom-left curl) */}
-                  <div style={{
-                    width: 0,
-                    height: 0,
-                    borderTop: '8px solid #5A3F0E',
-                    borderLeft: '8px solid transparent',
-                  }} />
-                </div>
-              )}
+{plan.badge && (
+  <div
+    className="absolute z-20 pointer-events-none"
+    style={{ left: '-8px', top: '20%' }}
+  >
+    {/* Main ribbon tab */}
+    <div
+      className="flex items-center"
+      style={{ position: 'relative' }}
+    >
+      <span
+        className="relative pl-4 pr-5 py-[7px] sm:py-[8px] text-[9px] sm:text-[10px] font-black uppercase"
+        style={{
+          color: '#3E2A08',
+          background: 'linear-gradient(135deg, #F5DE98 0%, #D9B45A 50%, #B9852E 100%)',
+          boxShadow: `
+            0 6px 18px rgba(0,0,0,0.42),
+            inset 0 1px 0 rgba(255,255,255,0.28),
+            inset 0 -1px 0 rgba(90,58,14,0.20)
+          `,
+          textShadow: '0 1px 0 rgba(255,255,255,0.14)',
+          fontFamily: 'var(--font-orbitron)',
+          letterSpacing: '0.14em',
+          clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%)',
+          display: 'block',
+        }}
+      >
+        {plan.badge}
+      </span>
+    </div>
+    {/* Folded corner shadow */}
+    <div
+      style={{
+        width: 0,
+        height: 0,
+        borderTop: '8px solid #6B4814',
+        borderLeft: '8px solid transparent',
+      }}
+    />
+  </div>
+)}
 
               <div className="relative z-10 flex flex-col flex-1 p-5 sm:p-6">
                 {/* Plan name */}
