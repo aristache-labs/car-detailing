@@ -68,6 +68,7 @@ export default function Testimonials() {
 
   const t = testimonials[current];
   const initials = t.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+  const progress = ((current + 1) / testimonials.length) * 100;
 
   return (
     <section
@@ -91,7 +92,7 @@ export default function Testimonials() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-14 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
 
           {/* ── LEFT: header + counter + nav ── */}
           <motion.div
@@ -105,7 +106,7 @@ export default function Testimonials() {
             <div className="flex items-center gap-2 justify-center lg:justify-start mb-4">
               <div className="h-px w-6" style={{ background: '#C9A84C' }} />
               <span className="text-premium-micro tracking-[0.22em]" style={{ fontFamily: 'var(--font-inter)' }}>
-                Verified Reviews
+                Verified Owner Reviews
               </span>
             </div>
 
@@ -127,35 +128,40 @@ export default function Testimonials() {
               </span>
             </h2>
 
+            <p
+              className="text-sm leading-relaxed max-w-120 mb-8"
+              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+            >
+              Real feedback from clients who trust us with high-value vehicles and expect flawless results.
+            </p>
+
             {/* Premium counter */}
-            <div className="flex items-end gap-3 mb-8">
-              <span
-                className="font-black leading-none tabular-nums"
+            <div className="mb-6">
+              <p
+                className="font-black tabular-nums"
                 style={{
                   fontFamily: 'var(--font-orbitron)',
-                  fontSize: 'clamp(2.4rem, 4vw, 3rem)',
-                  background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  fontSize: 'clamp(2.15rem, 3.9vw, 3rem)',
+                  lineHeight: 1,
+                  letterSpacing: '0.04em',
+                  color: 'white',
                 }}
               >
-                {String(current + 1).padStart(2, '0')}
-              </span>
-              <div className="flex flex-col items-start gap-0.5 mb-1.5">
-                <div className="h-px w-8" style={{ background: 'rgba(255,255,255,0.14)' }} />
                 <span
-                  className="tabular-nums"
                   style={{
-                    fontFamily: 'var(--font-orbitron)',
-                    fontSize: '0.7rem',
-                    color: 'var(--text-soft)',
-                    letterSpacing: '0.04em',
+                    background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
                   }}
                 >
+                  {String(current + 1).padStart(2, '0')}
+                </span>{' '}
+                <span style={{ color: 'rgba(255,255,255,0.42)' }}>/</span>{' '}
+                <span style={{ color: 'var(--text-soft)' }}>
                   {String(testimonials.length).padStart(2, '0')}
                 </span>
-              </div>
+              </p>
             </div>
 
             {/* Navigation controls */}
@@ -163,11 +169,12 @@ export default function Testimonials() {
               {/* Prev */}
               <button
                 onClick={back}
-                className="w-9 h-9 flex items-center justify-center cursor-pointer transition-all duration-200"
+                className="w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{
                   border: '1px solid rgba(201,168,76,0.25)',
-                  background: 'transparent',
+                  background: 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))',
                   color: '#C9A84C',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
@@ -176,7 +183,7 @@ export default function Testimonials() {
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'transparent';
+                  el.style.background = 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))';
                   el.style.borderColor = 'rgba(201,168,76,0.25)';
                 }}
                 aria-label="Previous"
@@ -185,14 +192,14 @@ export default function Testimonials() {
               </button>
 
               {/* Dot indicators */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 {testimonials.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => goTo(i)}
                     className="cursor-pointer transition-all duration-300"
                     style={{
-                      width: i === current ? '20px' : '6px',
+                      width: i === current ? '24px' : '6px',
                       height: '6px',
                       background: i === current ? '#C9A84C' : 'rgba(201,168,76,0.28)',
                       border: 'none',
@@ -206,11 +213,12 @@ export default function Testimonials() {
               {/* Next */}
               <button
                 onClick={advance}
-                className="w-9 h-9 flex items-center justify-center cursor-pointer transition-all duration-200"
+                className="w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{
                   border: '1px solid rgba(201,168,76,0.25)',
-                  background: 'transparent',
+                  background: 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))',
                   color: '#C9A84C',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
@@ -219,13 +227,30 @@ export default function Testimonials() {
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'transparent';
+                  el.style.background = 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))';
                   el.style.borderColor = 'rgba(201,168,76,0.25)';
                 }}
                 aria-label="Next"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
+            </div>
+
+            <p
+              className="mt-5 text-xs"
+              style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)', letterSpacing: '0.04em' }}
+            >
+              4.9 / 5 average · Ceramic · PPF · Correction
+            </p>
+
+            {/* Progress track */}
+            <div className="mt-5 h-px w-full max-w-xs" style={{ background: 'rgba(255,255,255,0.07)' }}>
+              <motion.div
+                className="h-full"
+                style={{ background: 'linear-gradient(90deg, #C9A84C, #FFD700)' }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+              />
             </div>
           </motion.div>
 
@@ -237,6 +262,17 @@ export default function Testimonials() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-3 relative"
           >
+            {/* Ambient glow behind showcase card */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              aria-hidden="true"
+              style={{
+                background: 'radial-gradient(ellipse at 70% 45%, rgba(201,168,76,0.08), transparent 62%)',
+                filter: 'blur(8px)',
+                transform: 'scale(1.02)',
+              }}
+            />
+
             {/* Large decorative quote mark */}
             <div
               className="absolute -top-5 -left-2 pointer-events-none select-none leading-none font-black"
@@ -261,16 +297,17 @@ export default function Testimonials() {
                 <motion.div
                   key={current}
                   custom={dir}
-                  initial={{ x: dir * 48, opacity: 0, scale: 0.98 }}
-                  animate={{ x: 0, opacity: 1, scale: 1 }}
-                  exit={{ x: dir * -48, opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                   className="relative overflow-hidden"
                   style={{
-                    background: 'linear-gradient(160deg, rgba(20,20,30,0.95) 0%, rgba(13,13,18,0.97) 100%)',
-                    border: '1px solid rgba(201,168,76,0.16)',
+                    background: 'linear-gradient(162deg, rgba(20,20,30,0.97) 0%, rgba(12,12,18,0.985) 100%)',
+                    border: '1px solid rgba(201,168,76,0.2)',
                     borderTop: '2px solid rgba(201,168,76,0.52)',
-                    boxShadow: '0 22px 56px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03)',
+                    boxShadow: '0 30px 72px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.045)',
+                    minHeight: '360px',
                   }}
                 >
                   {/* Subtle top-right glow */}
@@ -283,17 +320,22 @@ export default function Testimonials() {
                     }}
                   />
 
-                  <div className="relative p-7 md:p-10">
+                  <div className="relative p-7 md:p-12">
                     {/* Top row: stars + service tag */}
                     <div className="flex items-center justify-between gap-4 mb-6">
-                      <div className="flex gap-1">
+                      <motion.div
+                        className="flex gap-1"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.08 }}
+                      >
                         {Array.from({ length: t.rating }).map((_, i) => (
                           <svg key={i} viewBox="0 0 16 16" className="w-3.5 h-3.5" fill="#C9A84C">
                             <path d={STAR_PATH} />
                           </svg>
                         ))}
-                      </div>
-                      <span
+                      </motion.div>
+                      <motion.span
                         className="px-2.5 py-[3px] text-[9px] font-bold tracking-[0.16em] uppercase shrink-0"
                         style={{
                           background: 'rgba(201,168,76,0.07)',
@@ -301,24 +343,31 @@ export default function Testimonials() {
                           color: 'rgba(201,168,76,0.85)',
                           fontFamily: 'var(--font-inter)',
                         }}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.14 }}
                       >
-                        {t.service}
-                      </span>
+                        {t.service.toUpperCase()}
+                      </motion.span>
                     </div>
 
                     {/* Quote */}
-                    <blockquote
-                      className="leading-relaxed mb-8"
+                    <motion.blockquote
+                      className="leading-relaxed mb-8 max-w-3xl"
                       style={{
                         fontFamily: 'var(--font-inter)',
-                        fontSize: 'clamp(1rem, 2vw, 1.22rem)',
+                        fontSize: 'clamp(1.08rem, 2.2vw, 1.36rem)',
                         color: 'rgba(255,255,255,0.88)',
                         fontWeight: 300,
                         letterSpacing: '0.01em',
+                        lineHeight: 1.75,
                       }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: 0.18 }}
                     >
                       {t.quote}
-                    </blockquote>
+                    </motion.blockquote>
 
                     {/* Divider */}
                     <div
@@ -332,7 +381,7 @@ export default function Testimonials() {
                     {/* Author block */}
                     <div className="flex items-center gap-3">
                       {/* Initials avatar */}
-                      <div
+                      <motion.div
                         className="w-10 h-10 shrink-0 flex items-center justify-center font-black text-[11px] tracking-wider"
                         style={{
                           background: 'rgba(201,168,76,0.1)',
@@ -340,9 +389,12 @@ export default function Testimonials() {
                           color: '#C9A84C',
                           fontFamily: 'var(--font-orbitron)',
                         }}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.24 }}
                       >
                         {initials}
-                      </div>
+                      </motion.div>
                       <div>
                         <p
                           className="font-bold text-[11px] tracking-widest uppercase"
@@ -356,21 +408,17 @@ export default function Testimonials() {
                         >
                           {t.car}
                         </p>
+                        <p
+                          className="text-[10px] mt-1 uppercase tracking-[0.12em]"
+                          style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
+                        >
+                          {t.service} · Verified Owner
+                        </p>
                       </div>
                     </div>
                   </div>
                 </motion.div>
               </AnimatePresence>
-            </div>
-
-            {/* Progress track */}
-            <div className="mt-5 h-px" style={{ background: 'rgba(255,255,255,0.05)' }}>
-              <motion.div
-                className="h-full"
-                style={{ background: 'linear-gradient(90deg, #C9A84C, #FFD700)' }}
-                animate={{ width: `${((current + 1) / testimonials.length) * 100}%` }}
-                transition={{ duration: 0.45, ease: 'easeInOut' }}
-              />
             </div>
           </motion.div>
         </div>
