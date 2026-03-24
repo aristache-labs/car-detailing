@@ -621,7 +621,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-semibold text-white">București</p>
                       <p className="mt-0.5 text-[12px]" style={{ color: 'var(--text-soft)' }}>
-                        Studio by appointment
+                      By appointment only
                       </p>
                       <p className="mt-2 text-[12px] leading-snug" style={{ color: 'var(--text-secondary)' }}>
                         Str. Industriei 14
