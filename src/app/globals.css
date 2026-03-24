@@ -1,26 +1,239 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Carbon blacks */
+  --carbon-950: #070709;
+  --carbon-900: #0d0d12;
+  --carbon-800: #14141c;
+  --carbon-700: #1e1e2a;
+  --carbon-600: #2a2a3a;
+
+  /* Chrome / Silver */
+  --chrome-light: #e8eef4;
+  --chrome-mid: #c8d4de;
+  --chrome-dark: #8e9eab;
+
+  /* Gold accent */
+  --gold-bright: #ffd700;
+  --gold-mid: #c9a84c;
+  --gold-dark: #9a7b2e;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #9a9ab0;
+  --text-muted: #5a5a72;
+
+  /* Glow */
+  --glow-gold: rgba(201, 168, 76, 0.35);
+  --glow-chrome: rgba(200, 212, 222, 0.2);
+
+  /* Legacy compat */
+  --background: var(--carbon-950);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Expose brand colors to Tailwind utilities */
+  --color-carbon-950: var(--carbon-950);
+  --color-carbon-900: var(--carbon-900);
+  --color-carbon-800: var(--carbon-800);
+  --color-carbon-700: var(--carbon-700);
+  --color-carbon-600: var(--carbon-600);
+
+  --color-chrome-light: var(--chrome-light);
+  --color-chrome-mid: var(--chrome-mid);
+  --color-chrome-dark: var(--chrome-dark);
+
+  --color-gold-bright: var(--gold-bright);
+  --color-gold-mid: var(--gold-mid);
+  --color-gold-dark: var(--gold-dark);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --font-display: var(--font-bebas);
+  --font-heading: var(--font-orbitron);
+  --font-body: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base Reset ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--carbon-950);
+  color: var(--text-primary);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--carbon-950);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Carbon Fiber Texture ────────────────────────────────────────────────── */
+.carbon-texture {
+  background-color: var(--carbon-900);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.015) 2px,
+      rgba(255, 255, 255, 0.015) 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.015) 2px,
+      rgba(255, 255, 255, 0.015) 4px
+    );
+}
+
+.carbon-texture-dark {
+  background-color: var(--carbon-950);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.012) 3px,
+      rgba(255, 255, 255, 0.012) 6px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.012) 3px,
+      rgba(255, 255, 255, 0.012) 6px
+    );
+}
+
+/* ─── Chrome Gradient Text ────────────────────────────────────────────────── */
+.text-chrome {
+  background: linear-gradient(
+    135deg,
+    var(--chrome-light) 0%,
+    var(--chrome-mid) 30%,
+    #ffffff 50%,
+    var(--chrome-mid) 70%,
+    var(--chrome-dark) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gold {
+  background: linear-gradient(
+    135deg,
+    var(--gold-bright) 0%,
+    var(--gold-mid) 50%,
+    var(--gold-dark) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Gold Glow ───────────────────────────────────────────────────────────── */
+.glow-gold {
+  box-shadow: 0 0 20px var(--glow-gold), 0 0 40px rgba(201, 168, 76, 0.15);
+}
+
+.glow-gold-border {
+  border-color: var(--gold-mid);
+  box-shadow: 0 0 15px var(--glow-gold);
+}
+
+/* ─── CTA Shimmer Button ─────────────────────────────────────────────────── */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: none;
+}
+
+.btn-shimmer:hover::after {
+  animation: shimmer 0.65s ease-out forwards;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 150%; }
+}
+
+/* ─── Section Divider ─────────────────────────────────────────────────────── */
+.gold-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--gold-mid) 50%,
+    transparent 100%
+  );
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--carbon-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-mid);
+}
+
+/* ─── Selection ───────────────────────────────────────────────────────────── */
+::selection {
+  background: var(--gold-mid);
+  color: var(--carbon-950);
+}
+
+/* ─── Swiper custom styles ────────────────────────────────────────────────── */
+.swiper-pagination-bullet {
+  background: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--gold-mid) !important;
+  width: 24px !important;
+  border-radius: 3px !important;
 }
