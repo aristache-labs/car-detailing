@@ -25,7 +25,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-24 overflow-hidden"
+      className="relative py-20 md:py-24 overflow-hidden"
       style={{ background: 'var(--carbon-950)' }}
     >
       {/* Blueprint grid bg */}
@@ -63,7 +63,7 @@ export default function Contact() {
         </span>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 md:px-14 lg:pl-32 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-14 lg:pl-32 relative">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,20 +99,25 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-14">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10">
           {/* ── FORM — 60% ── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="lg:col-span-3"
+            className="lg:col-span-3 p-5 sm:p-6 md:p-8"
+            style={{
+              background: 'linear-gradient(180deg, rgba(16,16,24,0.86) 0%, rgba(10,10,14,0.9) 100%)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 18px 45px rgba(0,0,0,0.35)',
+            }}
           >
             {submitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center justify-center py-20 text-center"
+                className="flex flex-col items-center justify-center py-14 text-center"
               >
                 <div
                   className="text-6xl mb-4"
@@ -134,9 +139,9 @@ export default function Contact() {
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Row 1 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="float-input-wrap">
                     <input type="text" id="name" placeholder=" " required />
                     <label htmlFor="name">Full Name</label>
@@ -177,48 +182,36 @@ export default function Contact() {
                 </div>
 
                 {/* Submit — paint-spray button */}
-                <div className="pt-4">
+                <div className="pt-3">
                   <button
                     type="submit"
-                    className="relative w-full py-5 text-sm font-black tracking-[0.2em] uppercase overflow-hidden cursor-pointer transition-all duration-300 group"
+                    className="relative w-full py-4 text-[11px] font-black tracking-[0.16em] uppercase overflow-hidden cursor-pointer transition-all duration-300 group"
                     style={{
-                      background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
+                      background: 'linear-gradient(135deg, #D6B36A, #C9A84C)',
                       color: '#070709',
                       fontFamily: 'var(--font-inter)',
                       border: 'none',
-                      clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 100%, 0 100%)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.35)',
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.boxShadow = '0 0 40px rgba(201,168,76,0.4)';
+                      (e.currentTarget as HTMLElement).style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.24), 0 10px 28px rgba(0,0,0,0.38)';
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                      (e.currentTarget as HTMLElement).style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.35)';
                     }}
                   >
-                    {/* Paint-spray sweep on hover */}
+                    {/* Premium soft sweep */}
                     <span
-                      className="absolute inset-0 pointer-events-none"
+                      className="absolute inset-0 pointer-events-none transition-transform duration-500 ease-out group-hover:translate-x-full"
                       style={{
-                        background: 'radial-gradient(ellipse 80% 100% at -10% 50%, rgba(255,255,255,0.2) 0%, transparent 70%)',
+                        background: 'linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.18) 42%, transparent 72%)',
                         transform: 'translateX(-100%)',
-                        transition: 'transform 0.5s ease',
                       }}
                       aria-hidden="true"
                     />
-                    <span className="relative z-10 group-hover:[--spray-tx:100%]">
+                    <span className="relative z-10">
                       Book My Appointment
                     </span>
-                    {/* Additional shimmer */}
-                    <span
-                      className="absolute top-0 left-[-60%] w-[40%] h-full pointer-events-none opacity-0 group-hover:opacity-100"
-                      style={{
-                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)',
-                        transform: 'skewX(-15deg)',
-                        animation: 'none',
-                        transition: 'opacity 0s',
-                      }}
-                      aria-hidden="true"
-                    />
                   </button>
                   <p
                     className="text-center text-xs mt-3"
@@ -237,14 +230,21 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="lg:col-span-2 flex flex-col gap-8"
+            className="lg:col-span-2 flex flex-col gap-4 sm:gap-5"
           >
             {/* Contact cards */}
             {[
               { icon: Phone, label: 'Phone', value: '+40 721 000 000', sub: 'Mon–Sat, 9:00–18:00' },
               { icon: Mail, label: 'Email', value: 'contact@apexdetail.ro', sub: '24h response guaranteed' },
             ].map(({ icon: Icon, label, value, sub }) => (
-              <div key={label} className="flex items-start gap-4">
+              <div
+                key={label}
+                className="flex items-start gap-4 p-4 sm:p-5"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(16,16,24,0.78) 0%, rgba(10,10,14,0.84) 100%)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}
+              >
                 <div
                   className="shrink-0 w-11 h-11 flex items-center justify-center"
                   style={{
@@ -278,7 +278,13 @@ export default function Contact() {
             ))}
 
             {/* Location — stylised, no map embed */}
-            <div className="flex items-start gap-4">
+            <div
+              className="flex items-start gap-4 p-4 sm:p-5"
+              style={{
+                background: 'linear-gradient(180deg, rgba(16,16,24,0.78) 0%, rgba(10,10,14,0.84) 100%)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
               <div
                 className="shrink-0 w-11 h-11 flex items-center justify-center"
                 style={{
@@ -329,7 +335,13 @@ export default function Contact() {
             </div>
 
             {/* Hours */}
-            <div className="flex items-start gap-4">
+            <div
+              className="flex items-start gap-4 p-4 sm:p-5"
+              style={{
+                background: 'linear-gradient(180deg, rgba(16,16,24,0.78) 0%, rgba(10,10,14,0.84) 100%)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
               <div
                 className="shrink-0 w-11 h-11 flex items-center justify-center"
                 style={{
