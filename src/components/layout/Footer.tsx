@@ -1,205 +1,120 @@
 'use client';
 
-import { Zap, Share2, Camera, Play, Music2, Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { Clock, Mail, MapPin, Phone, Zap } from 'lucide-react';
 
-const serviceLinks = [
-  'Polish Exterior',
-  'Detailing Interior',
-  'Ceramic Coating',
-  'PPF Wrapping',
-  'Leather Restoration',
-  'Wheel Painting',
-];
+const SERVICE_LINKS = [
+  { label: 'Ceramic Coating', href: '#services' },
+  { label: 'PPF Protection', href: '#services' },
+  { label: 'Paint Correction', href: '#services' },
+  { label: 'Interior Detailing', href: '#services' },
+] as const;
 
-const quickLinks = [
-  { label: 'About Us', href: '#why-us' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Process', href: '#process' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Contact', href: '#contact' },
-];
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms & Conditions', href: '/terms' },
+  { label: 'Cookies Policy', href: '/cookies' },
+] as const;
 
-const socials = [
-  { icon: Camera, label: 'Instagram', href: '#' },
-  { icon: Share2, label: 'Facebook', href: '#' },
-  { icon: Play, label: 'YouTube', href: '#' },
-  { icon: Music2, label: 'TikTok', href: '#' },
-];
+const colHeading =
+  'mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A84C]';
+
+const linkClass =
+  'text-[13px] leading-snug text-white/55 transition-colors duration-200 hover:text-[#d8bb6c]';
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
-
   return (
     <footer className="relative" style={{ background: 'var(--carbon-950)' }}>
-      {/* Top gold border */}
       <div className="gold-divider" />
 
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-
-          {/* Brand column */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #C9A84C, #FFD700)' }}>
-                <Zap className="w-3.5 h-3.5 text-black fill-black" />
+      <div className="mx-auto max-w-7xl px-4 pb-5 pt-9 sm:px-8 md:px-14">
+        <div
+          className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-x-10 lg:gap-y-0"
+          style={{ fontFamily: 'var(--font-inter)' }}
+        >
+          {/* 1 — Brand */}
+          <div className="order-1 lg:order-0">
+            <div className="mb-3 flex items-center gap-2">
+              <div
+                className="flex h-7 w-7 items-center justify-center rounded-full"
+                style={{ background: 'linear-gradient(135deg, #C9A84C, #FFD700)' }}
+              >
+                <Zap className="h-3.5 w-3.5 fill-black text-black" />
               </div>
-              <span className="text-lg font-black tracking-widest uppercase"
-                style={{ fontFamily: 'var(--font-orbitron)' }}>
+              <span className="text-base font-black uppercase tracking-[0.18em]" style={{ fontFamily: 'var(--font-orbitron)' }}>
                 <span style={{ color: '#C9A84C' }}>APEX</span>
-                <span className="text-white ml-1">DETAIL</span>
+                <span className="ml-1 text-white">DETAILING</span>
               </span>
             </div>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)', textShadow: '0 1px 0 rgba(0,0,0,0.22)' }}>
-              Precision auto detailing that transforms vehicles into works of art. Every detail matters.
+            <p className="max-w-sm text-[13px] leading-relaxed text-white/60">
+              Premium auto detailing, paint correction, ceramic coating, and protective finishes for vehicles that
+              deserve more.
             </p>
-            {/* Social icons */}
-            <div className="flex gap-3">
-              {socials.map(({ icon: Icon, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="w-9 h-9 rounded flex items-center justify-center transition-all duration-300"
-                  style={{
-                    background: 'var(--carbon-800)',
-                    border: '1px solid rgba(201,168,76,0.1)',
-                    color: 'var(--text-secondary)',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.color = '#C9A84C';
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.5)';
-                    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 12px rgba(201,168,76,0.2)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.1)';
-                    (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                  }}
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div>
+            <p className="mt-3 text-[11px] tracking-wide text-white/35">By appointment only</p>
           </div>
 
-          {/* Services */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase mb-5"
-              style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}>
-              Services
-            </h4>
-            <ul className="space-y-2.5">
-              {serviceLinks.map((s) => (
-                <li key={s}>
-                  <a
-                    href="#services"
-                    className="text-sm transition-colors duration-200 flex items-center gap-1.5 group"
-                    style={{ color: 'var(--text-muted)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}
-                  >
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all duration-200" />
-                    {s}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase mb-5"
-              style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}>
-              Navigation
-            </h4>
-            <ul className="space-y-2.5">
-              {quickLinks.map(({ label, href }) => (
+          {/* 3 — Services (order 3 on mobile) */}
+          <nav className="order-3 lg:order-0" aria-label="Services">
+            <h2 className={colHeading}>Services</h2>
+            <ul className="space-y-2">
+              {SERVICE_LINKS.map(({ label, href }) => (
                 <li key={label}>
-                  <a
-                    href={href}
-                    className="text-sm transition-colors duration-200 flex items-center gap-1.5 group"
-                    style={{ color: 'var(--text-muted)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}
-                  >
-                    <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all duration-200" />
+                  <a href={href} className={linkClass}>
                     {label}
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Contact + Newsletter */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase mb-5"
-              style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}>
-              Contact
-            </h4>
-            <ul className="space-y-3 mb-6">
-              <li className="flex items-start gap-2.5">
-                <Phone className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#C9A84C' }} />
-                <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>+40 700 000 000</span>
+          {/* 2 — Contact (order 2 on mobile) */}
+          <div className="order-2 lg:order-0">
+            <h2 className={colHeading}>Contact</h2>
+            <ul className="space-y-2.5 text-[13px] text-white/60">
+              <li className="flex gap-2">
+                <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
+                <a href="tel:+40721000000" className={`${linkClass} block`}>
+                  +40 721 000 000
+                </a>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Mail className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#C9A84C' }} />
-                <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>contact@apexdetail.ro</span>
+              <li className="flex gap-2">
+                <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
+                <a href="mailto:info@apexdetailing.ro" className={`${linkClass} block`}>
+                  info@apexdetailing.ro
+                </a>
               </li>
-              <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: '#C9A84C' }} />
-                <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Str. Exemplu nr. 1, București</span>
+              <li className="flex gap-2">
+                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
+                <span className="leading-snug">Bucharest · Ilfov</span>
+              </li>
+              <li className="flex gap-2">
+                <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
+                <span className="leading-snug">Mon–Sat · 09:00–18:00</span>
               </li>
             </ul>
-            {/* Newsletter */}
-            <div className="flex">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email"
-                className="flex-1 px-3 py-2 text-sm outline-none rounded-l placeholder:text-text-soft"
-                style={{
-                  background: 'var(--carbon-800)',
-                  border: '1px solid rgba(201,168,76,0.26)',
-                  borderRight: 'none',
-                  color: 'var(--text-secondary)',
-                }}
-              />
-              <button
-                className="px-3 py-2 rounded-r transition-all duration-200"
-                style={{
-                  background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-                  color: '#070709',
-                }}
-              >
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
           </div>
+
+          {/* 4 — Legal */}
+          <nav className="order-4 lg:order-0" aria-label="Legal">
+            <h2 className={colHeading}>Legal</h2>
+            <ul className="space-y-2">
+              {LEGAL_LINKS.map(({ label, href }) => (
+                <li key={label}>
+                  <a href={href} className={linkClass}>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
-        {/* Bottom bar */}
-        <div className="gold-divider mb-6" />
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs" style={{ color: 'var(--text-soft)' }}>
-            © 2026 Apex Detail. All rights reserved.
+        <div
+          className="mt-8 border-t border-white/8 pt-4"
+          style={{ fontFamily: 'var(--font-inter)' }}
+        >
+          <p className="text-center text-[11px] text-white/40 md:text-left">
+            © {new Date().getFullYear()} Apex Detailing. All rights reserved.
           </p>
-          <div className="flex gap-6">
-            {['Privacy Policy', 'Terms of Service', 'ANPC'].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-xs transition-colors duration-200"
-                style={{ color: 'var(--text-soft)' }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#C9A84C')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-soft)')}
-              >
-                {item}
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </footer>
