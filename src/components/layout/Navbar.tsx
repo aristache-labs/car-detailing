@@ -209,7 +209,7 @@ export default function Navbar() {
               }}
             >
               APEX
-              <span style={{ color: GOLD, fontWeight: 500, letterSpacing: '0.04em' }}> Detailing</span>
+              <span style={{ color: GOLD, fontWeight: 500, letterSpacing: '0.04em' }}> DETAILING</span>
             </span>
           </a>
 
