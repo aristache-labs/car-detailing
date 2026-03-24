@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
-import { Search, Wrench, Sparkles, CheckCircle } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Droplets, Search, ShieldCheck } from 'lucide-react';
 
 interface Step {
   number: string;
@@ -10,95 +10,295 @@ interface Step {
   desc: string;
   icon: LucideIcon;
   tag: string;
+  cue?: string;
 }
 
 const steps: Step[] = [
   {
     number: '01',
     title: 'Inspection & Quote',
-    desc: 'We assess paint condition, contamination level, and client goals. A detailed quote is issued within hours — no surprises.',
+    desc: 'We assess paint condition, contamination level, and client goals. A detailed quote is issued within hours - no surprises.',
     icon: Search,
     tag: 'Assessment',
+    cue: 'START',
   },
   {
     number: '02',
     title: 'Prep & Decon',
     desc: 'Full wash, iron decontamination, clay bar treatment, and paint measurement before any polish or coating touches the vehicle.',
-    icon: Wrench,
+    icon: Droplets,
     tag: 'Preparation',
   },
   {
     number: '03',
     title: 'Treatment Applied',
-    desc: 'Multi-stage machine polishing, ceramic coating cure, or PPF installation — executed with professional equipment and zero shortcuts.',
-    icon: Sparkles,
+    desc: 'Multi-stage machine polishing, ceramic coating cure, or PPF installation - executed with professional equipment and zero shortcuts.',
+    icon: ShieldCheck,
     tag: 'Execution',
   },
   {
     number: '04',
     title: 'Final Review',
-    desc: "Post-treatment inspection under LED and natural light. We don't release the vehicle until it meets our standard — and yours.",
-    icon: CheckCircle,
+    desc: "Post-treatment inspection under LED and natural light. We don't release the vehicle until it meets our standard - and yours.",
+    icon: CheckCircle2,
     tag: 'Delivery',
+    cue: 'FINISH',
   },
 ];
 
-/* Hexagonal bolt marker */
-function HexBolt({ active }: { active: boolean }) {
+const desktopNodeX = [136, 102, 132, 112];
+
+function buildDesktopPath(index: number, total: number) {
+  const currentX = desktopNodeX[index];
+  const nextX = index === total - 1 ? currentX : desktopNodeX[index + 1];
+  const topY = index === 0 ? 18 : 0;
+  const bottomY = index === total - 1 ? 162 : 180;
+
+  return `M ${currentX} ${topY}
+    L ${currentX} 104
+    Q ${currentX} 122 ${nextX} 138
+    L ${nextX} ${bottomY}`;
+}
+
+function buildMobilePath(index: number, total: number) {
+  const topY = index === 0 ? 18 : 0;
+  const bottomY = index === total - 1 ? 144 : 160;
+  return `M 28 ${topY} L 28 ${bottomY}`;
+}
+
+function ProcessNode({
+  left,
+  isLast,
+  compact = false,
+  reduceMotion,
+}: {
+  left: number;
+  isLast: boolean;
+  compact?: boolean;
+  reduceMotion: boolean;
+}) {
+  const size = compact ? 30 : 40;
+  const innerSize = compact ? 7 : 9;
+
   return (
-    <div
-      className="hex-bolt w-10 h-10 flex items-center justify-center shrink-0"
-      style={{
-        background: active ? 'linear-gradient(135deg, #C9A84C, #FFD700)' : 'var(--carbon-700)',
-        border: active ? 'none' : '1px solid rgba(201,168,76,0.3)',
-        transition: 'background 0.3s',
+    <motion.div
+      initial={{ opacity: 0, scale: 0.88 }}
+      whileInView={{
+        opacity: 1,
+        scale: reduceMotion ? 1 : [0.92, 1.02, 1],
       }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: reduceMotion ? 0.3 : 0.45, ease: 'easeOut' }}
+      className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+      style={{ left }}
     >
       <div
-        className="w-2.5 h-2.5 rounded-full"
-        style={{ background: active ? '#070709' : 'rgba(201,168,76,0.5)' }}
-      />
-    </div>
+        className="relative flex items-center justify-center"
+        style={{
+          width: size,
+          height: size,
+          clipPath: 'polygon(24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%, 0 50%)',
+          background: 'linear-gradient(180deg, rgba(14,14,18,0.96), rgba(9,9,12,0.92))',
+          border: '1px solid rgba(201,168,76,0.34)',
+          boxShadow: isLast ? '0 0 0 1px rgba(201,168,76,0.16), inset 0 0 18px rgba(201,168,76,0.08)' : '0 0 0 1px rgba(255,255,255,0.04)',
+        }}
+      >
+        <div
+          className="rounded-full"
+          style={{
+            width: innerSize,
+            height: innerSize,
+            background: isLast ? '#d8bb6c' : 'rgba(201,168,76,0.74)',
+            boxShadow: isLast ? '0 0 16px rgba(201,168,76,0.14)' : 'none',
+          }}
+        />
+      </div>
+
+      {isLast && (
+        <div className="absolute left-[calc(100%+10px)] top-1/2 flex -translate-y-1/2 items-center gap-[3px]">
+          <span className="h-4 w-px bg-[#d8bb6c]/70" />
+          <span className="h-4 w-px bg-[#d8bb6c]/40" />
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+function ProcessTrack({
+  index,
+  total,
+  cue,
+  isLast,
+  reduceMotion,
+}: {
+  index: number;
+  total: number;
+  cue?: string;
+  isLast: boolean;
+  reduceMotion: boolean;
+}) {
+  const desktopPath = buildDesktopPath(index, total);
+  const mobilePath = buildMobilePath(index, total);
+  const desktopLeft = desktopNodeX[index];
+
+  return (
+    <>
+      <div className="relative h-full min-h-[152px] lg:hidden">
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 56 160" preserveAspectRatio="none" aria-hidden="true">
+          <path d={mobilePath} stroke="rgba(255,255,255,0.08)" strokeWidth="1" fill="none" />
+          <path
+            d={mobilePath}
+            stroke="rgba(201,168,76,0.28)"
+            strokeWidth="1.1"
+            strokeDasharray="6 10"
+            fill="none"
+          />
+          <motion.path
+            d={mobilePath}
+            initial={{ pathLength: 0, opacity: 0.5 }}
+            whileInView={{ pathLength: 1, opacity: 1 }}
+            viewport={{ once: true, amount: 0.55 }}
+            transition={{ duration: reduceMotion ? 0.35 : 0.7, ease: 'easeInOut', delay: index * 0.06 }}
+            stroke="rgba(216,187,108,0.72)"
+            strokeWidth="1.2"
+            fill="none"
+          />
+        </svg>
+
+        {cue && (
+          <span
+            className="absolute text-[9px] uppercase tracking-[0.32em]"
+            style={{
+              left: 28,
+              transform: 'translateX(-50%)',
+              top: index === 0 ? '0.1rem' : 'auto',
+              bottom: isLast ? '0.1rem' : 'auto',
+              color: 'rgba(201,168,76,0.62)',
+              fontFamily: 'var(--font-inter)',
+            }}
+          >
+            {cue}
+          </span>
+        )}
+
+        <ProcessNode left={28} isLast={isLast} compact reduceMotion={reduceMotion} />
+
+        {!isLast && (
+          <motion.div
+            animate={reduceMotion ? undefined : { y: [0, 3, 0], opacity: [0.25, 0.55, 0.25] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.12 }}
+            className="absolute left-[20px] top-[69%]"
+          >
+            <ChevronDown className="h-3 w-3" style={{ color: 'rgba(201,168,76,0.48)' }} />
+          </motion.div>
+        )}
+      </div>
+
+      <div className="relative hidden h-full min-h-[180px] lg:block">
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 220 180" preserveAspectRatio="none" aria-hidden="true">
+          <path d={desktopPath} stroke="rgba(255,255,255,0.07)" strokeWidth="1" fill="none" />
+          <path
+            d={desktopPath}
+            stroke="rgba(201,168,76,0.26)"
+            strokeWidth="1.1"
+            strokeDasharray="7 11"
+            fill="none"
+          />
+          <motion.path
+            d={desktopPath}
+            initial={{ pathLength: 0, opacity: 0.45 }}
+            whileInView={{ pathLength: 1, opacity: 1 }}
+            viewport={{ once: true, amount: 0.55 }}
+            transition={{ duration: reduceMotion ? 0.35 : 0.85, ease: 'easeInOut', delay: index * 0.07 }}
+            stroke="rgba(216,187,108,0.76)"
+            strokeWidth="1.3"
+            fill="none"
+          />
+        </svg>
+
+        {cue && (
+          <span
+            className="absolute text-[10px] uppercase tracking-[0.34em]"
+            style={{
+              left: desktopLeft,
+              transform: 'translateX(-50%)',
+              top: index === 0 ? '0.25rem' : 'auto',
+              bottom: isLast ? '0.5rem' : 'auto',
+              color: 'rgba(201,168,76,0.62)',
+              fontFamily: 'var(--font-inter)',
+            }}
+          >
+            {cue}
+          </span>
+        )}
+
+        <ProcessNode left={desktopLeft} isLast={isLast} reduceMotion={reduceMotion} />
+
+        {!isLast && (
+          <motion.div
+            animate={reduceMotion ? undefined : { y: [0, 4, 0], opacity: [0.22, 0.58, 0.22] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.16 }}
+            className="absolute top-[68%]"
+            style={{ left: desktopLeft - 6 }}
+          >
+            <ChevronDown className="h-3.5 w-3.5" style={{ color: 'rgba(201,168,76,0.42)' }} />
+          </motion.div>
+        )}
+      </div>
+    </>
   );
 }
 
 export default function Process() {
+  const reduceMotion = useReducedMotion() ?? false;
+
   return (
     <section
       id="process"
-      className="relative py-24 overflow-hidden"
+      className="relative overflow-hidden py-24"
       style={{ background: 'var(--carbon-800)' }}
     >
-      {/* Dashed race track line — vertical, centered left of content */}
-      <div
-        className="absolute hidden lg:block"
-        style={{
-          top: '10%',
-          bottom: '10%',
-          left: '18%',
-          width: '2px',
-          backgroundImage: 'repeating-linear-gradient(180deg, #C9A84C 0px, #C9A84C 14px, transparent 14px, transparent 26px)',
-          opacity: 0.35,
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-x-0 top-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.18), transparent)' }}
+        />
+        <div
+          className="absolute inset-x-0 top-[22%] h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
+        />
+        <div
+          className="absolute inset-x-0 top-[58%] h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)' }}
+        />
+      </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 md:px-14 relative">
-        {/* Section header */}
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-8 md:px-14">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center md:text-left"
+          transition={{ duration: reduceMotion ? 0.3 : 0.55 }}
+          className="mb-14 max-w-3xl"
         >
+          <div className="mb-4 flex items-center gap-3">
+            <div className="h-px w-12" style={{ background: 'rgba(201,168,76,0.7)' }} />
+            <span
+              className="text-[11px] uppercase tracking-[0.32em]"
+              style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
+            >
+              Technical workflow
+            </span>
+          </div>
+
           <h2
-            className="text-5xl md:text-7xl font-black leading-none"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.04em' }}
+            className="text-5xl font-black leading-none md:text-7xl"
+            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
           >
             PIT STOP{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
+                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -107,10 +307,11 @@ export default function Process() {
               PROCESS
             </span>
           </h2>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 mt-3">
-            <div className="w-20 md:w-12 h-px" style={{ background: '#C9A84C' }} />
+
+          <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
+            <div className="h-px w-20 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
             <span
-              className="text-xs tracking-[0.25em] uppercase"
+              className="text-xs uppercase tracking-[0.26em]"
               style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
             >
               From booking to keys in hand
@@ -118,104 +319,103 @@ export default function Process() {
           </div>
         </motion.div>
 
-        {/* Steps */}
-        <div className="space-y-0">
-          {steps.map((step, i) => {
+        <div className="relative">
+          {steps.map((step, index) => {
             const Icon = step.icon;
+            const isLast = index === steps.length - 1;
+
             return (
-              <motion.div
+              <div
                 key={step.number}
-                initial={{ x: 80, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.7, ease: 'easeOut', delay: i * 0.08 }}
-                className="relative flex items-start gap-6 lg:gap-10"
+                className="grid grid-cols-[56px_minmax(0,1fr)] gap-4 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10"
               >
-                {/* Large race number — ghost behind */}
-                <div
-                  className="shrink-0 select-none hidden sm:block"
-                  style={{
-                    fontFamily: 'var(--font-bebas)',
-                    fontSize: 'clamp(3.5rem, 8vw, 7rem)',
-                    lineHeight: 1,
-                    color: i === 0 ? 'rgba(201,168,76,0.18)' : 'rgba(255,255,255,0.05)',
-                    letterSpacing: '-0.02em',
-                    minWidth: '5rem',
-                    textAlign: 'right',
-                  }}
+                <div className={index === 0 ? '' : 'border-t border-white/5'}>
+                  <ProcessTrack
+                    index={index}
+                    total={steps.length}
+                    cue={step.cue}
+                    isLast={isLast}
+                    reduceMotion={reduceMotion}
+                  />
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: reduceMotion ? 0.3 : 0.6, delay: index * 0.06, ease: 'easeOut' }}
+                  className={`relative py-8 lg:py-10 ${index === 0 ? '' : 'border-t border-white/5'}`}
                 >
-                  {step.number}
-                </div>
-
-                {/* Connector line + hex bolt */}
-                <div className="flex flex-col items-center shrink-0 pt-3">
-                  <HexBolt active={i === 0} />
-                  {i < steps.length - 1 && (
-                    <div
-                      className="w-px mt-1"
-                      style={{
-                        height: '90px',
-                        backgroundImage: 'repeating-linear-gradient(180deg, rgba(201,168,76,0.4) 0px, rgba(201,168,76,0.4) 8px, transparent 8px, transparent 16px)',
-                      }}
-                    />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 pb-10 lg:pb-14 pt-2">
-                  {/* Tag */}
-                  <span
-                    className="inline-block px-3 py-0.5 text-[10px] font-bold tracking-widest uppercase mb-3"
+                  <div
+                    className="pointer-events-none absolute right-0 top-4 select-none"
                     style={{
-                      background: 'rgba(201,168,76,0.08)',
-                      border: '1px solid rgba(201,168,76,0.2)',
-                      color: '#C9A84C',
-                      fontFamily: 'var(--font-inter)',
+                      fontFamily: 'var(--font-bebas)',
+                      fontSize: 'clamp(4.2rem, 9vw, 7.8rem)',
+                      lineHeight: 0.9,
+                      letterSpacing: '0.02em',
+                      color: index === 0 ? 'rgba(201,168,76,0.14)' : 'rgba(255,255,255,0.045)',
                     }}
                   >
-                    {step.tag}
-                  </span>
-
-                  {/* Title */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3
-                      className="text-2xl md:text-3xl font-black"
-                      style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
-                    >
-                      {step.title}
-                    </h3>
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}
-                    >
-                      <Icon className="w-4 h-4" style={{ color: '#C9A84C' }} />
-                    </div>
+                    {step.number}
                   </div>
 
-                  {/* Description */}
-                  <p
-                    className="text-sm md:text-base leading-relaxed max-w-lg"
-                    style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
-                  >
-                    {step.desc}
-                  </p>
-                </div>
-              </motion.div>
+                  <div className="relative z-10 max-w-2xl">
+                    <span
+                      className="mb-4 inline-flex items-center gap-2 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.28em]"
+                      style={{
+                        color: '#cfb15d',
+                        background: 'rgba(201,168,76,0.08)',
+                        border: '1px solid rgba(201,168,76,0.18)',
+                        fontFamily: 'var(--font-inter)',
+                      }}
+                    >
+                      <span className="h-1 w-1 rounded-full bg-[#cfb15d]" />
+                      {step.tag}
+                    </span>
+
+                    <div className="mb-3 flex items-center gap-3">
+                      <div
+                        className="flex h-9 w-9 shrink-0 items-center justify-center"
+                        style={{
+                          background: 'linear-gradient(180deg, rgba(201,168,76,0.13), rgba(201,168,76,0.04))',
+                          border: '1px solid rgba(201,168,76,0.16)',
+                          clipPath: 'polygon(18% 0, 100% 0, 82% 100%, 0 100%)',
+                        }}
+                      >
+                        <Icon className="h-4 w-4" style={{ color: '#d8bb6c' }} />
+                      </div>
+
+                      <h3
+                        className="text-2xl font-black md:text-3xl"
+                        style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
+                      >
+                        {step.title}
+                      </h3>
+                    </div>
+
+                    <p
+                      className="max-w-xl text-sm leading-relaxed md:text-base"
+                      style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
+                    >
+                      {step.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
             );
           })}
         </div>
 
-        {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-4 flex flex-wrap items-center gap-4"
+          transition={{ duration: reduceMotion ? 0.3 : 0.55, delay: 0.18 }}
+          className="mt-8 flex flex-wrap items-center gap-4 lg:ml-[220px]"
         >
           <button
             onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="btn-shimmer px-10 py-4 text-sm font-bold tracking-widest uppercase cursor-pointer transition-all duration-300"
+            className="btn-shimmer cursor-pointer px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300"
             style={{
               background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
               color: '#070709',
@@ -226,7 +426,7 @@ export default function Process() {
             Start Your Booking
           </button>
           <span
-            className="text-xs"
+            className="text-xs uppercase tracking-[0.18em]"
             style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
           >
             Same-day response guaranteed
