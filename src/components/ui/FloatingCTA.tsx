@@ -36,7 +36,7 @@ export default function FloatingCTA() {
   };
 
   const fab =
-    'pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full shadow-2xl';
+    'pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full';
 
   return (
     <AnimatePresence>
@@ -59,7 +59,6 @@ export default function FloatingCTA() {
             style={{
               background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
               color: '#070709',
-              boxShadow: '0 4px 24px rgba(201, 168, 76, 0.45)',
             }}
             aria-label="Back to top"
             title="Back to top"
@@ -78,7 +77,6 @@ export default function FloatingCTA() {
             className={fab}
             style={{
               background: 'linear-gradient(135deg, #25D366, #128C7E)',
-              boxShadow: '0 0 20px rgba(37, 211, 102, 0.4)',
               color: '#fff',
             }}
             aria-label="Contact us on WhatsApp"

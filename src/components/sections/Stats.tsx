@@ -36,7 +36,7 @@ export default function Stats() {
         borderBottom: '1px solid rgba(255,255,255,0.045)',
       }}
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4">
           {items.map((item, i) => (
             <motion.div
@@ -59,6 +59,7 @@ export default function Stats() {
                   letterSpacing: '0.03em',
                   color: 'white',
                   lineHeight: 1.25,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {item.text}
