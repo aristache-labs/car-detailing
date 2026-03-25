@@ -348,20 +348,15 @@ function NavLink({
   onClick: () => void;
   children: React.ReactNode;
 }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <button
       onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="cursor-pointer pb-px"
+      className="cursor-pointer pb-px border-b border-transparent hover:border-[rgba(201,168,76,0.5)] hover:text-[#e3e3e3] transition-[color,border-color] duration-200"
       style={{
         fontFamily: 'var(--font-inter)',
         fontSize: '0.875rem',
         fontWeight: 500,
-        color: hovered ? '#e3e3e3' : 'rgba(212,212,212,0.88)',
-        borderBottom: hovered ? '1px solid rgba(201,168,76,0.5)' : '1px solid transparent',
-        transition: 'color 0.18s, border-color 0.18s',
+        color: 'rgba(212,212,212,0.88)',
         background: 'none',
       }}
     >
