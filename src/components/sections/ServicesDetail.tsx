@@ -400,7 +400,8 @@ function ServiceRow({ service }: ServiceRowProps) {
               alt={service.imageAlt ?? service.title.replace('\n', ' ')}
               className="absolute inset-0 w-full h-full object-cover"
               fill
-              sizes="(min-width: 1536px) 42vw, (min-width: 1024px) 50vw, 100vw"
+              sizes="(max-width: 1024px) 100vw, (max-width: 1536px) 48vw, 42vw"
+              quality={75}
             />
             <div
               className="absolute inset-0"

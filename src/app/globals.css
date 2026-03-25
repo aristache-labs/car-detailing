@@ -381,6 +381,16 @@ body {
   100% { transform: translateX(-20%); opacity: 0; }
 }
 
+@keyframes hero-scroll-pulse {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0); }
+}
+
+.hero-scroll-pulse {
+  animation: hero-scroll-pulse 1.8s ease-in-out infinite;
+}
+
 /* ─── Shine sweep ────────────────────────────────────────────────────────── */
 @keyframes shine-sweep {
   0% { transform: translate3d(-180%, 0, 0) skewX(-15deg); }
@@ -429,20 +439,38 @@ body {
 
 /* Keep hero shine clipped to car alpha only (avoid rectangular sweep box) */
 .hero-shine-mask {
-  -webkit-mask-image: url('/images/hero-car-no-bg.png');
-  mask-image: url('/images/hero-car-no-bg.png');
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
+  position: absolute;
+  inset: 0;
 }
 
-/* Mobile: remove decorative sweep to avoid extra cost/noise */
+/* Constrain decorative shine to car area without image-mask request */
+.hero-shine-core {
+  position: absolute;
+  inset: 16% 5% 16% 5%;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 54%,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(0, 0, 0, 0.98) 42%,
+    rgba(0, 0, 0, 0.68) 56%,
+    rgba(0, 0, 0, 0.32) 66%,
+    rgba(0, 0, 0, 0) 76%
+  );
+  mask-image: radial-gradient(
+    ellipse at 50% 54%,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(0, 0, 0, 0.98) 42%,
+    rgba(0, 0, 0, 0.68) 56%,
+    rgba(0, 0, 0, 0.32) 66%,
+    rgba(0, 0, 0, 0) 76%
+  );
+}
+
+/* Mobile: keep subtle shine (lighter than desktop) */
 @media (max-width: 767px) {
-  .hero-shine-mask {
-    display: none;
+  .hero-shine-core {
+    inset: 18% 2% 20% 2%;
+    opacity: 0.72;
   }
 }
 

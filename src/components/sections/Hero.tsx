@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle, Eye } from 'lucide-react';
 import gsap from 'gsap';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -201,16 +200,18 @@ export default function Hero() {
             fill
             priority
             fetchPriority="high"
-            sizes="(max-width: 1024px) 96vw, 900px"
+            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 86vw, (max-width: 1536px) 40vw, 608px"
             className="relative z-0 object-contain object-center drop-shadow-[0_16px_56px_rgba(0,0,0,0.5)]"
           />
-          {/* Lightweight shine overlay (keeps premium feel without PNG mask duplicate request) */}
+          {/* Decorative shine constrained to car area (no image mask request) */}
           <div
             className="hero-shine-mask pointer-events-none absolute inset-0 z-1 overflow-hidden"
             aria-hidden
           >
-            <div className="shine-sweep shine-sweep--hero" />
-            <div className="shine-sweep shine-sweep--hero-delayed" />
+            <div className="hero-shine-core">
+              <div className="shine-sweep shine-sweep--hero" />
+              <div className="shine-sweep shine-sweep--hero-delayed" />
+            </div>
           </div>
         </div>
       </div>
@@ -226,10 +227,8 @@ export default function Hero() {
         >
           {t.hero.scroll}
         </span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-px h-8"
+        <div
+          className="hero-scroll-pulse w-px h-8"
           style={{ background: 'linear-gradient(180deg, #C9A84C, transparent)' }}
         />
       </div>
