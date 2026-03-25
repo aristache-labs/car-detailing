@@ -200,7 +200,7 @@ export default function Hero() {
             fill
             priority
             fetchPriority="high"
-            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 86vw, (max-width: 1536px) 40vw, 608px"
+            sizes="(max-width: 640px) min(88vw, 560px), (max-width: 1024px) 86vw, (max-width: 1536px) 40vw, 608px"
             className="relative z-0 object-contain object-center drop-shadow-[0_16px_56px_rgba(0,0,0,0.5)]"
           />
           {/* Decorative shine constrained to car area (no image mask request) */}

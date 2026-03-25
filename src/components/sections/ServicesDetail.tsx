@@ -401,7 +401,7 @@ function ServiceRow({ service }: ServiceRowProps) {
               className="absolute inset-0 w-full h-full object-cover"
               fill
               sizes="(max-width: 1024px) 92vw, (max-width: 1536px) 48vw, 42vw"
-              quality={70}
+              quality={65}
             />
             <div
               className="absolute inset-0"
