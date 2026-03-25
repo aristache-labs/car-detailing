@@ -210,7 +210,7 @@ export default function Testimonials() {
                   markInteracted();
                   back();
                 }}
-                className="w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
+                className="w-11 h-11 flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{
                   border: '1px solid rgba(201,168,76,0.25)',
                   background: 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))',
@@ -260,7 +260,7 @@ export default function Testimonials() {
                   markInteracted();
                   advance();
                 }}
-                className="w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200"
+                className="w-11 h-11 flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{
                   border: '1px solid rgba(201,168,76,0.25)',
                   background: 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))',

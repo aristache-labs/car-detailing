@@ -1,7 +1,3 @@
-'use client';
-
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import Image from 'next/image';
 
 const items = [
@@ -22,12 +18,8 @@ const borderClass = (i: number) => {
 };
 
 export default function Stats() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
-
   return (
     <section
-      ref={ref}
       id="trust"
       className="mb-3 md:mb-5"
       style={{
@@ -39,11 +31,8 @@ export default function Stats() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4">
           {items.map((item, i) => (
-            <motion.div
+            <div
               key={item.text}
-              initial={{ opacity: 0, y: 8 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.07, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className={`flex items-center gap-3 py-4 px-5 ${borderClass(i)}`}
               style={{ borderColor: 'rgba(255,255,255,0.06)' }}
             >
@@ -64,7 +53,7 @@ export default function Stats() {
               >
                 {item.text}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

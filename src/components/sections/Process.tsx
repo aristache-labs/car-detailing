@@ -182,8 +182,8 @@ function ProcessTrack({
               transform: 'translateX(-50%)',
               top: index === 0 ? '-0.8rem' : 'auto',
               bottom: isLast ? '-0.95rem' : 'auto',
-              color: 'rgba(201,168,76,0.62)',
-              background: 'rgba(8,8,11,0.75)',
+              color: 'rgba(226,192,106,0.86)',
+              background: 'rgba(8,8,11,0.88)',
               fontFamily: 'var(--font-orbitron)',
               fontWeight: 600,
             }}
@@ -235,8 +235,8 @@ function ProcessTrack({
               transform: 'translateX(-50%)',
               top: index === 0 ? '-0.85rem' : 'auto',
               bottom: isLast ? '-1.05rem' : 'auto',
-              color: 'rgba(201,168,76,0.62)',
-              background: 'rgba(8,8,11,0.78)',
+              color: 'rgba(226,192,106,0.86)',
+              background: 'rgba(8,8,11,0.9)',
               fontFamily: 'var(--font-orbitron)',
               fontWeight: 600,
             }}

@@ -48,7 +48,7 @@ const colHeading =
   'mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A84C]';
 
 const linkClass =
-  'text-[13px] leading-snug text-white/55 transition-colors duration-200 hover:text-[#d8bb6c]';
+  'text-[13px] leading-snug text-white/70 transition-colors duration-200 hover:text-[#d8bb6c]';
 
 export default function Footer() {
   return (
@@ -74,7 +74,7 @@ export default function Footer() {
                 <span className="ml-1 text-white">DETAILING</span>
               </span>
             </div>
-            <p className="max-w-sm text-[13px] leading-relaxed text-white/60">
+            <p className="max-w-sm text-[13px] leading-relaxed text-white/72">
               Premium auto detailing, paint correction, ceramic coating, and protective finishes for vehicles that
               deserve more.
             </p>
@@ -113,7 +113,7 @@ export default function Footer() {
           {/* 2 — Contact (order 2 on mobile) */}
           <div className="order-2 lg:order-0">
             <h2 className={colHeading}>Contact</h2>
-            <ul className="space-y-2.5 text-[13px] text-white/60">
+            <ul className="space-y-2.5 text-[13px] text-white/72">
               <li className="flex gap-2">
                 <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
                 <a href="tel:+40721000000" className={`${linkClass} block`}>
@@ -156,7 +156,7 @@ export default function Footer() {
           className="mt-8 border-t border-white/8 pt-4"
           style={{ fontFamily: 'var(--font-inter)' }}
         >
-          <p className="text-center text-[11px] text-white/40 md:text-left">
+          <p className="text-center text-[11px] text-white/56 md:text-left">
             © {new Date().getFullYear()} Apex Detailing. All rights reserved.
           </p>
         </div>

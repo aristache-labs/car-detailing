@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
 
 const panels = [
   {
@@ -82,17 +84,24 @@ interface SliderProps {
 function DragSlider({ panel }: SliderProps) {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
+  const containerRectRef = useRef<DOMRect | null>(null);
   const dragging = useRef(false);
 
-  const update = useCallback((clientX: number) => {
+  const captureRect = useCallback(() => {
     if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    containerRectRef.current = containerRef.current.getBoundingClientRect();
+  }, []);
+
+  const update = useCallback((clientX: number) => {
+    const rect = containerRectRef.current;
+    if (!rect) return;
     const pct = Math.min(Math.max(((clientX - rect.left) / rect.width) * 100, 0), 100);
     setPos(pct);
   }, []);
 
   const onMouseDown = () => {
     dragging.current = true;
+    captureRect();
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
   };
@@ -104,23 +113,41 @@ function DragSlider({ panel }: SliderProps) {
   };
   const onTouchMove = (e: React.TouchEvent) => update(e.touches[0].clientX);
 
+  useEffect(() => {
+    captureRect();
+    window.addEventListener('resize', captureRect, { passive: true });
+    return () => {
+      window.removeEventListener('resize', captureRect);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [captureRect]);
+
   return (
     <div
       ref={containerRef}
       className="relative w-full h-full overflow-hidden cursor-col-resize select-none"
       onMouseDown={onMouseDown}
       onTouchMove={onTouchMove}
-      onTouchStart={(e) => update(e.touches[0].clientX)}
+      onTouchStart={(e) => {
+        captureRect();
+        update(e.touches[0].clientX);
+      }}
     >
       {/* BEFORE layer */}
-      <div
-        className="absolute inset-0 flex items-end p-4"
-        style={{
-          backgroundImage: `linear-gradient(180deg, rgba(5,5,8,0.08), rgba(5,5,8,0.4)), url(${panel.beforeImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <div className="absolute inset-0 flex items-end p-4">
+        <Image
+          src={panel.beforeImage}
+          alt={`${panel.service} before`}
+          fill
+          sizes="(max-width: 768px) 92vw, (max-width: 1024px) 78vw, 50vw"
+          className="object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, rgba(5,5,8,0.08), rgba(5,5,8,0.4))' }}
+          aria-hidden
+        />
         <span
           className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase"
           style={{
@@ -137,12 +164,21 @@ function DragSlider({ panel }: SliderProps) {
       <div
         className="absolute inset-0 flex items-end p-4"
         style={{
-          backgroundImage: `linear-gradient(180deg, rgba(5,5,8,0.04), rgba(5,5,8,0.3)), url(${panel.afterImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
           clipPath: `polygon(${pos}% 0, 100% 0, 100% 100%, ${pos}% 100%)`,
         }}
       >
+        <Image
+          src={panel.afterImage}
+          alt={`${panel.service} after`}
+          fill
+          sizes="(max-width: 768px) 92vw, (max-width: 1024px) 78vw, 50vw"
+          className="object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, rgba(5,5,8,0.04), rgba(5,5,8,0.3))' }}
+          aria-hidden
+        />
         <span
           className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase ml-auto"
           style={{
@@ -181,10 +217,13 @@ function DragSlider({ panel }: SliderProps) {
 
 export default function BeforeAfter() {
   const [active, setActive] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isNearViewport = useInView(sectionRef, { once: true, margin: '280px 0px' });
   const currentPanel = panels[active];
 
   return (
     <section
+      ref={sectionRef}
       id="gallery"
       className="relative py-12 md:py-13 overflow-hidden"
       style={{ background: 'var(--carbon-900)' }}
@@ -270,7 +309,7 @@ export default function BeforeAfter() {
             boxShadow: '0 10px 24px rgba(0,0,0,0.32)',
           }}
         >
-          <DragSlider panel={panels[active]} />
+          {isNearViewport ? <DragSlider panel={panels[active]} /> : null}
           <motion.div
             key={active}
             initial={{ opacity: 0, y: -8 }}
@@ -316,7 +355,7 @@ export default function BeforeAfter() {
                 className="absolute inset-0"
                 style={{ transform: 'skewX(2deg)' }}
               >
-                {isActive ? (
+                {isActive && isNearViewport ? (
                   <DragSlider panel={panel} />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 gap-2">
@@ -369,10 +408,13 @@ export default function BeforeAfter() {
         {panels.map((p) => (
           <button
             key={p.id}
+            type="button"
             onClick={() => setActive(p.id)}
-            className="transition-all duration-300"
+            className="transition-all duration-300 flex items-center justify-center min-w-10 min-h-10"
+            aria-label={`Show ${p.service} panel`}
+            aria-current={active === p.id}
             style={{
-              width: active === p.id ? 32 : 8,
+              width: active === p.id ? 32 : 24,
               height: 3,
               background: active === p.id ? '#C9A84C' : 'rgba(255,255,255,0.15)',
               borderRadius: 2,

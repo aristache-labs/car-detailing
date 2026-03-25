@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, type CSSProperties } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle, Eye } from 'lucide-react';
@@ -9,20 +9,7 @@ import { useLanguage } from '@/components/providers/LanguageProvider';
 
 const HERO_CAR = '/images/hero-car-no-bg.png';
 
-/** Matches <Image fill className="object-contain object-center" /> — shine only on car pixels */
-const shineMaskStyle: CSSProperties = {
-  WebkitMaskImage: `url(${HERO_CAR})`,
-  maskImage: `url(${HERO_CAR})`,
-  WebkitMaskSize: 'contain',
-  maskSize: 'contain',
-  WebkitMaskRepeat: 'no-repeat',
-  maskRepeat: 'no-repeat',
-  WebkitMaskPosition: 'center',
-  maskPosition: 'center',
-};
-
 export default function Hero() {
-  const leftRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -90,10 +77,7 @@ export default function Hero() {
       />
 
       {/* ── LEFT PANEL — editorial; desktop: content block nudged toward car ── */}
-      <div
-        ref={leftRef}
-        className="relative z-10 w-full lg:w-[52%] xl:w-[50%] px-6 sm:px-8 md:px-14 lg:pl-10 lg:pr-4 xl:pl-14 xl:pr-8 pt-28 pb-6 lg:py-0"
-      >
+      <div className="relative z-10 w-full lg:w-[52%] xl:w-[50%] px-6 sm:px-8 md:px-14 lg:pl-10 lg:pr-4 xl:pl-14 xl:pr-8 pt-28 pb-6 lg:py-0">
         <div className="lg:max-w-xl xl:max-w-2xl lg:ml-auto lg:mr-2 xl:mr-6 2xl:mr-10">
         {/* Main headline — two-line premium value proposition */}
         <div
@@ -216,14 +200,13 @@ export default function Hero() {
             alt="Premium detailed sports car"
             fill
             priority
-            unoptimized
+            fetchPriority="high"
             sizes="(max-width: 1024px) 96vw, 900px"
             className="relative z-0 object-contain object-center drop-shadow-[0_16px_56px_rgba(0,0,0,0.5)]"
           />
-          {/* Shine sweeps — masked to car alpha (no rectangular box) */}
+          {/* Lightweight shine overlay (keeps premium feel without PNG mask duplicate request) */}
           <div
-            className="pointer-events-none absolute inset-0 z-1 overflow-hidden"
-            style={shineMaskStyle}
+            className="hero-shine-mask pointer-events-none absolute inset-0 z-1 overflow-hidden"
             aria-hidden
           >
             <div className="shine-sweep shine-sweep--hero" />

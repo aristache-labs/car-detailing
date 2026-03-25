@@ -15,14 +15,14 @@ const bebasNeue = Bebas_Neue({
 });
 
 const orbitron = Orbitron({
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-orbitron",
   display: "swap",
 });
 
 const inter = Inter({
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
