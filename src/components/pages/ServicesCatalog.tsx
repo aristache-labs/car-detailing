@@ -3,7 +3,7 @@
 import { useMemo, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronDown, X, ArrowRight } from 'lucide-react';
 import {
   SERVICE_FILTER_LABELS,
@@ -129,72 +129,61 @@ function ServiceCard({
           <div
             className={`flex w-full items-center gap-3 ${isOpen ? 'mt-5' : 'mt-4'} ${isOpen ? '' : 'justify-start'}`}
           >
-            <div className="relative h-[34px] shrink-0">
-              <AnimatePresence mode="wait" initial={false}>
-                {!isOpen ? (
-                  <motion.button
-                    key="details"
-                    type="button"
-                    onClick={onToggle}
-                    aria-expanded={false}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -6 }}
-                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                    className="group/btn absolute left-0 top-0 inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-[#C9A84C]/28 bg-[rgba(0,0,0,0.45)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d4c49a] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:border-[#C9A84C]/55 hover:bg-[#C9A84C]/10 hover:text-[#ebe4cf] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_0_1px_rgba(201,168,76,0.12)]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    DETAILS
-                    <ChevronDown
-                      size={11}
-                      strokeWidth={2}
-                      className="transition-transform duration-300 ease-out group-hover/btn:translate-y-px"
-                      aria-hidden
-                    />
-                  </motion.button>
-                ) : (
-                  <motion.button
-                    key="close"
-                    type="button"
-                    onClick={onToggle}
-                    aria-expanded={true}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -6 }}
-                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                    className="group/close absolute left-0 top-0 inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-[#C9A84C]/22 bg-[rgba(0,0,0,0.45)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#c8c4bc] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/8 hover:text-[#f0ede6] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    CLOSE
-                    <X size={11} strokeWidth={2} className="opacity-90 transition-transform duration-300 ease-out group-hover/close:scale-95" aria-hidden />
-                  </motion.button>
-                )}
-              </AnimatePresence>
+            {/* iOS-safe: both buttons stay mounted; CSS opacity crossfade only (no exit/enter remount, no x-transform flicker) */}
+            <div className="relative isolate h-[34px] w-max shrink-0">
+              <button
+                type="button"
+                onClick={onToggle}
+                aria-expanded={false}
+                aria-hidden={isOpen}
+                tabIndex={isOpen ? -1 : 0}
+                className={`group/btn absolute left-0 top-0 z-1 inline-flex touch-manipulation cursor-pointer items-center gap-1.5 rounded-sm border border-[#C9A84C]/28 bg-[rgba(0,0,0,0.45)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d4c49a] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-[opacity,transform] duration-200 ease-out select-none hover:border-[#C9A84C]/55 hover:bg-[#C9A84C]/10 hover:text-[#ebe4cf] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_0_1px_rgba(201,168,76,0.12)] ${
+                  isOpen ? 'pointer-events-none opacity-0' : 'opacity-100'
+                }`}
+                style={{ fontFamily: 'var(--font-inter)', WebkitTapHighlightColor: 'transparent' }}
+              >
+                DETAILS
+                <ChevronDown
+                  size={11}
+                  strokeWidth={2}
+                  className="transition-transform duration-200 ease-out group-hover/btn:translate-y-px"
+                  aria-hidden
+                />
+              </button>
+              <button
+                type="button"
+                onClick={onToggle}
+                aria-expanded={true}
+                aria-hidden={!isOpen}
+                tabIndex={isOpen ? 0 : -1}
+                className={`group/close absolute left-0 top-0 z-2 inline-flex touch-manipulation cursor-pointer items-center gap-1.5 rounded-sm border border-[#C9A84C]/22 bg-[rgba(0,0,0,0.45)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#c8c4bc] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-[opacity,transform] duration-200 ease-out select-none hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/8 hover:text-[#f0ede6] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] ${
+                  isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+                }`}
+                style={{ fontFamily: 'var(--font-inter)', WebkitTapHighlightColor: 'transparent' }}
+              >
+                CLOSE
+                <X size={11} strokeWidth={2} className="opacity-90" aria-hidden />
+              </button>
             </div>
 
             {isOpen ? (
               <>
                 <div className="min-w-0 flex-1" aria-hidden />
-                <motion.div
-                  initial={{ opacity: 0, x: 12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.32, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-                  className="shrink-0"
-                >
+                <div className="shrink-0 opacity-100 transition-opacity duration-200 ease-out">
                   <Link
                     href="/contact"
-                    className="group/quote inline-flex cursor-pointer items-center gap-2 rounded-sm border border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                    className="group/quote inline-flex touch-manipulation cursor-pointer items-center gap-2 rounded-sm border border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] transition-[opacity,transform] duration-200 ease-out select-none hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)] active:translate-y-0"
+                    style={{ fontFamily: 'var(--font-inter)', WebkitTapHighlightColor: 'transparent' }}
                   >
                     REQUEST QUOTE
                     <ArrowRight
                       size={12}
                       strokeWidth={2.25}
-                      className="opacity-95 transition-transform duration-300 ease-out group-hover/quote:translate-x-0.5"
+                      className="opacity-95 transition-transform duration-200 ease-out group-hover/quote:translate-x-0.5"
                       aria-hidden
                     />
                   </Link>
-                </motion.div>
+                </div>
               </>
             ) : null}
           </div>
@@ -228,14 +217,6 @@ export default function ServicesCatalog() {
     <div className="pb-14 pt-3 md:pb-20 md:pt-5" style={{ background: 'var(--carbon-950)' }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         <div className="relative mb-7 md:mb-8">
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-linear-to-r from-[#070709] to-transparent md:hidden"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-linear-to-l from-[#070709] to-transparent md:hidden"
-            aria-hidden
-          />
           <div className="-mx-4 flex max-md:flex-nowrap max-md:gap-2.5 max-md:overflow-x-auto max-md:scroll-smooth max-md:px-4 max-md:pb-2 max-md:[scrollbar-width:none] md:mx-0 md:flex-wrap md:gap-2.5 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
             {SERVICE_FILTER_LABELS.map(({ id, label }) => {
               const active = filter === id;
