@@ -220,15 +220,15 @@ export default function Pricing({
                   {card.subtitle}
                 </p>
 
-                <div className="relative mx-auto mt-5 w-full max-w-56 min-h-18 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-3.5 md:mx-0 md:max-w-none md:min-h-19 md:px-4">
+                <div className="relative mx-auto mt-5 w-full max-w-48 min-h-20.5 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-3 md:mx-0 md:max-w-none md:min-h-19 md:px-4 md:py-3.5">
                   <p
-                    className="absolute left-3 top-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/55 md:left-4 md:top-3.5"
+                    className="absolute left-3 top-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/55 md:left-4 md:top-3.5"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {card.priceLabel}
                   </p>
                   <span
-                    className="absolute left-1/2 top-1/2 max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 text-center text-[2.0625rem] font-bold leading-none tabular-nums tracking-tight md:max-w-[calc(100%-2rem)] md:text-[clamp(1.5rem,4.5vw,1.75rem)]"
+                    className="absolute left-1/2 top-[51%] max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 text-center text-[2.25rem] font-bold leading-none tabular-nums tracking-tight md:top-1/2 md:max-w-[calc(100%-2rem)] md:text-[clamp(1.5rem,4.5vw,1.75rem)]"
                     style={{
                       fontFamily: 'var(--font-orbitron)',
                       color: card.featured ? '#e7ce88' : '#eef3fa',
@@ -237,7 +237,7 @@ export default function Pricing({
                     {card.startingPrice}
                   </span>
                   <span
-                    className="absolute bottom-3 right-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c9a84c] md:bottom-3.5 md:right-4"
+                    className="absolute bottom-2.5 right-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c9a84c] md:bottom-3.5 md:right-4"
                     style={{ fontFamily: 'var(--font-orbitron)' }}
                   >
                     RON
@@ -258,7 +258,7 @@ export default function Pricing({
                   >
                     Included Services
                   </p>
-                  <ul className="space-y-2.5 text-left">
+                  <ul className="mx-auto w-fit max-w-full space-y-2.5 text-left md:mx-0 md:w-full">
                     {card.includedItems.map((item) => (
                       <li key={item} className="flex gap-2.5">
                         <Check
