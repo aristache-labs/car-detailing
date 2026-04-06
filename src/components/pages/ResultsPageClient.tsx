@@ -3,12 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeftRight } from 'lucide-react';
 import SectionBadge from '@/components/ui/SectionBadge';
 import {
-  GALLERY_FILTERS,
   beforeAfterItems,
   featuredBeforeAfter,
   galleryCategoryBadge,
@@ -18,6 +17,43 @@ import {
   type MainTab,
   type VideoItem,
 } from '@/data/results-page-data';
+
+/** Mobile filter chips — labels uppercase; map to `GalleryFilterId`. */
+const MOBILE_GALLERY_FILTERS: { label: string; id: GalleryFilterId }[] = [
+  { label: 'ALL', id: 'all' },
+  { label: 'CORRECTION', id: 'correction' },
+  { label: 'CERAMIC', id: 'ceramic' },
+  { label: 'PPF', id: 'ppf' },
+  { label: 'INTERIOR', id: 'interior' },
+  { label: 'ENGINE', id: 'engine' },
+];
+
+const MOBILE_STATS = [
+  { value: '500+', label: 'Vehicles detailed' },
+  { value: '12+', label: 'Years experience' },
+  { value: '98%', label: 'Client satisfaction' },
+  { value: '50+', label: 'Services offered' },
+] as const;
+
+/** Nav ids — map to `MainTab` for existing content blocks. */
+type ResultsNavTab = 'GALLERY' | 'BEFORE_AFTER' | 'VIDEO';
+
+const TABS: { id: ResultsNavTab; label: string }[] = [
+  { id: 'GALLERY', label: 'Gallery' },
+  { id: 'BEFORE_AFTER', label: 'Before & After' },
+  { id: 'VIDEO', label: 'Video' },
+];
+
+function navTabToMainTab(id: ResultsNavTab): MainTab {
+  switch (id) {
+    case 'GALLERY':
+      return 'gallery';
+    case 'BEFORE_AFTER':
+      return 'beforeAfter';
+    case 'VIDEO':
+      return 'video';
+  }
+}
 
 /** Split-gradient title tokens — same clamps as /services (via `InnerPageHeader` premium). */
 const TITLE_SILVER: CSSProperties = {
@@ -45,7 +81,16 @@ const metaGold = 'text-[9px] font-bold uppercase tracking-[0.18em] text-[#C9A84C
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(201,168,76,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]';
 
-function BeforeAfterDragSlider({ before, after }: { before: string; after: string }) {
+function BeforeAfterDragSlider({
+  before,
+  after,
+  featured = false,
+}: {
+  before: string;
+  after: string;
+  /** Mobile: taller ratio; desktop unchanged. */
+  featured?: boolean;
+}) {
   const [pos, setPos] = useState(50);
   const dragging = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -90,7 +135,9 @@ function BeforeAfterDragSlider({ before, after }: { before: string; after: strin
   return (
     <div
       ref={containerRef}
-      className="relative aspect-video w-full cursor-ew-resize select-none overflow-hidden rounded-sm border border-white/[0.07] bg-black"
+      className={`relative w-full cursor-ew-resize select-none overflow-hidden rounded-sm border border-white/[0.07] bg-black ${
+        featured ? 'aspect-4/3 md:aspect-video' : 'aspect-video'
+      }`}
       onMouseDown={(e) => {
         dragging.current = true;
         updateFromClientX(e.clientX);
@@ -134,31 +181,46 @@ function BeforeAfterDragSlider({ before, after }: { before: string; after: strin
   );
 }
 
-const MAIN_TAB_LABELS: { id: MainTab; label: string }[] = [
-  { id: 'gallery', label: 'Gallery' },
-  { id: 'beforeAfter', label: 'Before & After' },
-  { id: 'video', label: 'Video' },
-];
+function subscribeMdUp(callback: () => void) {
+  const mq = window.matchMedia('(min-width: 768px)');
+  mq.addEventListener('change', callback);
+  return () => mq.removeEventListener('change', callback);
+}
+
+function getMdUpSnapshot() {
+  return window.matchMedia('(min-width: 768px)').matches;
+}
+
+function getMdUpServerSnapshot() {
+  return false;
+}
+
+function useIsMdUp() {
+  return useSyncExternalStore(subscribeMdUp, getMdUpSnapshot, getMdUpServerSnapshot);
+}
 
 export default function ResultsPageClient() {
-  const [mainTab, setMainTab] = useState<MainTab>('gallery');
-  const [galleryFilter, setGalleryFilter] = useState<GalleryFilterId>('all');
+  const [activeTab, setActiveTab] = useState<ResultsNavTab>('GALLERY');
+  const [mobileGalleryFilter, setMobileGalleryFilter] = useState<GalleryFilterId>('all');
+  const mainTab = navTabToMainTab(activeTab);
+  const isMdUp = useIsMdUp();
 
-  const filteredGallery = useMemo(() => {
-    if (galleryFilter === 'all') return galleryItems;
-    return galleryItems.filter((g) => g.category === galleryFilter);
-  }, [galleryFilter]);
+  const galleryItemsForDisplay = useMemo(() => {
+    if (activeTab !== 'GALLERY') return galleryItems;
+    if (isMdUp) return galleryItems;
+    if (mobileGalleryFilter === 'all') return galleryItems;
+    return galleryItems.filter((g) => g.category === mobileGalleryFilter);
+  }, [activeTab, isMdUp, mobileGalleryFilter]);
 
-  const setMainTabAndReset = (id: MainTab) => {
-    setMainTab(id);
-    setGalleryFilter('all');
+  const goToTab = (id: ResultsNavTab) => {
+    setActiveTab(id);
   };
 
   return (
     <div className="results-page min-h-screen bg-[#0a0a0a]">
       {/* Page intro — same structure + classes as Services `InnerPageHeader` premium (client-safe duplicate). */}
       <section
-        className="border-b border-white/[0.07] pt-16 pb-6 md:pt-20 md:pb-8"
+        className="border-b border-white/[0.07] pt-20 pb-8 md:pt-20 md:pb-8"
         style={{ background: 'var(--carbon-950)' }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
@@ -201,89 +263,105 @@ export default function ResultsPageClient() {
         </div>
       </section>
 
-      {/* Unified control bar: mode + gallery-only chips */}
-      <div className="border-b border-white/6 bg-[#0a0a0a]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
-          <div className="mb-2 pt-1">
-            <div className="flex flex-wrap items-center justify-center gap-x-1 md:justify-start">
-              {MAIN_TAB_LABELS.map(({ id, label }, i) => {
-                const active = mainTab === id;
+      {/* Mobile: compact tab bar + optional gallery filter chips */}
+      <section className="border-b border-white/[0.07] bg-[#0a0a0a] md:hidden">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mb-6 flex items-center gap-6 overflow-x-auto border-b border-white/8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {TABS.map(({ id, label }) => {
+              const active = activeTab === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => goToTab(id)}
+                  className={`relative shrink-0 whitespace-nowrap pb-3 text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${focusRing} ${
+                    active ? 'text-white' : 'text-white/30'
+                  }`}
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                >
+                  {label}
+                  <span
+                    className={`absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C] transition-opacity duration-300 ${
+                      active ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    aria-hidden
+                  />
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            className="overflow-hidden transition-all duration-300"
+            style={{
+              maxHeight: activeTab === 'GALLERY' ? '40px' : '0px',
+              opacity: activeTab === 'GALLERY' ? 1 : 0,
+            }}
+            aria-hidden={activeTab !== 'GALLERY'}
+          >
+            <div className="mb-6 flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
+                const on = mobileGalleryFilter === id;
                 return (
-                  <Fragment key={id}>
-                    {i > 0 && <span className="px-2.5 text-xs text-white/15 md:px-4" aria-hidden>·</span>}
-                    <button
-                      type="button"
-                      onClick={() => setMainTabAndReset(id)}
-                      className={`relative min-h-10 px-1 pb-2.5 text-[11px] font-bold uppercase tracking-[0.16em] transition-colors duration-200 ${focusRing} ${
-                        active ? 'text-white' : 'text-white/30 hover:text-white/55'
-                      }`}
-                      style={{ fontFamily: 'var(--font-inter)' }}
-                    >
-                      {label}
-                      <span
-                        className={`absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C] transition-opacity duration-300 ${
-                          active ? 'opacity-100' : 'opacity-0'
-                        }`}
-                        aria-hidden
-                      />
-                    </button>
-                  </Fragment>
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setMobileGalleryFilter(id)}
+                    className={`shrink-0 rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest transition-all duration-200 ${focusRing} ${
+                      on
+                        ? 'border-[#C9A84C]/40 bg-[#C9A84C]/8 text-[#C9A84C]'
+                        : 'border-white/10 text-white/30 hover:border-white/25 hover:text-white/50'
+                    }`}
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    {label}
+                  </button>
                 );
               })}
             </div>
-            <div className="mb-5 mt-0 h-px w-full bg-white/8 md:mb-6" />
-            <div
-              className="overflow-hidden transition-all duration-300 ease-out"
-              style={{
-                maxHeight: mainTab === 'gallery' ? '140px' : '0px',
-                opacity: mainTab === 'gallery' ? 1 : 0,
-                marginBottom: mainTab === 'gallery' ? '1.25rem' : '0',
-                pointerEvents: mainTab === 'gallery' ? 'auto' : 'none',
-              }}
-              aria-hidden={mainTab !== 'gallery'}
-            >
-              <div className="flex flex-wrap items-center justify-center gap-1.5 md:justify-start">
-                {GALLERY_FILTERS.map(({ id, label }) => {
-                  const on = galleryFilter === id;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => setGalleryFilter(id)}
-                      className={`min-h-10 rounded-full border px-3 py-2 text-[9px] font-bold uppercase tracking-[0.14em] transition-all duration-200 md:min-h-9 md:py-1.5 ${focusRing} ${
-                        on
-                          ? 'border-[#C9A84C]/40 bg-[#C9A84C]/8 text-[#C9A84C]'
-                          : 'border-white/10 text-white/30 hover:border-white/22 hover:text-white/55'
-                      }`}
-                      style={{ fontFamily: 'var(--font-inter)' }}
-                    >
-                      {label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="px-4 py-8 md:px-8 md:py-12">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            key={mainTab}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
+      {/* Main: desktop side nav + content */}
+      <section className="bg-[#0a0a0a] px-4 py-8 md:px-8 md:py-12">
+        <div className="mx-auto flex max-w-7xl items-start gap-8 md:gap-12">
+          {/* Desktop: vertical nav */}
+          <nav
+            aria-label="Results content"
+            className="sticky top-32 hidden w-44 shrink-0 flex-col gap-1 pt-2 md:flex"
+          >
+            {TABS.map(({ id, label }, i) => {
+              const active = activeTab === id;
+              return (
+                <div key={id}>
+                  {i > 0 ? <div className="my-4 ml-4 h-px bg-white/8" aria-hidden /> : null}
+                  <button
+                    type="button"
+                    onClick={() => goToTab(id)}
+                    className={`w-full border-l-2 py-2 pl-4 text-left text-[11px] font-bold uppercase tracking-widest transition-all duration-250 ${focusRing} ${
+                      active
+                        ? 'border-[#C9A84C] text-white'
+                        : 'border-transparent text-white/25 hover:border-white/20 hover:text-white/50'
+                    }`}
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    {label}
+                  </button>
+                </div>
+              );
+            })}
+          </nav>
+
+          <div
+            key={activeTab}
+            className="min-w-0 flex-1"
+            style={{ animation: 'fadeUp 0.2s ease-out' }}
           >
             {mainTab === 'gallery' && (
-              <motion.div
-                key={galleryFilter}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-              >
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7 lg:gap-8">
-                  {filteredGallery.map((item, index) => (
+              <div>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-7 lg:gap-8">
+                  {galleryItemsForDisplay.map((item, index) => (
                     <motion.article
                       key={item.id}
                       initial={{ opacity: 0, y: 4 }}
@@ -295,43 +373,67 @@ export default function ResultsPageClient() {
                       }}
                       className={`group ${mediaCardFrame}`}
                     >
-                      {/* aspect-video: consistent with BA/video — curated portfolio row */}
-                      <div className="relative aspect-video overflow-hidden">
+                      <div className="relative aspect-4/3 overflow-hidden md:aspect-video">
                         <Image
                           src={item.image}
                           alt=""
                           fill
                           priority={index === 0}
                           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-                          sizes="(max-width:768px) 100vw, 50vw"
+                          sizes="(max-width:768px) 50vw, 50vw"
                         />
+                        <span className="absolute left-2 top-2 rounded-sm border border-[#C9A84C]/45 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-[#C9A84C] md:hidden">
+                          {galleryCategoryBadge(item.category)}
+                        </span>
+                        <span className="absolute right-2 top-2 font-mono text-[10px] text-[#C9A84C]/70 tabular-nums md:hidden">
+                          {item.number}
+                        </span>
                       </div>
-                      <div className="space-y-2 px-4 pb-5 pt-4">
-                        <div className="flex items-baseline justify-between gap-3 border-b border-white/6 pb-2">
+                      <div className="space-y-1.5 p-3 md:space-y-2 md:px-4 md:pb-5 md:pt-4">
+                        <div className="hidden items-baseline justify-between gap-3 border-b border-white/6 pb-2 md:flex">
                           <span className={metaGold}>{galleryCategoryBadge(item.category)}</span>
                           <span className="font-mono text-[10px] text-white/20 tabular-nums">{item.number}</span>
                         </div>
                         <h3
-                          className="text-[15px] font-semibold uppercase tracking-wide text-text-primary"
+                          className="text-xs font-semibold uppercase tracking-wide text-text-primary md:text-[15px]"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item.vehicle}
                         </h3>
                         <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#C9A84C]/75">{item.service}</p>
-                        <p className="text-[13px] leading-relaxed text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>
+                        <p
+                          className="hidden text-[13px] leading-relaxed text-text-secondary sm:block"
+                          style={{ fontFamily: 'var(--font-inter)' }}
+                        >
                           {item.result}
                         </p>
                       </div>
                     </motion.article>
                   ))}
                 </div>
-              </motion.div>
+
+                {/* Mobile-only stats — 2x2, GALLERY tab */}
+                <div className="mt-8 border-t border-white/8 pt-6 md:hidden">
+                  <div className="grid grid-cols-2 gap-4 gap-y-6">
+                    {MOBILE_STATS.map((s) => (
+                      <div key={s.label} className="text-center">
+                        <p className="text-3xl font-semibold tabular-nums text-white" style={{ fontFamily: 'var(--font-bebas)' }}>
+                          {s.value}
+                        </p>
+                        <p className="mt-1 text-[9px] font-medium uppercase tracking-widest text-white/45" style={{ fontFamily: 'var(--font-inter)' }}>
+                          {s.label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             )}
 
             {mainTab === 'beforeAfter' && (
               <div className="space-y-12 md:space-y-14">
-                <div className="grid gap-8 md:grid-cols-2 md:items-start md:gap-10">
-                  <div className="space-y-3 md:space-y-4 md:pt-0">
+                <div className="mb-6 flex flex-col gap-4 md:mb-0 md:flex-row md:items-start md:gap-10">
+                  <div className="space-y-3 md:flex-1 md:space-y-4 md:pt-0">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: 'var(--font-inter)' }}>
                       Featured case
                     </p>
@@ -349,8 +451,12 @@ export default function ResultsPageClient() {
                       Studio time · {featuredBeforeAfter.studioTime}
                     </p>
                   </div>
-                  <div className="min-w-0">
-                    <BeforeAfterDragSlider before={featuredBeforeAfter.before} after={featuredBeforeAfter.after} />
+                  <div className="min-w-0 md:flex-1">
+                    <BeforeAfterDragSlider
+                      featured
+                      before={featuredBeforeAfter.before}
+                      after={featuredBeforeAfter.after}
+                    />
                   </div>
                 </div>
 
@@ -391,15 +497,15 @@ export default function ResultsPageClient() {
             )}
 
             {mainTab === 'video' && (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-7">
                 {videoItems.map((v) => (
                   <VideoCard key={v.id} item={v} />
                 ))}
               </div>
             )}
-          </motion.div>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* CTA — flat band, hands off to footer carbon + gold-divider */}
       <section className="border-t border-white/6 bg-carbon-950 pb-16 pt-10 md:pb-20 md:pt-12">
@@ -413,7 +519,7 @@ export default function ResultsPageClient() {
                 Book an inspection or explore services — we&apos;ll match the right package to your goals.
               </p>
             </div>
-            <div className="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center md:w-auto md:justify-end md:gap-3">
+            <div className="flex w-full flex-col gap-3 sm:flex-row sm:justify-center md:w-auto md:justify-end md:gap-3">
               <Link
                 href="/contact"
                 className={`inline-flex min-h-11 w-full items-center justify-center rounded-sm bg-[#C9A84C] px-5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-black transition-colors duration-200 hover:bg-[#b8963e] sm:w-auto ${focusRing}`}
