@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeftRight } from 'lucide-react';
 import SectionBadge from '@/components/ui/SectionBadge';
@@ -181,49 +181,30 @@ function BeforeAfterDragSlider({
   );
 }
 
-function subscribeMdUp(callback: () => void) {
-  const mq = window.matchMedia('(min-width: 768px)');
-  mq.addEventListener('change', callback);
-  return () => mq.removeEventListener('change', callback);
-}
-
-function getMdUpSnapshot() {
-  return window.matchMedia('(min-width: 768px)').matches;
-}
-
-function getMdUpServerSnapshot() {
-  return false;
-}
-
-function useIsMdUp() {
-  return useSyncExternalStore(subscribeMdUp, getMdUpSnapshot, getMdUpServerSnapshot);
-}
-
 export default function ResultsPageClient() {
   const [activeTab, setActiveTab] = useState<ResultsNavTab>('GALLERY');
   const [mobileGalleryFilter, setMobileGalleryFilter] = useState<GalleryFilterId>('all');
   const mainTab = navTabToMainTab(activeTab);
-  const isMdUp = useIsMdUp();
 
   const galleryItemsForDisplay = useMemo(() => {
     if (activeTab !== 'GALLERY') return galleryItems;
-    if (isMdUp) return galleryItems;
     if (mobileGalleryFilter === 'all') return galleryItems;
     return galleryItems.filter((g) => g.category === mobileGalleryFilter);
-  }, [activeTab, isMdUp, mobileGalleryFilter]);
+  }, [activeTab, mobileGalleryFilter]);
 
   const goToTab = (id: ResultsNavTab) => {
     setActiveTab(id);
+    setMobileGalleryFilter('all');
   };
 
   return (
     <div className="results-page min-h-screen bg-[#0a0a0a]">
       {/* Page intro — same structure + classes as Services `InnerPageHeader` premium (client-safe duplicate). */}
       <section
-        className="border-b border-white/[0.07] pt-20 pb-8 md:pt-20 md:pb-8"
+        className="border-b border-white/[0.07] pt-20 pb-8 md:pt-24 md:pb-10"
         style={{ background: 'var(--carbon-950)' }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
+        <div className="mx-auto max-w-5xl px-4 md:max-w-7xl md:px-14">
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
             <SectionBadge className="mb-3 md:mb-4">PROOF</SectionBadge>
             <h1
@@ -263,10 +244,13 @@ export default function ResultsPageClient() {
         </div>
       </section>
 
-      {/* Mobile: compact tab bar + optional gallery filter chips */}
+      {/* Mobile: tab bar + gallery filter chips */}
       <section className="border-b border-white/[0.07] bg-[#0a0a0a] md:hidden">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="mb-6 flex items-center gap-6 overflow-x-auto border-b border-white/8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div
+            className="mb-4 flex items-center gap-5 overflow-x-auto border-b border-white/8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            style={{ scrollbarWidth: 'none' }}
+          >
             {TABS.map(({ id, label }) => {
               const active = activeTab === id;
               return (
@@ -280,52 +264,50 @@ export default function ResultsPageClient() {
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {label}
-                  <span
-                    className={`absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C] transition-opacity duration-300 ${
-                      active ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    aria-hidden
-                  />
+                  {active ? <span className="absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C]" aria-hidden /> : null}
                 </button>
               );
             })}
           </div>
 
-          <div
-            className="overflow-hidden transition-all duration-300"
-            style={{
-              maxHeight: activeTab === 'GALLERY' ? '40px' : '0px',
-              opacity: activeTab === 'GALLERY' ? 1 : 0,
-            }}
-            aria-hidden={activeTab !== 'GALLERY'}
-          >
-            <div className="mb-6 flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
-                const on = mobileGalleryFilter === id;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setMobileGalleryFilter(id)}
-                    className={`shrink-0 rounded-full border px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest transition-all duration-200 ${focusRing} ${
-                      on
-                        ? 'border-[#C9A84C]/40 bg-[#C9A84C]/8 text-[#C9A84C]'
-                        : 'border-white/10 text-white/30 hover:border-white/25 hover:text-white/50'
-                    }`}
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
+          {activeTab === 'GALLERY' ? (
+            <div className="relative mb-5">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-0 top-0 z-10 h-full w-5 bg-linear-to-r from-[#0a0a0a] to-transparent"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute right-0 top-0 z-10 h-full w-5 bg-linear-to-l from-[#0a0a0a] to-transparent"
+              />
+              <div className="flex gap-1.5 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
+                  const on = mobileGalleryFilter === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setMobileGalleryFilter(id)}
+                      className={`shrink-0 rounded-full border px-2.5 py-1 text-[8px] font-bold uppercase tracking-widest transition-all duration-200 ${focusRing} ${
+                        on
+                          ? 'border-[#C9A84C]/40 bg-[#C9A84C]/8 text-[#C9A84C]'
+                          : 'border-white/10 text-white/30'
+                      }`}
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </section>
 
       {/* Main: desktop side nav + content */}
       <section className="bg-[#0a0a0a] px-4 py-8 md:px-8 md:py-12">
-        <div className="mx-auto flex max-w-7xl items-start gap-8 md:gap-12">
+        <div className="mx-auto flex max-w-7xl items-start gap-8 px-0 md:gap-12 md:px-0">
           {/* Desktop: vertical nav */}
           <nav
             aria-label="Results content"
@@ -360,7 +342,28 @@ export default function ResultsPageClient() {
           >
             {mainTab === 'gallery' && (
               <div>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-7 lg:gap-8">
+                <div className="mb-6 hidden flex-wrap items-center gap-2 md:flex">
+                  {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
+                    const on = mobileGalleryFilter === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => setMobileGalleryFilter(id)}
+                        className={`rounded-sm border px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-200 ${focusRing} ${
+                          on
+                            ? 'border-[#C9A84C]/50 bg-[#C9A84C]/6 text-[#C9A84C]'
+                            : 'border-white/10 text-white/30 hover:border-white/25 hover:text-white/55'
+                        }`}
+                        style={{ fontFamily: 'var(--font-inter)' }}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5 md:grid-cols-2 md:gap-7 lg:gap-8">
                   {galleryItemsForDisplay.map((item, index) => (
                     <motion.article
                       key={item.id}
@@ -371,9 +374,9 @@ export default function ResultsPageClient() {
                         duration: 0.2,
                         ease: 'easeOut',
                       }}
-                      className={`group ${mediaCardFrame}`}
+                      className="group overflow-hidden rounded-sm border-0 bg-transparent md:border md:border-white/8 md:bg-white/2 md:transition-[border-color] md:duration-300 md:hover:border-[#C9A84C]/22"
                     >
-                      <div className="relative aspect-4/3 overflow-hidden md:aspect-video">
+                      <div className="relative aspect-3/2 overflow-hidden rounded-sm md:aspect-video md:rounded-none">
                         <Image
                           src={item.image}
                           alt=""
@@ -382,27 +385,32 @@ export default function ResultsPageClient() {
                           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                           sizes="(max-width:768px) 50vw, 50vw"
                         />
-                        <span className="absolute left-2 top-2 rounded-sm border border-[#C9A84C]/45 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-[#C9A84C] md:hidden">
+                        <span className="absolute left-2 top-2 rounded-sm border border-[#C9A84C]/45 px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-widest text-[#C9A84C] md:hidden">
                           {galleryCategoryBadge(item.category)}
                         </span>
-                        <span className="absolute right-2 top-2 font-mono text-[10px] text-[#C9A84C]/70 tabular-nums md:hidden">
+                        <span className="absolute right-2 top-2 font-mono text-[9px] text-[#C9A84C]/70 tabular-nums md:hidden">
                           {item.number}
                         </span>
                       </div>
-                      <div className="space-y-1.5 p-3 md:space-y-2 md:px-4 md:pb-5 md:pt-4">
+                      <div className="space-y-0 pt-2.5 pb-1 md:space-y-2 md:px-4 md:pb-5 md:pt-4">
                         <div className="hidden items-baseline justify-between gap-3 border-b border-white/6 pb-2 md:flex">
                           <span className={metaGold}>{galleryCategoryBadge(item.category)}</span>
                           <span className="font-mono text-[10px] text-white/20 tabular-nums">{item.number}</span>
                         </div>
+                        <p className="mb-0.5 text-[8px] font-bold uppercase tracking-widest text-[#C9A84C] md:hidden">
+                          {galleryCategoryBadge(item.category)}
+                        </p>
                         <h3
-                          className="text-xs font-semibold uppercase tracking-wide text-text-primary md:text-[15px]"
+                          className="mb-0.5 text-[11px] font-bold uppercase leading-tight tracking-wide text-white md:mb-0 md:font-semibold md:text-[15px] md:leading-normal md:text-text-primary"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item.vehicle}
                         </h3>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#C9A84C]/75">{item.service}</p>
+                        <p className="mb-0 text-[8px] font-bold uppercase tracking-widest text-white/40 md:text-[9px] md:tracking-[0.12em] md:text-[#C9A84C]/75">
+                          {item.service}
+                        </p>
                         <p
-                          className="hidden text-[13px] leading-relaxed text-text-secondary sm:block"
+                          className="hidden text-[13px] leading-relaxed text-text-secondary md:block"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item.result}
@@ -414,7 +422,7 @@ export default function ResultsPageClient() {
 
                 {/* Mobile-only stats — 2x2, GALLERY tab */}
                 <div className="mt-8 border-t border-white/8 pt-6 md:hidden">
-                  <div className="grid grid-cols-2 gap-4 gap-y-6">
+                  <div className="grid grid-cols-2 gap-8">
                     {MOBILE_STATS.map((s) => (
                       <div key={s.label} className="text-center">
                         <p className="text-3xl font-semibold tabular-nums text-white" style={{ fontFamily: 'var(--font-bebas)' }}>
@@ -519,20 +527,20 @@ export default function ResultsPageClient() {
                 Book an inspection or explore services — we&apos;ll match the right package to your goals.
               </p>
             </div>
-            <div className="flex w-full flex-col gap-3 sm:flex-row sm:justify-center md:w-auto md:justify-end md:gap-3">
+            <div className="mt-4 flex w-full shrink-0 flex-col gap-2.5 sm:flex-row md:mt-0 md:w-auto md:justify-end">
+              <Link
+                href="/services"
+                className={`inline-flex min-h-11 w-full items-center justify-center rounded-sm border border-[#C9A84C]/45 px-5 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C9A84C] transition-colors duration-200 hover:border-[#C9A84C] hover:bg-[#C9A84C]/6 sm:w-auto ${focusRing}`}
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                VIEW SERVICES
+              </Link>
               <Link
                 href="/contact"
                 className={`inline-flex min-h-11 w-full items-center justify-center rounded-sm bg-[#C9A84C] px-5 text-center text-[11px] font-bold uppercase tracking-[0.14em] text-black transition-colors duration-200 hover:bg-[#b8963e] sm:w-auto ${focusRing}`}
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                Get a quote
-              </Link>
-              <Link
-                href="/pricing"
-                className={`inline-flex min-h-11 w-full items-center justify-center rounded-sm border border-[#C9A84C]/45 px-5 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[#C9A84C] transition-colors duration-200 hover:border-[#C9A84C] hover:bg-[#C9A84C]/6 sm:w-auto ${focusRing}`}
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                View packages
+                BOOK A QUOTE →
               </Link>
             </div>
           </div>
