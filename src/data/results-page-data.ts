@@ -190,4 +190,3 @@ export const videoItems: VideoItem[] = [
     src: '/videos/showcase.mp4',
   },
 ];
-
