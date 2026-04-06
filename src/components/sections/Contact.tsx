@@ -9,11 +9,11 @@ const SERVICE_OPTIONS = [
   'Exterior Detailing',
   'Paint Correction',
   'Ceramic Coating',
-  'PPF Protection',
+  'PPF',
   'Interior Detailing',
-  'Leather Care & Restoration',
-  'Wheel & Caliper Detailing',
-  'Engine Bay Detailing',
+  'Leather Restoration',
+  'Wheel & Caliper',
+  'Engine Bay Detail',
   'Not Sure / Need Guidance',
 ] as const;
 

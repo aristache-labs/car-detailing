@@ -14,7 +14,7 @@ const EXPLORE_LINKS = [
 
 const SERVICE_LINKS = [
   { label: 'Ceramic Coating', href: '/services' },
-  { label: 'PPF Protection', href: '/services' },
+  { label: 'PPF', href: '/services' },
   { label: 'Paint Correction', href: '/services' },
   { label: 'Interior Detailing', href: '/services' },
 ] as const;

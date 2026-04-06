@@ -67,7 +67,7 @@ export const servicesCatalog: ServiceCatalogItem[] = [
   {
     id: 'ppf',
     number: '04',
-    title: 'PPF Protection',
+    title: 'PPF',
     subtitle: 'Paint protection film application',
     description:
       'Military-grade polyurethane film absorbs rock chips, door dings, and chemical stains before they ever reach your paint. Self-healing at low temperatures. Zero visible edges.',
@@ -93,7 +93,7 @@ export const servicesCatalog: ServiceCatalogItem[] = [
   {
     id: 'leather-care',
     number: '06',
-    title: 'Leather Care & Restoration',
+    title: 'Leather Restoration',
     subtitle: 'Conditioning, repair & color renewal',
     description:
       'Professional-grade leather cleaner, deep conditioner, and color restoration compound revives faded, cracked, or stained hides. Protective coating seals the finish long-term.',
@@ -106,7 +106,7 @@ export const servicesCatalog: ServiceCatalogItem[] = [
   {
     id: 'wheels',
     number: '07',
-    title: 'Wheel & Caliper Detailing',
+    title: 'Wheel & Caliper',
     subtitle: 'Precision rim & brake finish',
     description:
       'Iron fallout removal, acid-safe decontamination, and high-heat caliper paint or coating. Every spoke, barrel, and lug seat detailed to a showroom standard.',
@@ -119,7 +119,7 @@ export const servicesCatalog: ServiceCatalogItem[] = [
   {
     id: 'engine-bay',
     number: '08',
-    title: 'Engine Bay Detailing',
+    title: 'Engine Bay Detail',
     subtitle: 'Degreasing, detailing & protection',
     description:
       'Controlled degreasing removes years of grime and oil residue. All plastics dressed, metal surfaces protected, and wiring shielded — leaving the engine bay concours-clean.',

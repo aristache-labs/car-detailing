@@ -71,7 +71,7 @@ const TESTIMONIALS = [
   {
     name: 'Mihai T.',
     car: 'Audi RS6',
-    badge: 'PPF Protection',
+    badge: 'PPF',
     quote: 'Professional from start to finish. I knew exactly what they were doing at every step.',
     initials: 'MT',
   },

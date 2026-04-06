@@ -69,7 +69,7 @@ export default function Pricing({
             background: rgba(16, 16, 16, 0.96);
             color: #d9b45a;
             font-size: 10px;
-            font-weight: 800;
+            font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             padding: 4px 10px;
@@ -208,73 +208,66 @@ export default function Pricing({
 
               <div className="relative z-10 flex h-full flex-col p-4 pt-6 sm:p-5 sm:pt-7">
                 <h3
-                  className="mt-0 text-[1.78rem] font-black uppercase leading-[0.9] tracking-[0.035em] text-white"
-                  style={{ fontFamily: 'var(--font-bebas)' }}
+                  className="mt-0 text-center text-[clamp(1.125rem,2.8vw,1.3rem)] font-bold uppercase leading-[1.15] tracking-[0.14em] text-white/95"
+                  style={{ fontFamily: 'var(--font-orbitron)' }}
                 >
                   {card.title}
                 </h3>
                 <p
-                  className="mt-1.5 min-h-[2.6rem] text-[11px] leading-relaxed text-[#d5dce7]"
+                  className="mx-auto mt-2 max-w-[20rem] text-center text-[12px] leading-snug text-[#b9c5d4]"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.subtitle}
                 </p>
 
-                <div className="mt-4 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-4 py-3.5">
+                <div className="relative mt-5 min-h-19 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-4 py-3.5">
                   <p
-                    className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/42"
+                    className="absolute left-4 top-3.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/55"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {card.priceLabel}
                   </p>
-                  <div className="mt-1.5 flex items-end gap-1.5">
-                    <span
-                      className="text-[1.7rem] font-black leading-none tabular-nums"
-                      style={{
-                        fontFamily: 'var(--font-orbitron)',
-                        color: card.featured ? '#e7ce88' : '#eef3fa',
-                      }}
-                    >
-                      {card.startingPrice}
-                    </span>
-                    <span
-                      className="pb-1 text-[11px] font-black uppercase tracking-[0.14em] text-[#c9a84c]"
-                      style={{ fontFamily: 'var(--font-orbitron)' }}
-                    >
-                      RON
-                    </span>
-                  </div>
-                  <p
-                    className="mt-2 text-[11px] leading-relaxed text-[#aab5c4]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                  <span
+                    className="absolute left-1/2 top-1/2 max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 text-center text-[clamp(1.9rem,4.5vw,1.95rem)] font-bold leading-none tabular-nums tracking-tight"
+                    style={{
+                      fontFamily: 'var(--font-orbitron)',
+                      color: card.featured ? '#e7ce88' : '#eef3fa',
+                    }}
                   >
-                    Final quote confirmed after inspection.
-                  </p>
+                    {card.startingPrice}
+                  </span>
+                  <span
+                    className="absolute bottom-3.5 right-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c9a84c]"
+                    style={{ fontFamily: 'var(--font-orbitron)' }}
+                  >
+                    RON
+                  </span>
                 </div>
 
                 <p
-                  className="mt-4 text-[13px] leading-relaxed text-[#b8c2d0]"
+                  className="mt-4 text-[13px] leading-[1.55] text-[#aeb8c6]"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.summary}
                 </p>
 
-                <div className="mt-4">
+                <div className="mt-5 text-left">
                   <p
-                    className="mb-2.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#d2b872]"
+                    className="mb-3 border-l border-[#c9a84c]/28 pl-3 text-[10px] font-medium uppercase tracking-[0.2em] text-[#b8a574]"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
-                    Typical Scope
+                    Included Services
                   </p>
-                  <ul className="space-y-2">
+                  <ul className="space-y-2.5">
                     {card.includedItems.map((item) => (
-                      <li key={item} className="flex items-start gap-2">
+                      <li key={item} className="flex gap-2.5">
                         <Check
-                          className="mt-[2px] h-3.5 w-3.5 shrink-0 text-[#c9a84c]"
-                          strokeWidth={2.4}
+                          className="mt-[0.35em] h-3 w-3 shrink-0 text-[#c9a84c]/85"
+                          strokeWidth={2}
+                          aria-hidden
                         />
                         <span
-                          className="text-[12px] leading-relaxed text-[#e0e6ef]"
+                          className="text-[12px] font-normal leading-normal tracking-[0.01em] text-[#c4ccd8]"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item}
@@ -284,19 +277,25 @@ export default function Pricing({
                   </ul>
                 </div>
 
-                <div className="mt-auto pt-4">
+                <div className="mt-auto pt-3">
                   <div
                     aria-hidden
-                    className="mb-3.5 h-px w-full"
+                    className="mb-3 h-px w-full"
                     style={{
                       background: card.featured
                         ? 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 50%, transparent 100%)'
-                        : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 50%, transparent 100%)',
+                        : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)',
                     }}
                   />
+                  <p
+                    className="mb-3.5 text-center text-[11px] font-medium leading-relaxed text-[#94a3b8]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    Final quote confirmed after inspection.
+                  </p>
                   <Link
                     href="/contact"
-                    className={`group inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
+                    className={`group inline-flex min-h-10.5 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
                       card.featured
                         ? 'border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)]'
                         : 'border-[#C9A84C]/26 bg-[rgba(0,0,0,0.42)] text-[#ddc27a] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:-translate-y-px hover:border-[#C9A84C]/48 hover:bg-[#C9A84C]/8 hover:text-[#f0ddab] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_0_1px_rgba(201,168,76,0.1)]'
