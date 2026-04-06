@@ -28,13 +28,6 @@ const MOBILE_GALLERY_FILTERS: { label: string; id: GalleryFilterId }[] = [
   { label: 'ENGINE', id: 'engine' },
 ];
 
-const MOBILE_STATS = [
-  { value: '500+', label: 'Vehicles detailed' },
-  { value: '12+', label: 'Years experience' },
-  { value: '98%', label: 'Client satisfaction' },
-  { value: '50+', label: 'Services offered' },
-] as const;
-
 /** Nav ids — map to `MainTab` for existing content blocks. */
 type ResultsNavTab = 'GALLERY' | 'BEFORE_AFTER' | 'VIDEO';
 
@@ -417,22 +410,6 @@ export default function ResultsPageClient() {
                       </div>
                     </motion.article>
                   ))}
-                </div>
-
-                {/* Mobile-only stats — 2x2, GALLERY tab */}
-                <div className="mt-8 border-t border-white/8 pt-6 md:hidden">
-                  <div className="grid grid-cols-2 gap-8">
-                    {MOBILE_STATS.map((s) => (
-                      <div key={s.label} className="text-center">
-                        <p className="text-3xl font-semibold tabular-nums text-white" style={{ fontFamily: 'var(--font-bebas)' }}>
-                          {s.value}
-                        </p>
-                        <p className="mt-1 text-[9px] font-medium uppercase tracking-widest text-white/45" style={{ fontFamily: 'var(--font-inter)' }}>
-                          {s.label}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </div>
             )}
