@@ -74,6 +74,11 @@ const metaGold = 'text-[9px] font-bold uppercase tracking-[0.18em] text-[#C9A84C
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(201,168,76,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]';
 
+function studioTimeShort(studioTime: string): string {
+  const m = studioTime.match(/^(\d+)/);
+  return m ? `${m[1]}h` : studioTime.replace(/\s*hours?$/i, 'h').trim();
+}
+
 function BeforeAfterDragSlider({
   before,
   after,
@@ -81,7 +86,7 @@ function BeforeAfterDragSlider({
 }: {
   before: string;
   after: string;
-  /** Mobile: taller ratio; desktop unchanged. */
+  /** Larger ratio + premium chrome for the featured editorial block. */
   featured?: boolean;
 }) {
   const [pos, setPos] = useState(50);
@@ -128,8 +133,8 @@ function BeforeAfterDragSlider({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full cursor-ew-resize select-none overflow-hidden rounded-sm border border-white/[0.07] bg-black ${
-        featured ? 'aspect-4/3 md:aspect-video' : 'aspect-video'
+      className={`relative w-full cursor-ew-resize select-none overflow-hidden rounded-sm border border-white/10 bg-black ${
+        featured ? 'aspect-4/3 md:aspect-16/10' : 'aspect-video'
       }`}
       onMouseDown={(e) => {
         dragging.current = true;
@@ -140,35 +145,41 @@ function BeforeAfterDragSlider({
         updateFromClientX(e.touches[0].clientX);
       }}
       role="img"
-      aria-label="Before and after comparison, drag to adjust"
+      aria-label="Before and after comparison, slide to compare"
     >
-      <Image src={before} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" priority />
+      <Image src={before} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 42vw" priority />
       <div className="absolute inset-0 z-1" style={{ clipPath: `inset(0 0 0 ${pos}%)` }}>
-        <Image src={after} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" priority />
+        <Image src={after} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 42vw" priority />
       </div>
       <div
-        className="pointer-events-none absolute bottom-0 left-0 top-0 z-2 w-px bg-[#C9A84C]/90"
+        className="pointer-events-none absolute inset-x-0 top-0 z-3 h-14 bg-linear-to-b from-black/45 to-transparent"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 top-0 z-2 w-px bg-[#C9A84C]/88"
         style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}
         aria-hidden
       />
       <div
-        className="absolute top-2.5 z-3 flex w-full justify-between px-2.5 text-[9px] font-bold uppercase tracking-widest"
+        className="absolute top-3 z-4 flex w-full justify-between px-4 text-[8px] font-semibold uppercase tracking-[0.16em]"
         style={{ pointerEvents: 'none' }}
       >
-        <span className="text-white/75">Before</span>
-        <span className="text-[#C9A84C]/90">After</span>
+        <span className="text-white/72">Before</span>
+        <span className="text-[#C9A84C]/88">After</span>
       </div>
-      <button
-        type="button"
-        className="pointer-events-none absolute top-1/2 z-4 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-black/25 bg-[#C9A84C] text-black shadow-sm"
+      <div
+        className="pointer-events-none absolute top-1/2 z-4 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A84C]/55 bg-[#0a0a0a]/95 text-[#C9A84C]"
         style={{ left: `${pos}%` }}
         aria-hidden
-        tabIndex={-1}
       >
-        <ArrowLeftRight className="h-4 w-4" aria-hidden />
-      </button>
-      <p className="pointer-events-none absolute bottom-2.5 left-0 right-0 z-3 text-center text-[9px] font-bold uppercase tracking-widest text-white/35">
-        Drag to compare
+        <ArrowLeftRight className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
+      </div>
+      <p
+        className={`pointer-events-none absolute left-0 right-0 z-3 text-center font-semibold uppercase tracking-[0.2em] text-white/32 ${
+          featured ? 'bottom-3 text-[8px]' : 'bottom-2.5 text-[9px]'
+        }`}
+      >
+        {featured ? 'SLIDE TO COMPARE' : 'Drag to compare'}
       </p>
     </div>
   );
@@ -415,62 +426,92 @@ export default function ResultsPageClient() {
             )}
 
             {mainTab === 'beforeAfter' && (
-              <div className="space-y-12 md:space-y-14">
-                <div className="mb-6 flex flex-col gap-4 md:mb-0 md:flex-row md:items-start md:gap-10">
-                  <div className="space-y-3 md:flex-1 md:space-y-4 md:pt-0">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: 'var(--font-inter)' }}>
-                      Featured case
-                    </p>
-                    <h2
-                      className="text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl"
-                      style={{ fontFamily: 'var(--font-bebas)' }}
+              <div className="space-y-14 md:space-y-16">
+                {/* Featured editorial case — ~42/58, balanced composition */}
+                <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] md:items-center md:gap-12 lg:gap-14">
+                  <div className="flex min-w-0 flex-col justify-center space-y-6 md:space-y-7 md:pr-2 lg:pr-4">
+                    <p
+                      className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#C9A84C]/58"
+                      style={{ fontFamily: 'var(--font-inter)' }}
                     >
-                      {featuredBeforeAfter.vehicle}
-                    </h2>
-                    <p className={metaGold}>{featuredBeforeAfter.service}</p>
-                    <p className="text-[13px] leading-relaxed text-text-secondary" style={{ fontFamily: 'var(--font-inter)' }}>
-                      {featuredBeforeAfter.tags.join(' · ')}
+                      Featured transformation
                     </p>
-                    <p className="text-[10px] font-medium uppercase tracking-widest text-white/30" style={{ fontFamily: 'var(--font-inter)' }}>
-                      Studio time · {featuredBeforeAfter.studioTime}
+                    <div className="space-y-3">
+                      <h2
+                        className="text-[clamp(2rem,5vw,2.75rem)] font-bold uppercase leading-[0.95] tracking-[0.02em] text-white md:text-[clamp(2.25rem,2.8vw,3rem)]"
+                        style={{ fontFamily: 'var(--font-bebas)' }}
+                      >
+                        {featuredBeforeAfter.vehicle}
+                      </h2>
+                      <p
+                        className="max-w-md text-[14px] font-medium leading-relaxed text-white/78 md:text-[15px]"
+                        style={{ fontFamily: 'var(--font-inter)' }}
+                      >
+                        {featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service}
+                      </p>
+                    </div>
+                    <p
+                      className="max-w-md text-[10px] font-medium uppercase tracking-[0.14em] text-white/36"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {featuredBeforeAfter.featuredMetaLine ??
+                        `${featuredBeforeAfter.tags.join(' · ')} · ${studioTimeShort(featuredBeforeAfter.studioTime)} studio time`}
                     </p>
                   </div>
-                  <div className="min-w-0 md:flex-1">
-                    <BeforeAfterDragSlider
-                      featured
-                      before={featuredBeforeAfter.before}
-                      after={featuredBeforeAfter.after}
-                    />
+                  <div className="min-w-0 w-full">
+                    <div className="mx-auto w-full max-w-2xl md:mx-0 md:max-w-none">
+                      <div className="rounded-sm border border-white/10 bg-white/2 p-1 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] md:p-1.5">
+                        <BeforeAfterDragSlider
+                          featured
+                          before={featuredBeforeAfter.before}
+                          after={featuredBeforeAfter.after}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: 'var(--font-inter)' }}>
-                    More cases
+                <div className="border-t border-white/[0.07] pt-10 md:pt-12">
+                  <p
+                    className="mb-6 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/38"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    More transformations
                   </p>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7">
+                  <div className="grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8">
                     {beforeAfterItems.slice(1).map((ba) => (
-                      <article key={ba.id} className={`${mediaCardFrame}`}>
+                      <article
+                        key={ba.id}
+                        className="overflow-hidden rounded-sm border border-white/8 bg-white/2 transition-[border-color] duration-300 hover:border-[#C9A84C]/22"
+                      >
                         <div className="relative aspect-video w-full">
                           <div className="absolute inset-0 flex">
                             <div className="relative h-full w-1/2">
-                              <Image src={ba.before} alt="" fill className="object-cover" sizes="25vw" />
+                              <Image src={ba.before} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
                             </div>
-                            <div className="relative h-full w-1/2 border-l border-white/[0.07]">
-                              <Image src={ba.after} alt="" fill className="object-cover" sizes="25vw" />
+                            <div className="relative h-full w-1/2 border-l border-white/8">
+                              <Image src={ba.after} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
                             </div>
                           </div>
                         </div>
-                        <div className="space-y-2 px-4 pb-5 pt-4">
+                        <div className="space-y-1.5 px-4 pb-5 pt-4">
                           <h3
                             className="text-[15px] font-semibold uppercase tracking-wide text-text-primary"
                             style={{ fontFamily: 'var(--font-inter)' }}
                           >
                             {ba.vehicle}
                           </h3>
-                          <p className={metaGold}>{ba.service}</p>
-                          <p className="text-[10px] font-medium uppercase tracking-widest text-white/30" style={{ fontFamily: 'var(--font-inter)' }}>
-                            {ba.studioTime}
+                          <p
+                            className="text-[11px] font-medium uppercase tracking-[0.08em] text-white/52"
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {ba.service}
+                          </p>
+                          <p
+                            className="text-[9px] font-medium uppercase tracking-[0.14em] text-white/34"
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            Studio time · {studioTimeShort(ba.studioTime)}
                           </p>
                         </div>
                       </article>

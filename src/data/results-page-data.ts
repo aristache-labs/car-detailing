@@ -20,6 +20,10 @@ export type BeforeAfterItem = {
   after: string;
   tags: string[];
   studioTime: string;
+  /** Combined service line for featured editorial block (optional) */
+  editorialSubtitle?: string;
+  /** Single meta line for featured block, e.g. "Correction · Ceramic · 14h studio time" */
+  featuredMetaLine?: string;
 };
 
 export type VideoItem = {
@@ -124,6 +128,8 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-paint-correction.png',
     tags: ['Correction', 'Ceramic'],
     studioTime: '14 hours',
+    editorialSubtitle: 'Paint Correction & Ceramic Protection',
+    featuredMetaLine: 'Correction · Ceramic · 14h studio time',
   },
   {
     id: 'ba2',
