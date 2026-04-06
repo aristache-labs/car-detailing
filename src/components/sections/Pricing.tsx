@@ -66,15 +66,15 @@ export default function Pricing({
             left: 20px;
             transform: translateY(-50%);
             z-index: 2;
-            background: #c9a227;
-            color: #0a0a0a;
+            background: rgba(16, 16, 16, 0.96);
+            color: #d9b45a;
             font-size: 10px;
             font-weight: 700;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             padding: 4px 10px;
             border-radius: 0;
-            border: none;
+            border: 1px solid rgba(201, 168, 76, 0.36);
             box-shadow: none;
             font-family: var(--font-inter), system-ui, sans-serif;
           }
@@ -161,7 +161,7 @@ export default function Pricing({
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-4 gap-y-7 md:grid-cols-2 xl:grid-cols-4">
           {cards.map((card, index) => (
             <motion.article
               key={card.id}
