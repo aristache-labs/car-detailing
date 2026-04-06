@@ -78,44 +78,47 @@ export default function Footer() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-8 md:px-14" style={{ fontFamily: BODY }}>
         {/* Desktop: 3 + 4 + 5. Mobile: brand → contact card → 2-col nav → legal */}
         <div className="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:gap-x-10 lg:gap-y-0">
-          {/* Brand — compact wordmark; avoids mirroring the full navbar lockup */}
+          {/* Brand — icon + title on one line; tagline & socials share text column alignment */}
           <div className="lg:col-span-3">
-            <div className="flex items-start gap-3 sm:items-center">
+            <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 sm:gap-x-3.5 sm:gap-y-2.5">
               <div
-                className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full shadow-[0_0_0_1px_rgba(201,168,76,0.25)] sm:h-8 sm:w-8"
-                style={{ background: 'linear-gradient(145deg, #d4b86a 0%, #9a7b2e 100%)' }}
+                className="row-span-2 flex items-start justify-center self-start pt-0.5 sm:pt-1"
+                aria-hidden
               >
-                <Zap className="h-4 w-4 fill-black text-black sm:h-3.5 sm:w-3.5" aria-hidden />
-              </div>
-              <div className="min-w-0">
-                <p
-                  className="text-[13px] font-bold uppercase leading-tight tracking-[0.2em] sm:text-xs sm:tracking-[0.22em]"
-                  style={{ fontFamily: 'var(--font-orbitron)' }}
+                <div
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-[0_0_0_1px_rgba(201,168,76,0.25)] sm:h-9 sm:w-9"
+                  style={{ background: 'linear-gradient(145deg, #d4b86a 0%, #9a7b2e 100%)' }}
                 >
-                  <span className="text-[#d4b86a]">Apex</span>
-                  <span className="text-white/95"> Detailing</span>
-                </p>
-                <p className="mt-2 max-w-[20rem] text-[13px] leading-[1.55] text-white/58 sm:mt-1.5 sm:text-[12px] sm:leading-relaxed">
-                  Premium detailing, correction, ceramic coating, and protection — built for vehicles that deserve more
-                  than a wash.
-                </p>
+                  <Zap className="h-4 w-4 fill-black text-black sm:h-3.5 sm:w-3.5" />
+                </div>
               </div>
-            </div>
-            <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-4" aria-label="Social media">
-              {SOCIAL_LINKS.map(({ label, href, path }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.14)] bg-[rgba(201,168,76,0.04)] text-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-200 hover:border-[rgba(201,168,76,0.35)] hover:bg-[rgba(201,168,76,0.08)] hover:text-[#d4b86a] sm:h-9 sm:w-9"
-                >
-                  <svg className="h-[15px] w-[15px] sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d={path} />
-                  </svg>
-                </a>
-              ))}
+              <p
+                className="col-start-2 min-w-0 text-[clamp(0.75rem,2.8vw,0.8125rem)] font-bold uppercase leading-[1.15] tracking-[0.18em] sm:text-xs sm:tracking-[0.2em]"
+                style={{ fontFamily: 'var(--font-orbitron)' }}
+              >
+                <span className="text-[#d4b86a]">APEX</span>
+                <span className="text-white/95"> DETAILING</span>
+              </p>
+              <p className="col-start-2 max-w-[20rem] text-[13px] leading-[1.55] text-white/58 sm:text-[12px] sm:leading-relaxed">
+                Premium detailing, correction, ceramic coating, and protection — built for vehicles that deserve more
+                than a wash.
+              </p>
+              <div className="col-start-2 flex flex-wrap gap-2.5 pt-1" aria-label="Social media">
+                {SOCIAL_LINKS.map(({ label, href, path }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-10 w-10 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.14)] bg-[rgba(201,168,76,0.04)] text-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-200 hover:border-[rgba(201,168,76,0.35)] hover:bg-[rgba(201,168,76,0.08)] hover:text-[#d4b86a] sm:h-9 sm:w-9"
+                  >
+                    <svg className="h-[15px] w-[15px] sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d={path} />
+                    </svg>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
