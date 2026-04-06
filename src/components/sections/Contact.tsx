@@ -57,7 +57,24 @@ const inputBase =
   'w-full min-h-[2.75rem] rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(6,6,8,0.88)] px-3.5 py-2.5 text-[13px] leading-normal text-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] placeholder:text-white/38 hover:border-[rgba(201,168,76,0.2)] focus:border-[#a88b42] focus:bg-[rgba(255,255,255,0.04)] focus:ring-1 focus:ring-[#C9A84C]/20';
 
 const trustAsideSectionTitle =
-  'mb-4 flex w-full items-center justify-center gap-3 text-center';
+  'mb-3 flex w-full items-center justify-center gap-3 text-center';
+
+/** Phone & Address: icon before copy, top-aligned, full-width row (left-aligned) */
+const asideInlineIconRowClass = 'flex flex-row items-start justify-start gap-3.5 text-left';
+
+/** Opening hours: icon left of copy, left-aligned (all breakpoints) */
+const asideHoursRowClass = 'flex flex-row items-start gap-3.5 text-left';
+
+/** Stronger sidebar section labels on small screens */
+const asideSectionLabelClass =
+  'shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#cab06a] md:text-[10px] md:tracking-[0.14em] md:text-[#b8a574]';
+
+/** Phone + Opening hours sub-labels — higher contrast than body meta */
+const asideFieldLabelClass =
+  'text-[11px] font-semibold uppercase tracking-[0.14em] text-[#cab06a] md:text-[10px] md:tracking-[0.13em] md:text-[#b8a574]';
+
+const asidePhoneScheduleClass =
+  'mt-1.5 text-[12px] font-medium leading-snug text-[#c4ccd6]';
 
 function FieldLabel({
   htmlFor,
@@ -330,7 +347,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
 
                 <div className="mt-5">
                   <FieldLabel htmlFor="contact-photos">Photos</FieldLabel>
-                  <div className="w-1/2 min-w-0 max-w-full rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(6,6,8,0.75)] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors hover:border-[rgba(201,168,76,0.2)] focus-within:border-[#a88b42] focus-within:ring-1 focus-within:ring-[#C9A84C]/20">
+                  <div className="w-full min-w-0 max-w-full rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(6,6,8,0.75)] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors hover:border-[rgba(201,168,76,0.2)] focus-within:border-[#a88b42] focus-within:ring-1 focus-within:ring-[#C9A84C]/20 sm:w-1/2">
                     <input
                       id="contact-photos"
                       name="photos"
@@ -396,30 +413,32 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
             />
 
             <div className="flex flex-1 flex-col p-6 sm:p-7 lg:p-8">
-              <header className="mb-6">
-                <p
-                  className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#b8a574]"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  Why clients book with us
-                </p>
-                <h3
-                  className="text-[1.5rem] font-black uppercase leading-[0.98] tracking-[0.04em] text-white/95 sm:text-[1.65rem]"
-                  style={{ fontFamily: 'var(--font-bebas)' }}
-                >
-                  Fast, Clear, Professional
-                </h3>
-              </header>
-
               <div
-                className="border-l border-[rgba(201,168,76,0.28)] pl-4"
+                className="md:border-l md:border-[rgba(201,168,76,0.22)] md:pl-5"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                <ul className="space-y-2.5">
+                <header className="pr-1 text-center md:text-left">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#b89a4a]">
+                    Why clients book with us
+                  </p>
+                  <h3 className="mt-2.5 text-[1.45rem] font-semibold leading-[1.12] tracking-[-0.03em] text-white/95 sm:text-[1.55rem]">
+                    Fast
+                    <span className="mx-1.5 text-[#9a8060]/90" aria-hidden>
+                      ·
+                    </span>
+                    Clear
+                    <span className="mx-1.5 text-[#9a8060]/90" aria-hidden>
+                      ·
+                    </span>
+                    Professional
+                  </h3>
+                </header>
+
+                <ul className="mt-6 space-y-3">
                   {TRUST_BULLETS.map((line) => (
                     <li
                       key={line}
-                      className="text-[13px] leading-[1.45] text-[#c4ccd6]"
+                      className="relative pl-3.5 text-[13px] leading-normal text-[#c4ccd6] before:absolute before:left-0 before:top-[0.55em] before:h-1 before:w-1 before:rounded-full before:bg-[rgba(201,168,76,0.45)] before:content-['']"
                     >
                       {line}
                     </li>
@@ -428,11 +447,11 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               </div>
 
               <div
-                className="my-6 h-px w-full shrink-0 bg-[rgba(201,168,76,0.12)]"
+                className="my-8 h-px w-full shrink-0 bg-[rgba(201,168,76,0.1)]"
                 aria-hidden
               />
 
-              <div className="space-y-6" style={{ fontFamily: 'var(--font-inter)' }}>
+              <div className="space-y-8" style={{ fontFamily: 'var(--font-inter)' }}>
                 <div>
                   <div className={trustAsideSectionTitle}>
                     <div
@@ -440,37 +459,29 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.65))' }}
                       aria-hidden
                     />
-                    <p
-                      className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
-                    >
-                      Contact
-                    </p>
+                    <p className={asideSectionLabelClass}>Contact</p>
                     <div
                       className="h-px w-10 max-w-[32%] shrink-0"
                       style={{ background: 'linear-gradient(270deg, transparent, rgba(201,168,76,0.65))' }}
                       aria-hidden
                     />
                   </div>
-                  <div className="mt-1 flex gap-3.5">
+                  <div className={`mt-1 ${asideInlineIconRowClass}`}>
                     <div
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
+                      className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
                       aria-hidden
                     >
                       <Phone className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
                     <div className="min-w-0 flex-1 pt-0.5">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/45">
-                        Phone
-                      </p>
+                      <p className={asideFieldLabelClass}>Phone</p>
                       <a
                         href="tel:+40721000000"
                         className="mt-1 block text-[15px] font-semibold tracking-wide text-white transition-colors hover:text-[#e8d8b8]"
                       >
                         +40 721 000 000
                       </a>
-                      <p className="mt-1.5 text-[11px] leading-snug text-[#8b939e]">
-                        Mon – Sat · 09:00 – 18:00
-                      </p>
+                      <p className={asidePhoneScheduleClass}>Mon – Sat · 09:00 – 18:00</p>
                     </div>
                   </div>
 
@@ -485,58 +496,50 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   </a>
                 </div>
 
-                <div className="border-t border-white/[0.07] pt-6">
+                <div className="border-t border-white/6 pt-8">
                   <div className={trustAsideSectionTitle}>
                     <div
                       className="h-px w-10 max-w-[32%] shrink-0"
                       style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.65))' }}
                       aria-hidden
                     />
-                    <p
-                      className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
-                    >
-                      Address
-                    </p>
+                    <p className={asideSectionLabelClass}>Address</p>
                     <div
                       className="h-px w-10 max-w-[32%] shrink-0"
                       style={{ background: 'linear-gradient(270deg, transparent, rgba(201,168,76,0.65))' }}
                       aria-hidden
                     />
                   </div>
-                  <div className="mt-1 flex gap-3.5">
+                  <div className={`mt-1 ${asideInlineIconRowClass}`}>
                     <div
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
+                      className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
                       aria-hidden
                     >
                       <MapPin className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
                     <div className="min-w-0 flex-1 pt-0.5">
                       <p className="text-[14px] font-semibold text-white/95">București</p>
-                      <p className="mt-0.5 text-[12px] text-[#8b939e]">
-                      By appointment only
-                      </p>
+                      <p className="mt-0.5 text-[12px] text-[#8b939e]">By appointment only</p>
                       <p className="mt-2 text-[12px] leading-snug text-[#aeb8c6]">
                         Str. Industriei 14
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-5 flex gap-3.5">
+                  <div className={`mt-7 ${asideHoursRowClass}`}>
                     <div
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
+                      className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
                       aria-hidden
                     >
                       <Clock className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
                     <div className="min-w-0 flex-1 pt-0.5">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/45">
-                        Opening hours
-                      </p>
-                      <ul className="mt-2 space-y-2">
+                      <p className={asideFieldLabelClass}>Opening hours</p>
+                      <ul className="mt-2 space-y-2 text-left">
                         {TRUST_STUDIO_HOURS.map(({ label, time }) => (
                           <li
                             key={label}
-                            className="flex items-baseline justify-between gap-6 border-b border-white/4 pb-2 text-[12px] leading-snug last:border-b-0 last:pb-0"
+                            className="flex items-baseline justify-between gap-4 border-b border-white/4 pb-2 text-[12px] leading-snug last:border-b-0 last:pb-0 sm:gap-6"
                           >
                             <span className="text-[#9aa3ae]">{label}</span>
                             <span className="shrink-0 tabular-nums text-[13px] font-medium text-white/88">{time}</span>
