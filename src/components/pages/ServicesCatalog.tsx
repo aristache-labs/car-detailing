@@ -14,7 +14,7 @@ import {
 
 /**
  * Single card — vertical stack: full-width image + content (accordion expand below).
- * CSS columns masonry on desktop; see `.services-grid` / `.service-card` in globals.css.
+ * Two-column grid on md+ (`grid-cols-2`); `.service-card` in globals.css sets `min-w-0` for grid overflow.
  */
 function ServiceCard({
   item,
@@ -38,10 +38,10 @@ function ServiceCard({
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 8 }}
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.03, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className={`service-card group relative max-w-full min-w-0 overflow-hidden rounded-lg border bg-[#0f0f0f] transition-all duration-300 ${
+      transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+      className={`service-card group relative min-w-0 max-w-full overflow-hidden rounded-lg border bg-[#0f0f0f] transition-all duration-300 ${
         isOpen
           ? 'border-[#C9A84C]/50 shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_0_1px_rgba(201,168,76,0.2)]'
           : 'border-[#1a1a1a] hover:-translate-y-0.5 hover:border-[#C9A84C]/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.5)]'
@@ -242,7 +242,7 @@ export default function ServicesCatalog() {
           </div>
         </div>
 
-        <div className="services-grid columns-1 md:columns-2">
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-4">
           {filtered.map((item, i) => {
             const isOpen = activeCard === item.id;
             return (

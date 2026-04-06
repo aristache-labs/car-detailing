@@ -618,14 +618,7 @@ body {
   .svc-clip-left  { clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%); }
 }
 
-/* Services catalog — CSS columns masonry (see ServicesCatalog) */
-.services-grid {
-  column-gap: 16px;
-}
-
+/* Services catalog cards — grid layout in ServicesCatalog (min-w-0 for grid/flex overflow) */
 .service-card {
-  break-inside: avoid;
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 16px;
+  min-width: 0;
 }
