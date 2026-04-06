@@ -1,6 +1,14 @@
 'use client';
 
-import { useMemo, useState, type CSSProperties } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -11,6 +19,114 @@ import {
   type ServiceCatalogItem,
   type ServiceCatalogFilter,
 } from '@/data/services-catalog';
+
+/** Matches section background — solid stops prevent buttons showing through fades */
+const FILTER_SCROLLER_BG = '#070709';
+
+function FilterTabsMobile({
+  filter,
+  onSelect,
+}: {
+  filter: ServiceCatalogFilter;
+  onSelect: (id: ServiceCatalogFilter) => void;
+}) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const skipScrollIntoViewRef = useRef(true);
+  const [fade, setFade] = useState({ left: false, right: false });
+
+  const updateFade = useCallback(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    const max = Math.max(0, scrollWidth - clientWidth);
+    const eps = 2;
+    setFade({
+      left: scrollLeft > eps,
+      right: max > eps && scrollLeft < max - eps,
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    updateFade();
+  }, [filter, updateFade]);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => updateFade());
+    ro.observe(el);
+    window.addEventListener('resize', updateFade);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateFade);
+    };
+  }, [updateFade]);
+
+  /** After user changes filter, scroll active tab into view (not on first mount) */
+  useEffect(() => {
+    if (skipScrollIntoViewRef.current) {
+      skipScrollIntoViewRef.current = false;
+      return;
+    }
+    const root = scrollerRef.current;
+    if (!root) return;
+    const id = window.requestAnimationFrame(() => {
+      const active = root.querySelector<HTMLElement>('[data-services-filter-active]');
+      active?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      updateFade();
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [filter, updateFade]);
+
+  const fadeBase =
+    'pointer-events-none absolute inset-y-0 z-20 transition-opacity duration-300 ease-out';
+
+  return (
+    <div className="relative w-full overflow-hidden md:hidden">
+      <div
+        aria-hidden
+        className={`${fadeBase} left-0 w-7`}
+        style={{
+          opacity: fade.left ? 1 : 0,
+          background: `linear-gradient(to right, ${FILTER_SCROLLER_BG} 0%, rgba(7,7,9,0.75) 38%, rgba(7,7,9,0.2) 78%, transparent 100%)`,
+        }}
+      />
+      <div
+        aria-hidden
+        className={`${fadeBase} right-0 w-8`}
+        style={{
+          opacity: fade.right ? 1 : 0,
+          background: `linear-gradient(to left, ${FILTER_SCROLLER_BG} 0%, rgba(7,7,9,0.75) 38%, rgba(7,7,9,0.2) 78%, transparent 100%)`,
+        }}
+      />
+      <div
+        ref={scrollerRef}
+        onScroll={updateFade}
+        className="flex flex-nowrap gap-2.5 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+      >
+        {SERVICE_FILTER_LABELS.map(({ id, label }) => {
+          const active = filter === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              data-services-filter-active={active || undefined}
+              onClick={() => onSelect(id)}
+              className={`inline-flex shrink-0 min-h-10 items-center justify-center rounded-sm px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(207,168,90,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#070709] sm:min-h-[44px] sm:px-5 ${
+                active
+                  ? 'border border-transparent bg-linear-to-b from-[#ddc48a] from-0% via-[#cfa85a] via-48% to-[#b8924a] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)] active:translate-y-0'
+                  : 'border border-[rgba(207,168,90,0.2)] bg-[rgba(0,0,0,0.35)] text-[#d6b36a] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:-translate-y-px hover:border-[rgba(207,168,90,0.42)] hover:bg-[rgba(207,168,90,0.05)] hover:text-[#e0c088] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_0_1px_rgba(207,168,90,0.08)] active:translate-y-0'
+              }`}
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 /**
  * Single card — vertical stack: full-width image + content (accordion expand below).
@@ -217,7 +333,14 @@ export default function ServicesCatalog() {
     <div className="pb-14 pt-3 md:pb-20 md:pt-5" style={{ background: 'var(--carbon-950)' }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         <div className="relative mb-7 md:mb-8">
-          <div className="-mx-4 flex max-md:flex-nowrap max-md:gap-2.5 max-md:overflow-x-auto max-md:scroll-smooth max-md:px-4 max-md:pb-2 max-md:[scrollbar-width:none] md:mx-0 md:flex-wrap md:gap-2.5 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+          <FilterTabsMobile
+            filter={filter}
+            onSelect={(id) => {
+              setFilter(id);
+              setActiveCard(null);
+            }}
+          />
+          <div className="hidden flex-wrap gap-2.5 md:flex">
             {SERVICE_FILTER_LABELS.map(({ id, label }) => {
               const active = filter === id;
               return (
@@ -228,7 +351,7 @@ export default function ServicesCatalog() {
                     setFilter(id);
                     setActiveCard(null);
                   }}
-                  className={`max-md:shrink-0 inline-flex min-h-10 items-center justify-center rounded-sm px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(207,168,90,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#070709] sm:min-h-[44px] sm:px-5 ${
+                  className={`inline-flex min-h-10 items-center justify-center rounded-sm px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(207,168,90,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#070709] sm:min-h-[44px] sm:px-5 ${
                     active
                       ? 'border border-transparent bg-linear-to-b from-[#ddc48a] from-0% via-[#cfa85a] via-48% to-[#b8924a] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)] active:translate-y-0'
                       : 'border border-[rgba(207,168,90,0.2)] bg-[rgba(0,0,0,0.35)] text-[#d6b36a] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:-translate-y-px hover:border-[rgba(207,168,90,0.42)] hover:bg-[rgba(207,168,90,0.05)] hover:text-[#e0c088] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_0_1px_rgba(207,168,90,0.08)] active:translate-y-0'
