@@ -220,15 +220,15 @@ export default function Pricing({
                   {card.subtitle}
                 </p>
 
-                <div className="relative mt-5 min-h-19 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-4 py-3.5">
+                <div className="relative mx-auto mt-5 w-full max-w-56 min-h-18 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-3.5 md:mx-0 md:max-w-none md:min-h-19 md:px-4">
                   <p
-                    className="absolute left-4 top-3.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/55"
+                    className="absolute left-3 top-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/55 md:left-4 md:top-3.5"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {card.priceLabel}
                   </p>
                   <span
-                    className="absolute left-1/2 top-1/2 max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 text-center text-[clamp(1.9rem,4.5vw,1.95rem)] font-bold leading-none tabular-nums tracking-tight"
+                    className="absolute left-1/2 top-1/2 max-w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2 text-center text-[2.0625rem] font-bold leading-none tabular-nums tracking-tight md:max-w-[calc(100%-2rem)] md:text-[clamp(1.5rem,4.5vw,1.75rem)]"
                     style={{
                       fontFamily: 'var(--font-orbitron)',
                       color: card.featured ? '#e7ce88' : '#eef3fa',
@@ -237,7 +237,7 @@ export default function Pricing({
                     {card.startingPrice}
                   </span>
                   <span
-                    className="absolute bottom-3.5 right-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c9a84c]"
+                    className="absolute bottom-3 right-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c9a84c] md:bottom-3.5 md:right-4"
                     style={{ fontFamily: 'var(--font-orbitron)' }}
                   >
                     RON
@@ -245,20 +245,20 @@ export default function Pricing({
                 </div>
 
                 <p
-                  className="mt-4 text-[13px] leading-[1.55] text-[#aeb8c6]"
+                  className="mt-4 text-center text-[13px] leading-[1.55] text-[#aeb8c6] md:text-left"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.summary}
                 </p>
 
-                <div className="mt-5 text-left">
+                <div className="mt-5">
                   <p
-                    className="mb-3 border-l border-[#c9a84c]/28 pl-3 text-[10px] font-medium uppercase tracking-[0.2em] text-[#b8a574]"
+                    className="mb-3 border-b border-[#c9a84c]/28 pb-2 pl-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-[#b8a574] md:border-b-0 md:border-l md:border-[#c9a84c]/28 md:pb-0 md:pl-3 md:text-left"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     Included Services
                   </p>
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-2.5 text-left">
                     {card.includedItems.map((item) => (
                       <li key={item} className="flex gap-2.5">
                         <Check
