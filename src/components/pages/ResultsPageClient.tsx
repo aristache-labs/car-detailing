@@ -241,7 +241,6 @@ export default function ResultsPageClient() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const moreTransformItems = useMemo(() => beforeAfterItems.slice(1), []);
-  const featuredCaseBadge = (featuredBeforeAfter.featuredEyebrow ?? 'Featured case').toUpperCase();
   const featuredMetaAll = (
     `${studioTimeShort(featuredBeforeAfter.studioTime)} studio time · ${
       featuredBeforeAfter.featuredTreatmentLine ??
@@ -256,6 +255,10 @@ export default function ResultsPageClient() {
   const featuredMetaPrimary = featuredMetaAll.slice(0, 3);
   const featuredMetaTail =
     featuredMetaAll.length > 3 ? featuredMetaAll.slice(3).join(' · ') : null;
+  const featuredServiceBadgeDesktop = featuredBeforeAfter.serviceBadgeLabel ?? 'FEATURED CASE';
+  const featuredServiceBadgeMobile = serviceBadgeLabelMobile(featuredServiceBadgeDesktop);
+  const featuredCaptionLine = featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service;
+  const featuredSupportingLine = featuredBeforeAfter.featuredSupportingLine ?? null;
 
   const openGalleryLightbox = useCallback(
     (clickedIndex: number) => {
@@ -532,29 +535,64 @@ export default function ResultsPageClient() {
                       />
                     </div>
                     <div className="border-t border-white/10 px-4 py-4 sm:px-5 sm:py-5 md:px-6 md:py-6">
-                      <div className="mb-2 flex items-center justify-between gap-1.5 md:mb-3 md:gap-3">
-                        <p
-                          className="min-w-0 flex-1 text-[clamp(1.2rem,5.5vw,1.65rem)] font-bold uppercase leading-[0.98] tracking-[0.03em] text-white md:text-[clamp(1.5rem,4.2vw,2.125rem)]"
-                          style={{ fontFamily: 'var(--font-bebas)' }}
-                        >
-                          {featuredBeforeAfter.vehicle}
-                        </p>
-                        <span
-                          className={`${serviceBadgeClass} max-w-none shrink-0 whitespace-nowrap`}
-                          style={{ fontFamily: 'var(--font-inter)' }}
-                        >
-                          {featuredCaseBadge}
-                        </span>
+                      <div className="md:hidden" style={{ fontFamily: 'var(--font-inter)' }}>
+                        <div className="flex min-w-0 items-start justify-between gap-1.5">
+                          <p
+                            className="min-w-0 flex-1 pr-2 text-left text-[1.35rem] font-semibold uppercase leading-tight tracking-[0.03em] text-white"
+                            style={{ fontFamily: 'var(--font-bebas)' }}
+                          >
+                            {featuredBeforeAfter.vehicle}
+                          </p>
+                          <span
+                            className={`${serviceBadgeClass} max-w-none shrink-0 self-start whitespace-nowrap`}
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {featuredServiceBadgeMobile}
+                          </span>
+                        </div>
+                        {featuredCaptionLine ? (
+                          <p className="mt-1.5 text-left text-[12px] font-medium leading-snug text-white/90 sm:text-[13px]">
+                            {featuredCaptionLine}
+                          </p>
+                        ) : null}
+                        {featuredSupportingLine ? (
+                          <p className="mt-1 text-left text-[11px] leading-relaxed text-[#d5c8ac]">
+                            {featuredSupportingLine}
+                          </p>
+                        ) : null}
                       </div>
-                      <p
-                        className="max-w-2xl text-left text-[12px] font-medium leading-snug text-white/82 sm:text-[13px] md:text-[14px] md:leading-relaxed"
-                        style={{ fontFamily: 'var(--font-inter)' }}
-                      >
-                        {featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service}
-                      </p>
+                      <div className="hidden md:block">
+                        <div className="mb-1.5 flex min-w-0 items-start justify-between gap-3 md:mb-2">
+                          <p
+                            className="min-w-0 flex-1 text-[clamp(1.5rem,4.2vw,2.25rem)] font-bold uppercase leading-[0.98] tracking-[0.03em] text-white"
+                            style={{ fontFamily: 'var(--font-bebas)' }}
+                          >
+                            {featuredBeforeAfter.vehicle}
+                          </p>
+                          <span className={serviceBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
+                            {featuredServiceBadgeDesktop}
+                          </span>
+                        </div>
+                        {featuredCaptionLine ? (
+                          <p
+                            className="max-w-2xl text-left text-[13px] font-medium leading-snug text-white/88 md:text-[14px] md:leading-relaxed"
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {featuredCaptionLine}
+                          </p>
+                        ) : null}
+                        {featuredSupportingLine ? (
+                          <p
+                            className="mt-1 max-w-2xl text-left text-[12px] leading-relaxed text-[#d5c8ac]"
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {featuredSupportingLine}
+                          </p>
+                        ) : null}
+                      </div>
                       {/* Desktop: single metadata row — flush left (no horizontal centering) */}
                       <div
-                        className="mt-3 hidden text-[10px] leading-[1.55] text-[#d5c8ac] sm:text-[11px] md:block"
+                        className="mt-4 hidden text-[10px] leading-[1.55] text-[#d5c8ac] sm:text-[11px] md:block"
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
                         <div className="flex max-w-3xl flex-wrap items-center gap-x-2 gap-y-1 text-left">

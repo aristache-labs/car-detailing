@@ -161,7 +161,6 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-paint-correction.png',
     tags: ['Correction', 'Ceramic'],
     studioTime: '14 hours',
-    featuredEyebrow: 'Signature Transformation',
     editorialSubtitle: 'Multi-Stage Paint Correction & Ceramic Protection',
     featuredTreatmentLine: 'Defect removal · Gloss refinement · Long-term protection',
     serviceBadgeLabel: 'PAINT CORRECTION',
