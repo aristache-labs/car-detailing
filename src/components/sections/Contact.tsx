@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Clock, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
+import { Clock, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
+import DarkSelect from '@/components/ui/DarkSelect';
 
 const SERVICE_OPTIONS = [
   'Exterior Detailing',
@@ -76,102 +77,6 @@ function FieldLabel({
         </span>
       ) : null}
     </label>
-  );
-}
-
-function DarkSelect({
-  id,
-  name,
-  value,
-  onChange,
-  options,
-  placeholder,
-  error,
-}: {
-  id: string;
-  name: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: readonly { value: string; label: string }[];
-  placeholder: string;
-  error?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const listId = `${id}-listbox`;
-
-  useEffect(() => {
-    if (!open) return;
-    const onDoc = (e: MouseEvent) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('mousedown', onDoc);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onDoc);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [open]);
-
-  const display = options.find((o) => o.value === value)?.label ?? placeholder;
-  const showPlaceholderStyle = value === '' && !options.some((o) => o.value === '');
-
-  return (
-    <div className="relative" ref={wrapRef}>
-      <input type="hidden" name={name} value={value} />
-      <button
-        type="button"
-        id={id}
-        className={`${inputBase} flex w-full cursor-pointer items-center justify-between gap-2 text-left`}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listId}
-        onClick={() => setOpen((o) => !o)}
-        style={
-          error
-            ? { borderColor: 'rgba(251, 191, 36, 0.45)', boxShadow: '0 0 0 1px rgba(251, 191, 36, 0.2)' }
-            : undefined
-        }
-      >
-        <span className={showPlaceholderStyle ? 'text-white/40' : undefined}>{display}</span>
-        <ChevronDown
-          className={`h-4 w-4 shrink-0 text-white/45 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-          aria-hidden
-        />
-      </button>
-      {open ? (
-        <ul
-          id={listId}
-          role="listbox"
-          className="absolute left-0 right-0 top-full z-60 mt-1 max-h-60 overflow-auto rounded-sm border border-white/12 bg-[#0c0c10] py-1 shadow-[0_16px_48px_rgba(0,0,0,0.55)]"
-          style={{ fontFamily: 'var(--font-inter)' }}
-        >
-          {options.map((opt) => (
-            <li key={opt.value === '' ? '__empty' : opt.value} role="presentation">
-              <button
-                type="button"
-                role="option"
-                aria-selected={value === opt.value}
-                className={`w-full px-3 py-2 text-left text-sm transition-colors ${
-                  value === opt.value
-                    ? 'bg-[#C9A84C]/15 text-[#f0d892]'
-                    : 'text-white/90 hover:bg-white/6'
-                }`}
-                onClick={() => {
-                  onChange(opt.value);
-                  setOpen(false);
-                }}
-              >
-                {opt.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </div>
   );
 }
 
@@ -273,7 +178,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
-            className="lg:col-span-8 overflow-hidden rounded-xl"
+            className="lg:col-span-8 overflow-visible rounded-xl"
             style={{
               background: 'linear-gradient(160deg, rgba(17,17,26,0.92) 0%, rgba(10,10,15,0.96) 100%)',
               border: '1px solid rgba(255,255,255,0.07)',

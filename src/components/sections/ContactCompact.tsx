@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ShieldCheck } from 'lucide-react';
+import DarkSelect from '@/components/ui/DarkSelect';
 
 const SERVICE_OPTIONS = [
   'Exterior Detailing',
@@ -16,6 +17,8 @@ const SERVICE_OPTIONS = [
   'Engine Bay Detailing',
   'Not Sure / Need Guidance',
 ] as const;
+
+const SERVICE_SELECT_OPTIONS = SERVICE_OPTIONS.map((s) => ({ value: s, label: s }));
 
 const inputBase =
   'w-full rounded-sm border border-white/12 bg-white/3 px-3 py-2.5 text-sm text-white outline-none transition-[border-color,box-shadow] [color-scheme:dark] placeholder:text-white/25 focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/35';
@@ -47,52 +50,70 @@ export default function ContactCompact() {
         }}
       />
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
-        <div className="mb-8 text-center md:mb-10 md:text-left">
-          <span
-            className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base"
-            style={{
-              color: '#E2C06A',
-              fontFamily: 'var(--font-orbitron)',
-              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-              border: '1px solid rgba(201,168,76,0.35)',
-            }}
-          >
-            Quick quote
-          </span>
-          <h2
-            className="text-4xl font-black leading-none md:text-6xl"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
-          >
-            REQUEST A{' '}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12 lg:gap-x-14">
+          {/* Copy + form share one grid: no “floating” headline vs centered card */}
+          <div className="relative pl-5 text-left sm:pl-6 lg:col-span-4 lg:border-r lg:border-white/10 lg:pr-8 xl:pr-10">
+            <div
+              className="absolute left-0 top-1.5 h-[min(100%,14rem)] w-[3px] rounded-full bg-linear-to-b from-[#e8c768] via-[#C9A84C] to-transparent"
+              aria-hidden
+            />
             <span
+              className="inline-flex items-center px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] md:text-xs"
               style={{
-                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#E2C06A',
+                fontFamily: 'var(--font-orbitron)',
+                background: 'linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%)',
+                border: '1px solid rgba(201,168,76,0.28)',
               }}
             >
-              CALLBACK
+              Quick quote
             </span>
-          </h2>
-          <p
-            className="mx-auto mt-3 max-w-xl text-sm leading-relaxed md:mx-0"
-            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}
-          >
-            Short form for a fast reply — full details and photo uploads on the{' '}
-            <Link href="/contact" className="font-medium text-[#C9A84C] underline-offset-2 hover:text-[#e8d49a]">
-              contact page
-            </Link>
-            .
-          </p>
-        </div>
+            <h2
+              className="mt-5 text-[clamp(2.5rem,6vw,4.25rem)] font-black leading-[0.88] tracking-[0.06em] sm:mt-6"
+              style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
+            >
+              <span className="block text-white">REQUEST A</span>
+              <span className="mt-1 block bg-linear-to-br from-[#F5E6B8] via-[#D4B05C] to-[#9a7630] bg-clip-text text-transparent sm:mt-0">
+                CALLBACK
+              </span>
+            </h2>
 
-        <div className="mx-auto max-w-3xl overflow-hidden rounded-xl border border-white/8 bg-[linear-gradient(160deg,rgba(17,17,26,0.92)_0%,rgba(10,10,15,0.96)_100%)] shadow-[0_16px_48px_rgba(0,0,0,0.38)]">
-          <div
-            className="h-[2px] w-full"
-            style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.55) 50%, transparent 100%)' }}
-          />
-          {submitted ? (
+            <div
+              className="mt-7 h-px w-14 bg-linear-to-r from-[#C9A84C]/70 to-transparent sm:mt-8"
+              aria-hidden
+            />
+            <p
+              className="mt-5 max-w-88 text-[13px] leading-[1.75] text-white/58 sm:text-sm"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              Short form for a fast reply — full details and photo uploads on the{' '}
+              <Link href="/contact" className="font-semibold text-[#d4b86a] underline decoration-[#C9A84C]/35 underline-offset-[3px] transition-colors hover:text-[#e8d49a]">
+                contact page
+              </Link>
+              .
+            </p>
+            <ul
+              className="mt-7 max-w-md space-y-3 text-[12px] leading-relaxed text-white/48 sm:text-[13px]"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              <li className="flex gap-2">
+                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#C9A84C]/80" aria-hidden />
+                Response within 24h on business days
+              </li>
+              <li className="flex gap-2">
+                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#C9A84C]/80" aria-hidden />
+                No spam — your details stay with Apex
+              </li>
+            </ul>
+          </div>
+
+          <div className="min-w-0 lg:col-span-8">
+            <div className="overflow-visible rounded-xl border border-white/8 bg-[linear-gradient(160deg,rgba(17,17,26,0.92)_0%,rgba(10,10,15,0.96)_100%)] shadow-[0_16px_48px_rgba(0,0,0,0.38)]">
+              <div
+                className="h-[2px] w-full"
+                style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.55) 50%, transparent 100%)' }}
+              />
+              {submitted ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -145,21 +166,14 @@ export default function ContactCompact() {
                   <label htmlFor="compact-service" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
                     Service interest<span className="ml-0.5 text-[#C9A84C]">*</span>
                   </label>
-                  <select
+                  <DarkSelect
                     id="compact-service"
                     name="service"
-                    required
                     value={service}
-                    onChange={(e) => setService(e.target.value)}
-                    className={inputBase}
-                  >
-                    <option value="">Select a service</option>
-                    {SERVICE_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={setService}
+                    options={SERVICE_SELECT_OPTIONS}
+                    placeholder="Select a service"
+                  />
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="compact-message" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
@@ -196,6 +210,8 @@ export default function ContactCompact() {
               </div>
             </form>
           )}
+        </div>
+          </div>
         </div>
       </div>
     </section>
