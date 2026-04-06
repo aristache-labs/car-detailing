@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 /* ─── Icons ────────────────────────────────────────────────────────────── */
@@ -514,8 +515,8 @@ function ServiceRow({ service }: ServiceRowProps) {
           </div>
 
           {/* CTA */}
-          <button
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+          <Link
+            href="/contact"
             className="group inline-flex items-center gap-2 px-4 py-2 mx-auto lg:mx-0 text-[10px] font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300"
             style={{
               color: '#E7C979',
@@ -537,14 +538,23 @@ function ServiceRow({ service }: ServiceRowProps) {
           >
             Request Consultation
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" />
-          </button>
+          </Link>
         </div>
       </motion.div>
     </div>
   );
 }
 
-export default function ServicesDetail() {
+export default function ServicesDetail({
+  variant = 'full',
+  previewCount = 3,
+}: {
+  variant?: 'full' | 'preview';
+  previewCount?: number;
+} = {}) {
+  const visibleServices =
+    variant === 'preview' ? services.slice(0, previewCount) : services;
+
   return (
     <section id="services" className="relative" style={{ background: 'var(--carbon-950)' }}>
       {/* Section header */}
@@ -571,7 +581,7 @@ export default function ServicesDetail() {
 
       {/* Service rows */}
       <div className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
-        {services.map((s) => (
+        {visibleServices.map((s) => (
           <ServiceRow key={s.number} service={s} />
         ))}
       </div>
@@ -588,7 +598,7 @@ export default function ServicesDetail() {
           background: 'linear-gradient(180deg, rgba(201,168,76,0.03) 0%, rgba(7,7,9,0.0) 100%)',
         }}
       >
-        <div className="max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 md:gap-6">
+        <div className="max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-4 md:gap-6 flex-wrap">
           <div className="text-center">
             <p
               className="text-sm md:text-base font-black tracking-[0.14em] uppercase"
@@ -603,8 +613,18 @@ export default function ServicesDetail() {
               Tailored package for your vehicle and finish goals.
             </p>
           </div>
-          <button
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+          {variant === 'preview' ? (
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-[10px] md:text-xs font-bold tracking-[0.16em] uppercase border border-[#C9A84C]/40 text-[#E7C979] hover:bg-[#C9A84C]/10 transition-colors"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              View all services
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          ) : null}
+          <Link
+            href="/contact"
             className="btn-shimmer flex items-center gap-2 px-6 py-2.5 text-[10px] md:text-xs font-bold tracking-[0.16em] uppercase cursor-pointer transition-all duration-300"
             style={{
               background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
@@ -617,7 +637,7 @@ export default function ServicesDetail() {
           >
             Book a Service
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
         </div>
       </motion.div>
     </section>

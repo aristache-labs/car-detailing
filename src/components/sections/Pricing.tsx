@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 const plans = [
   {
@@ -60,10 +61,17 @@ const plans = [
   },
 ];
 
-export default function Pricing() {
+export default function Pricing({
+  variant = 'full',
+}: {
+  variant?: 'full' | 'preview';
+} = {}) {
+  const isPreview = variant === 'preview';
+  const serviceLineCap = isPreview ? 3 : 5;
+
   return (
     <section
-      id="pricing"
+      id={isPreview ? 'pricing-preview' : 'pricing'}
       className="relative pt-14 pb-16 md:pt-18 md:pb-20 overflow-hidden"
       style={{ background: 'var(--carbon-900)' }}
     >
@@ -274,7 +282,7 @@ export default function Pricing() {
 
                 {/* Service list */}
                 <ul className="space-y-3">
-                  {plan.services.slice(0, 5).map((service) => (
+                  {plan.services.slice(0, serviceLineCap).map((service) => (
                     <li key={service} className="flex items-start gap-2">
                       <Check
                         className="w-3.5 h-3.5 mt-[2px] shrink-0"
@@ -295,12 +303,12 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                {plan.services.length > 5 && (
+                {plan.services.length > serviceLineCap && (
                   <p
                     className="mt-2 text-[10px]"
                     style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
                   >
-                    +{plan.services.length - 5} more included
+                    +{plan.services.length - serviceLineCap} more included
                   </p>
                 )}
 
@@ -316,24 +324,37 @@ export default function Pricing() {
                         : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 50%, transparent 100%)',
                     }}
                   />
-                  <button
-                    type="button"
-                    onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className={`w-full ${plan.highlight ? 'hero-cta-primary' : 'hero-cta-secondary'} group`}
+                  <Link
+                    href="/contact"
+                    className={`w-full inline-flex items-center justify-center gap-2 ${plan.highlight ? 'hero-cta-primary' : 'hero-cta-secondary'} group`}
                   >
                     Request Quote
                     <ArrowRight
                       className="w-[15px] h-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5"
                       strokeWidth={2.25}
                     />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.article>
           ))}
         </div>
 
+        {isPreview ? (
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] border border-[#C9A84C]/40 text-[#E7C979] hover:bg-[#C9A84C]/10 transition-colors"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              View full packages
+              <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.25} />
+            </Link>
+          </div>
+        ) : null}
+
         {/* PPF add-on card */}
+        {!isPreview ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -398,17 +419,17 @@ export default function Pricing() {
 
             {/* Right: CTA */}
             <div className="shrink-0">
-              <button
-                type="button"
-                onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="hero-cta-secondary group w-full md:w-auto"
+              <Link
+                href="/contact"
+                className="hero-cta-secondary group w-full md:w-auto inline-flex items-center justify-center gap-2"
               >
                 Request PPF Assessment
                 <ArrowRight className="w-[15px] h-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={2.25} />
-              </button>
+              </Link>
             </div>
           </div>
         </motion.div>
+        ) : null}
       </div>
     </section>
   );

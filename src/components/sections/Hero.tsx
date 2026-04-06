@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight, CheckCircle, Eye } from 'lucide-react';
 import gsap from 'gsap';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -138,23 +139,15 @@ export default function Hero() {
           className="flex flex-col sm:flex-row lg:flex-row lg:items-stretch gap-3 sm:gap-3.5 justify-center lg:justify-start"
           style={{ opacity: 0 }}
         >
-          <button
-            type="button"
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="hero-cta-primary group"
-          >
+          <Link href="/contact" className="hero-cta-primary group inline-flex items-center justify-center">
             {t.hero.primaryCta}
             <ArrowRight className="w-[15px] h-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={2.25} />
-          </button>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => document.querySelector('#gallery')?.scrollIntoView({ behavior: 'smooth' })}
-            className="hero-cta-secondary group"
-          >
+          <Link href="/results" className="hero-cta-secondary group inline-flex items-center justify-center">
             <Eye className="w-[15px] h-[15px] shrink-0 opacity-90" strokeWidth={2} />
             {t.hero.secondaryCta}
-          </button>
+          </Link>
         </div>
 
         {/* Trust bullets */}

@@ -1,13 +1,19 @@
-import Hero from '@/components/sections/Hero';
-import ServicesMarquee from '@/components/sections/ServicesMarquee';
-import ServicesDetail from '@/components/sections/ServicesDetail';
-import Stats from '@/components/sections/Stats';
+import type { Metadata } from 'next';
 import BeforeAfter from '@/components/sections/BeforeAfter';
-import Process from '@/components/sections/Process';
-import Testimonials from '@/components/sections/Testimonials';
-import WhyUs from '@/components/sections/WhyUs';
+import ContactTeaser from '@/components/sections/ContactTeaser';
+import Hero from '@/components/sections/Hero';
 import Pricing from '@/components/sections/Pricing';
-import Contact from '@/components/sections/Contact';
+import Process from '@/components/sections/Process';
+import ServicesDetail from '@/components/sections/ServicesDetail';
+import ServicesMarquee from '@/components/sections/ServicesMarquee';
+import Stats from '@/components/sections/Stats';
+import Testimonials from '@/components/sections/Testimonials';
+
+export const metadata: Metadata = {
+  title: 'Apex Detailing — Premium Car Detailing',
+  description:
+    'Luxury car detailing, ceramic coating, PPF wrapping, and leather restoration. Transform your vehicle with precision craftsmanship.',
+};
 
 export default function Home() {
   return (
@@ -15,13 +21,12 @@ export default function Home() {
       <Hero />
       <Stats />
       <ServicesMarquee />
-      <ServicesDetail />
-      <BeforeAfter />
+      <ServicesDetail variant="preview" previewCount={3} />
+      <BeforeAfter variant="preview" previewCount={3} />
       <Process />
-      <Testimonials />
-      <WhyUs />
-      <Pricing />
-      <Contact />
+      <Testimonials maxItems={3} />
+      <Pricing variant="preview" />
+      <ContactTeaser />
     </>
   );
 }

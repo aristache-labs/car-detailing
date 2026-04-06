@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import { CheckCircle2, ChevronDown, Droplets, Search, ShieldCheck, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 interface Step {
   number: string;
@@ -397,9 +398,9 @@ export default function Process() {
           transition={{ duration: reduceMotion ? 0.3 : 0.55, delay: 0.18 }}
           className="mt-8 flex flex-wrap items-center gap-4 lg:ml-[220px]"
         >
-          <button
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="btn-shimmer cursor-pointer px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300"
+          <Link
+            href="/contact"
+            className="btn-shimmer inline-flex cursor-pointer px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300"
             style={{
               background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
               color: '#070709',
@@ -408,7 +409,7 @@ export default function Process() {
             }}
           >
             Start Your Booking
-          </button>
+          </Link>
           <span className="text-premium-micro tracking-[0.18em]" style={{ fontFamily: 'var(--font-inter)' }}>
             Same-day response guaranteed
           </span>

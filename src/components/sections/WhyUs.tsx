@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowRight, ClipboardCheck, Droplets, FileCheck2, FlaskConical, ShieldCheck, SlidersHorizontal } from 'lucide-react';
 
 const differentiators = [
@@ -64,14 +65,14 @@ export default function WhyUs() {
             >
               Premium detailing built on method, materials, and measurable results.
             </p>
-            <a
-              href="#process"
+            <Link
+              href="/#process"
               className="mt-4 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-bold cursor-pointer"
               style={{ color: 'rgba(201,168,76,0.9)', fontFamily: 'var(--font-inter)' }}
             >
               See our process
               <ArrowRight className="w-3.5 h-3.5" />
-            </a>
+            </Link>
           </div>
 
           <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">

@@ -1,12 +1,22 @@
 'use client';
 
+import Link from 'next/link';
 import { Clock, Mail, MapPin, Phone, Zap } from 'lucide-react';
 
+const EXPLORE_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Results', href: '/results' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Why Us', href: '/why-us' },
+  { label: 'Contact', href: '/contact' },
+] as const;
+
 const SERVICE_LINKS = [
-  { label: 'Ceramic Coating', href: '#services' },
-  { label: 'PPF Protection', href: '#services' },
-  { label: 'Paint Correction', href: '#services' },
-  { label: 'Interior Detailing', href: '#services' },
+  { label: 'Ceramic Coating', href: '/services' },
+  { label: 'PPF Protection', href: '/services' },
+  { label: 'Paint Correction', href: '/services' },
+  { label: 'Interior Detailing', href: '/services' },
 ] as const;
 
 const LEGAL_LINKS = [
@@ -57,11 +67,11 @@ export default function Footer() {
 
       <div className="mx-auto max-w-7xl px-4 pb-5 pt-9 sm:px-8 md:px-14">
         <div
-          className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-x-10 lg:gap-y-0"
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)_minmax(0,0.95fr)_minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-x-8 lg:gap-y-0 xl:gap-x-10"
           style={{ fontFamily: 'var(--font-inter)' }}
         >
           {/* 1 — Brand */}
-          <div className="order-1 lg:order-0">
+          <div className="order-1 sm:col-span-2 lg:col-span-1 lg:order-0">
             <div className="mb-3 flex items-center gap-2">
               <div
                 className="flex h-7 w-7 items-center justify-center rounded-full"
@@ -96,22 +106,33 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* 3 — Services (order 3 on mobile) */}
-          <nav className="order-3 lg:order-0" aria-label="Services">
-            <h2 className={colHeading}>Services</h2>
+          <nav className="order-3 lg:order-0" aria-label="Site">
+            <h2 className={colHeading}>Explore</h2>
             <ul className="space-y-2">
-              {SERVICE_LINKS.map(({ label, href }) => (
+              {EXPLORE_LINKS.map(({ label, href }) => (
                 <li key={label}>
-                  <a href={href} className={linkClass}>
+                  <Link href={href} className={linkClass}>
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* 2 — Contact (order 2 on mobile) */}
-          <div className="order-2 lg:order-0">
+          <nav className="order-4 lg:order-0" aria-label="Services">
+            <h2 className={colHeading}>Services</h2>
+            <ul className="space-y-2">
+              {SERVICE_LINKS.map(({ label, href }) => (
+                <li key={label}>
+                  <Link href={href} className={linkClass}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="order-2 sm:order-5 lg:order-0">
             <h2 className={colHeading}>Contact</h2>
             <ul className="space-y-2.5 text-[13px] text-white/72">
               <li className="flex gap-2">
@@ -137,8 +158,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 4 — Legal */}
-          <nav className="order-4 lg:order-0" aria-label="Legal">
+          <nav className="order-6 sm:order-4 lg:order-0" aria-label="Legal">
             <h2 className={colHeading}>Legal</h2>
             <ul className="space-y-2">
               {LEGAL_LINKS.map(({ label, href }) => (

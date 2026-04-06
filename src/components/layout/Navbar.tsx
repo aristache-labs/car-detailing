@@ -120,11 +120,11 @@ export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
-    { label: t.nav.services, href: '#services' },
-    { label: t.nav.gallery, href: '#gallery' },
-    { label: language === 'ro' ? 'Pachete' : 'Packages', href: '#pricing' },
-    { label: language === 'ro' ? 'Recenzii' : 'Reviews', href: '#testimonials' },
-    { label: t.nav.contact, href: '#contact' },
+    { label: t.nav.services, href: '/services' },
+    { label: t.nav.results, href: '/results' },
+    { label: t.nav.pricing, href: '/pricing' },
+    { label: t.nav.whyUs, href: '/why-us' },
+    { label: t.nav.contact, href: '/contact' },
   ];
 
   const ctaLabel = language === 'ro' ? 'Solicită ofertă' : 'Get a Quote';
@@ -147,11 +147,9 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler);
   }, [langOpen]);
 
-  const handleLink = (href: string) => {
+  const closeOverlays = () => {
     setMenuOpen(false);
     setLangOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleLanguage = (next: Language) => {
@@ -201,7 +199,7 @@ export default function Navbar() {
           {/* ── Desktop nav ── */}
           <nav className="hidden lg:flex items-center gap-6" aria-label="Primary navigation">
             {navLinks.map((link) => (
-              <NavLink key={link.href} onClick={() => handleLink(link.href)}>
+              <NavLink key={link.href} href={link.href}>
                 {link.label}
               </NavLink>
             ))}
@@ -210,8 +208,8 @@ export default function Navbar() {
           {/* ── Desktop right controls ── */}
           <div className="hidden lg:flex items-center gap-5 shrink-0">
             <LanguageDropdown {...langDropdownProps} />
-            <button
-              onClick={() => handleLink('#contact')}
+            <Link
+              href="/contact"
               className="cursor-pointer rounded-[8px] transition-colors duration-200"
               style={{
                 background: GOLD,
@@ -226,7 +224,7 @@ export default function Navbar() {
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD)}
             >
               {ctaLabel}
-            </button>
+            </Link>
           </div>
 
           {/* ── Mobile controls ── */}
@@ -294,9 +292,10 @@ export default function Navbar() {
             {/* Drawer links */}
             <nav className="flex flex-col px-6 py-8 gap-1 flex-1" aria-label="Mobile navigation">
               {navLinks.map((link) => (
-                <button
+                <Link
                   key={link.href}
-                  onClick={() => handleLink(link.href)}
+                  href={link.href}
+                  onClick={closeOverlays}
                   className="text-left cursor-pointer py-3 transition-colors duration-150"
                   style={{
                     fontFamily: 'var(--font-inter)',
@@ -309,15 +308,16 @@ export default function Navbar() {
                   onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = TEXT_MUTED)}
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
             </nav>
 
             {/* Drawer CTA */}
             <div className="px-6 pb-10">
-              <button
-                onClick={() => handleLink('#contact')}
-                className="w-full cursor-pointer rounded-[8px] transition-colors duration-200"
+              <Link
+                href="/contact"
+                onClick={closeOverlays}
+                className="flex w-full cursor-pointer justify-center rounded-[8px] transition-colors duration-200"
                 style={{
                   background: GOLD,
                   color: '#0a0a0c',
@@ -331,7 +331,7 @@ export default function Navbar() {
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD)}
               >
                 {ctaLabel}
-              </button>
+              </Link>
             </div>
           </motion.div>
         )}
@@ -341,16 +341,10 @@ export default function Navbar() {
 }
 
 // ── Extracted NavLink to avoid repeated inline style logic ──
-function NavLink({
-  onClick,
-  children,
-}: {
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <button
-      onClick={onClick}
+    <Link
+      href={href}
       className="cursor-pointer pb-px border-b border-transparent hover:border-[rgba(201,168,76,0.5)] hover:text-[#e3e3e3] transition-[color,border-color] duration-200"
       style={{
         fontFamily: 'var(--font-inter)',
@@ -361,6 +355,6 @@ function NavLink({
       }}
     >
       {children}
-    </button>
+    </Link>
   );
 }

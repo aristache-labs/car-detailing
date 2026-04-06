@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const testimonials = [
+const ALL_TESTIMONIALS = [
   {
     quote: 'Attention to detail was exceptional. The finish and depth of gloss exceeded expectations.',
     name: 'Andrei M.',
@@ -41,7 +41,12 @@ const testimonials = [
 
 const STAR_PATH = 'M8 1l1.854 3.759L14 5.528l-3 2.922.708 4.128L8 10.545l-3.708 2.033L5 8.45 2 5.528l4.146-.769L8 1z';
 
-export default function Testimonials() {
+export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
+  const list = useMemo(
+    () => (maxItems != null ? ALL_TESTIMONIALS.slice(0, maxItems) : ALL_TESTIMONIALS),
+    [maxItems]
+  );
+
   const [current, setCurrent] = useState(0);
   const [dir, setDir] = useState(1);
   const [dragStart, setDragStart] = useState<number | null>(null);
@@ -51,13 +56,13 @@ export default function Testimonials() {
 
   const advance = useCallback(() => {
     setDir(1);
-    setCurrent(c => (c + 1) % testimonials.length);
-  }, []);
+    setCurrent((c) => (c + 1) % list.length);
+  }, [list.length]);
 
   const back = useCallback(() => {
     setDir(-1);
-    setCurrent(c => (c - 1 + testimonials.length) % testimonials.length);
-  }, []);
+    setCurrent((c) => (c - 1 + list.length) % list.length);
+  }, [list.length]);
 
   const goTo = useCallback((i: number) => {
     setDir(i > current ? 1 : -1);
@@ -74,10 +79,10 @@ export default function Testimonials() {
     if (isHovered || isInteracted) return;
     const id = setInterval(() => {
       setDir(1);
-      setCurrent((c) => (c + 1) % testimonials.length);
+      setCurrent((c) => (c + 1) % list.length);
     }, 7000);
     return () => clearInterval(id);
-  }, [isHovered, isInteracted]);
+  }, [isHovered, isInteracted, list.length]);
 
   useEffect(() => {
     return () => {
@@ -99,13 +104,13 @@ export default function Testimonials() {
     setDragStart(null);
   };
 
-  const t = testimonials[current];
+  const t = list[current];
   const initials = t.name.split(' ').map(w => w[0]).join('').slice(0, 2);
-  const progress = ((current + 1) / testimonials.length) * 100;
+  const progress = ((current + 1) / list.length) * 100;
 
   return (
     <section
-      id="testimonials"
+      id={maxItems != null ? 'testimonials-preview' : 'testimonials'}
       className="relative pt-16 pb-14 md:pt-20 md:pb-16 overflow-hidden"
       style={{ background: 'var(--carbon-950)' }}
     >
@@ -197,7 +202,7 @@ export default function Testimonials() {
                 </span>{' '}
                 <span style={{ color: 'rgba(255,255,255,0.42)' }}>/</span>{' '}
                 <span style={{ color: 'var(--text-soft)' }}>
-                  {String(testimonials.length).padStart(2, '0')}
+                  {String(list.length).padStart(2, '0')}
                 </span>
               </p>
             </div>
@@ -234,7 +239,7 @@ export default function Testimonials() {
 
               {/* Dot indicators */}
               <div className="flex items-center gap-2.5">
-                {testimonials.map((_, i) => (
+                {list.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => {

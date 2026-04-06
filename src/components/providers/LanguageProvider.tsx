@@ -16,8 +16,10 @@ type TranslationShape = {
     services: string;
     stats: string;
     gallery: string;
+    results: string;
     process: string;
     pricing: string;
+    whyUs: string;
     contact: string;
     bookNow: string;
     language: string;
@@ -41,8 +43,10 @@ const translations: Record<Language, TranslationShape> = {
       services: 'Services',
       stats: 'Stats',
       gallery: 'Gallery',
+      results: 'Results',
       process: 'Process',
       pricing: 'Pricing',
+      whyUs: 'Why Us',
       contact: 'Contact',
       bookNow: 'Book Now',
       language: 'Language',
@@ -65,8 +69,10 @@ const translations: Record<Language, TranslationShape> = {
       services: 'Servicii',
       stats: 'Statistici',
       gallery: 'Galerie',
+      results: 'Rezultate',
       process: 'Proces',
       pricing: 'Preturi',
+      whyUs: 'De ce noi',
       contact: 'Contact',
       bookNow: 'Programeaza',
       language: 'Limba',

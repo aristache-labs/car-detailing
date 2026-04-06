@@ -1,84 +1,15 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
-import { useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
-
-const panels = [
-  {
-    id: 0,
-    label: 'Polish',
-    service: 'Paint Correction',
-    beforeLabel: 'Swirl Marks',
-    afterLabel: 'Mirror Finish',
-    beforeImage: '/images/before-after/before-paint-correction.png',
-    afterImage: '/images/before-after/after-paint-correction.png',
-    vehicle: 'Infiniti Q60',
-    proofService: '2-stage paint correction + ceramic coating',
-    time: '14 hours',
-    outcome: 'Swirl removal, deeper gloss, hydrophobic finish',
-    beforeBg: 'linear-gradient(135deg, #121218 0%, #0c0c10 100%)',
-    afterBg: 'linear-gradient(135deg, #151720 0%, #0d0f16 100%)',
-    beforeAccent: '#3a3a4a',
-    afterAccent: '#C9A84C',
-  },
-  {
-    id: 1,
-    label: 'Ceramic',
-    service: 'Ceramic Coating',
-    beforeLabel: 'Dull Paint',
-    afterLabel: 'Hydrophobic Shield',
-    beforeImage: '/images/before-after/before-ceramic-coating.png',
-    afterImage: '/images/before-after/after-ceramic-coating.png',
-    vehicle: 'BMW 3 Series',
-    proofService: 'Paint decontamination + ceramic coating',
-    time: '11 hours',
-    outcome: 'Higher gloss, smoother finish, durable water repellency',
-    beforeBg: 'linear-gradient(135deg, #171521 0%, #0d0b14 100%)',
-    afterBg: 'linear-gradient(135deg, #101828 0%, #0a1018 100%)',
-    beforeAccent: '#3a3848',
-    afterAccent: '#4a8aa0',
-  },
-  {
-    id: 2,
-    label: 'PPF',
-    service: 'Paint Protection Film',
-    beforeLabel: 'Unprotected',
-    afterLabel: 'Invisible Armour',
-    beforeImage: '/images/before-after/before-PPF.png',
-    afterImage: '/images/before-after/after-PPF.png',
-    vehicle: 'BMW M4',
-    proofService: 'Front-end PPF + finish correction prep',
-    time: '16 hours',
-    outcome: 'Impact protection, cleaner reflections, protected high-wear zones',
-    beforeBg: 'linear-gradient(135deg, #161411 0%, #0f0d0b 100%)',
-    afterBg: 'linear-gradient(135deg, #171a14 0%, #0d100b 100%)',
-    beforeAccent: '#3a3830',
-    afterAccent: '#6a8a50',
-  },
-  {
-    id: 3,
-    label: 'Interior',
-    service: 'Interior Detailing',
-    beforeLabel: 'Stained',
-    afterLabel: 'Showroom Ready',
-    beforeImage: '/images/before-after/before-Interior-deep-clean.png',
-    afterImage: '/images/before-after/after-Interior-deep-clean.png',
-    vehicle: 'Mercedes-Benz GLC-Class',
-    proofService: 'Interior deep clean + leather conditioning',
-    time: '6 hours',
-    outcome: 'Restored cabin finish, improved texture, refreshed interior feel',
-    beforeBg: 'linear-gradient(135deg, #17120e 0%, #0d0b08 100%)',
-    afterBg: 'linear-gradient(135deg, #1a1814 0%, #0e0c0a 100%)',
-    beforeAccent: '#5a4030',
-    afterAccent: '#C9A84C',
-  },
-];
+import Link from 'next/link';
+import type { GalleryPanel } from '@/data/gallery-cases';
+import { galleryPanels } from '@/data/gallery-cases';
 
 /* ── Inner drag slider ── */
 interface SliderProps {
-  panel: typeof panels[0];
+  panel: GalleryPanel;
 }
 
 function DragSlider({ panel }: SliderProps) {
@@ -99,18 +30,29 @@ function DragSlider({ panel }: SliderProps) {
     setPos(pct);
   }, []);
 
+  /** Active window listeners for drag — cleared on mouseup or unmount */
+  const dragListenersRef = useRef<{
+    move: (e: MouseEvent) => void;
+    up: () => void;
+  } | null>(null);
+
   const onMouseDown = () => {
     dragging.current = true;
     captureRect();
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    const move = (e: MouseEvent) => {
+      if (dragging.current) update(e.clientX);
+    };
+    const up = () => {
+      dragging.current = false;
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+      dragListenersRef.current = null;
+    };
+    dragListenersRef.current = { move, up };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
   };
-  const onMouseMove = (e: MouseEvent) => { if (dragging.current) update(e.clientX); };
-  const onMouseUp = () => {
-    dragging.current = false;
-    window.removeEventListener('mousemove', onMouseMove);
-    window.removeEventListener('mouseup', onMouseUp);
-  };
+
   const onTouchMove = (e: React.TouchEvent) => update(e.touches[0].clientX);
 
   useEffect(() => {
@@ -118,8 +60,12 @@ function DragSlider({ panel }: SliderProps) {
     window.addEventListener('resize', captureRect, { passive: true });
     return () => {
       window.removeEventListener('resize', captureRect);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
+      const d = dragListenersRef.current;
+      if (d) {
+        window.removeEventListener('mousemove', d.move);
+        window.removeEventListener('mouseup', d.up);
+        dragListenersRef.current = null;
+      }
     };
   }, [captureRect]);
 
@@ -215,16 +161,24 @@ function DragSlider({ panel }: SliderProps) {
   );
 }
 
-export default function BeforeAfter() {
+export default function BeforeAfter({
+  variant = 'full',
+  previewCount = 3,
+}: {
+  variant?: 'full' | 'preview';
+  previewCount?: number;
+}) {
+  const displayPanels =
+    variant === 'preview' ? galleryPanels.slice(0, previewCount) : galleryPanels;
   const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const isNearViewport = useInView(sectionRef, { once: true, margin: '280px 0px' });
-  const currentPanel = panels[active];
+  const currentPanel = displayPanels[active];
 
   return (
     <section
       ref={sectionRef}
-      id="gallery"
+      id={variant === 'full' ? 'results' : undefined}
       className="relative py-12 md:py-13 overflow-hidden"
       style={{ background: 'var(--carbon-900)' }}
     >
@@ -280,7 +234,7 @@ export default function BeforeAfter() {
       <div className="md:hidden px-4">
         {/* Mobile service switcher */}
         <div className="mb-4 flex items-center justify-center gap-2">
-          {panels.map((p) => (
+          {displayPanels.map((p) => (
             <button
               key={p.id}
               type="button"
@@ -304,12 +258,12 @@ export default function BeforeAfter() {
             height: '88vw',
             minHeight: '280px',
             maxHeight: '470px',
-            background: panels[active].beforeBg,
+            background: displayPanels[active].beforeBg,
             border: '1px solid rgba(201,168,76,0.25)',
             boxShadow: '0 10px 24px rgba(0,0,0,0.32)',
           }}
         >
-          {isNearViewport ? <DragSlider panel={panels[active]} /> : null}
+          {isNearViewport ? <DragSlider panel={displayPanels[active]} /> : null}
           <motion.div
             key={active}
             initial={{ opacity: 0, y: -8 }}
@@ -325,7 +279,7 @@ export default function BeforeAfter() {
               className="text-[10px] font-bold tracking-widest uppercase"
               style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
             >
-              {panels[active].service}
+              {displayPanels[active].service}
             </span>
           </motion.div>
         </div>
@@ -333,7 +287,7 @@ export default function BeforeAfter() {
 
       {/* ── Desktop: filmstrip ── */}
       <div className="hidden md:flex h-[500px] px-14 gap-1.5">
-        {panels.map((panel) => {
+        {displayPanels.map((panel) => {
           const isActive = panel.id === active;
           return (
             <motion.div
@@ -405,7 +359,7 @@ export default function BeforeAfter() {
 
       {/* Panel selector dots */}
       <div className="hidden md:flex items-center gap-2.5 px-4 sm:px-8 md:px-14 mt-3">
-        {panels.map((p) => (
+        {displayPanels.map((p) => (
           <button
             key={p.id}
             type="button"
@@ -456,6 +410,18 @@ export default function BeforeAfter() {
           ))}
         </div>
       </div>
+
+      {variant === 'preview' ? (
+        <div className="px-4 sm:px-8 md:px-14 mt-6 flex justify-center">
+          <Link
+            href="/results"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-200 border border-[#C9A84C]/45 text-[#E7C979] hover:bg-[#C9A84C]/10"
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            View full results gallery
+          </Link>
+        </div>
+      ) : null}
     </section>
   );
 }
