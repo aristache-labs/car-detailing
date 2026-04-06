@@ -69,7 +69,7 @@ export default function Pricing({
             background: rgba(16, 16, 16, 0.96);
             color: #d9b45a;
             font-size: 10px;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             padding: 4px 10px;
@@ -77,13 +77,18 @@ export default function Pricing({
             border: 1px solid rgba(201, 168, 76, 0.36);
             box-shadow: none;
             font-family: var(--font-inter), system-ui, sans-serif;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
           }
           .popular-ribbon {
             position: absolute;
             top: -1px;
             right: -1px;
-            width: 90px;
-            height: 90px;
+            width: 136px;
+            height: 136px;
             overflow: hidden;
             z-index: 10;
             pointer-events: none;
@@ -92,20 +97,25 @@ export default function Pricing({
           .popular-ribbon::before {
             content: 'MOST REQUESTED';
             position: absolute;
-            top: 18px;
-            right: -22px;
-            width: 100px;
-            padding: 5px 0;
-            background: #c9a227;
-            color: #0a0a0a;
-            font-size: 8px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
+            top: 28px;
+            right: -36px;
+            width: 174px;
+            padding: 8px 10px 7px;
+            background: linear-gradient(180deg, #f2dd96 0%, #d2aa2f 52%, #bc9522 100%);
+            color: #130f08;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            line-height: 1;
             text-align: center;
+            white-space: nowrap;
             transform: rotate(45deg);
             transform-origin: center;
             font-family: var(--font-inter), system-ui, sans-serif;
-            box-shadow: none;
+            box-shadow:
+              0 6px 16px rgba(0, 0, 0, 0.26),
+              inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            text-shadow: 0 1px 0 rgba(255, 251, 245, 0.18);
           }
         `}</style>
         {showHeader ? (
