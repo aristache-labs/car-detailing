@@ -1,25 +1,25 @@
 'use client';
 
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const FAQ_ITEMS = [
   {
-    q: 'Why are final prices quoted after inspection?',
-    a: 'Paint condition, vehicle size, and your protection goals all change the scope. Inspection keeps recommendations honest and avoids guesswork pricing.',
+    q: 'Why do the cards show starting prices instead of fixed totals?',
+    a: 'They give you a real baseline for each service while still leaving room for vehicle size, paint condition, interior wear, or added protection work discovered during inspection.',
   },
   {
-    q: 'What typically changes the price?',
-    a: 'Heavy defects, larger paint surfaces, multi-stage correction, PPF coverage, and interior condition can all increase time and materials versus a baseline package.',
+    q: 'What usually changes the final quote?',
+    a: 'Vehicle size, defect severity, contamination level, leather condition, PPF coverage area, and whether services are combined into one studio booking can all change the final scope.',
   },
   {
-    q: 'How does PPF quoting work?',
-    a: 'PPF is quoted by coverage: front-end, partial, or full-body. Film type (clear vs matte) and panel complexity are confirmed during inspection.',
+    q: 'Can I combine multiple services into one visit?',
+    a: 'Yes. Many vehicles need correction, coating, interior work, and specialty detailing together. We can build one tailored quote and recommend the right service order.',
   },
   {
-    q: 'Do packages include ceramic coating?',
-    a: 'Our Protection-oriented packages include ceramic application where listed. Correction-focused work may pair correction stages with coating — your quote will spell it out.',
+    q: 'Is PPF priced the same way as the other services?',
+    a: 'PPF is still presented with a starting point, but final pricing depends more heavily on coverage, film type, edge complexity, and the exact panels being protected.',
   },
 ] as const;
 
@@ -28,28 +28,43 @@ export default function PricingFAQ() {
 
   return (
     <section className="border-t border-white/[0.07] py-12 md:py-16" style={{ background: 'var(--carbon-950)' }}>
-      <div className="mx-auto max-w-3xl px-4 sm:px-8 md:px-14">
-        <h2
-          className="mb-8 text-center text-2xl font-black tracking-[0.06em] md:text-left md:text-3xl"
-          style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
-        >
-          PRICING <span style={{ color: '#C9A84C' }}>FAQ</span>
-        </h2>
-        <div className="space-y-2">
+      <div className="mx-auto max-w-4xl px-4 sm:px-8 md:px-14">
+        <div className="mb-8 text-center md:mb-10 md:text-left">
+          <p
+            className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#d2b872]"
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            Pricing FAQ
+          </p>
+          <h2
+            className="mt-2 text-[2.4rem] font-black uppercase leading-[0.92] tracking-[0.04em] text-white md:text-[3rem]"
+            style={{ fontFamily: 'var(--font-bebas)' }}
+          >
+            Clear pricing, <span className="text-[#C9A84C]">without guesswork</span>
+          </h2>
+          <p
+            className="mt-3 max-w-2xl text-sm leading-relaxed text-[#b8c2d0] md:text-[15px]"
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            The pricing page sets direction. Inspection confirms the exact service scope, final quote, and the right combination for your vehicle.
+          </p>
+        </div>
+
+        <div className="space-y-3">
           {FAQ_ITEMS.map((item, i) => {
             const isOpen = open === i;
             return (
               <div
                 key={item.q}
-                className="overflow-hidden rounded-lg border border-white/8 bg-white/2"
+                className="overflow-hidden rounded-sm border border-white/8 bg-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
               >
                 <button
                   type="button"
                   onClick={() => setOpen((v) => (v === i ? null : i))}
-                  className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+                  className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left md:px-5"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                  <span className="text-sm font-semibold text-white/90">{item.q}</span>
+                  <span className="text-sm font-semibold leading-relaxed text-white/92 md:text-[15px]">{item.q}</span>
                   <ChevronDown
                     className={`h-4 w-4 shrink-0 text-[#C9A84C] transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     aria-hidden
@@ -64,7 +79,7 @@ export default function PricingFAQ() {
                       transition={{ duration: 0.2 }}
                     >
                       <p
-                        className="border-t border-white/6 px-4 pb-3 pt-2 text-sm leading-relaxed text-white/65"
+                        className="border-t border-white/8 px-4 pb-4 pt-3 text-sm leading-relaxed text-[#c6cfdb] md:px-5 md:text-[15px]"
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
                         {item.a}
