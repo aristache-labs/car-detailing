@@ -46,11 +46,15 @@ const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
   ...CONDITION_OPTIONS.map((c) => ({ value: c, label: c })),
 ];
 
-const inputBase =
-  'w-full rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(255,255,255,0.035)] px-3.5 py-2.5 text-[13px] leading-normal text-white/95 outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] placeholder:text-white/32 hover:border-[rgba(201,168,76,0.22)] focus:border-[#a88b42] focus:bg-[rgba(255,255,255,0.04)] focus:ring-1 focus:ring-[#C9A84C]/22';
+/** Pricing-aligned micro-labels — Included Services / section eyebrow family */
+const FIELD_LABEL_CLASS =
+  'mb-2.5 block text-[11px] font-medium uppercase tracking-[0.18em] text-[#b89a4a]';
 
-const labelBase =
-  'mb-2 block text-[10px] font-semibold uppercase tracking-[0.13em] text-white/52';
+const HELPER_TEXT_CLASS =
+  'mt-2 max-w-[min(100%,36rem)] text-[11px] leading-relaxed text-[#aeb8c6]';
+
+const inputBase =
+  'w-full min-h-[2.75rem] rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(6,6,8,0.88)] px-3.5 py-2.5 text-[13px] leading-normal text-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] placeholder:text-white/38 hover:border-[rgba(201,168,76,0.2)] focus:border-[#a88b42] focus:bg-[rgba(255,255,255,0.04)] focus:ring-1 focus:ring-[#C9A84C]/20';
 
 const trustAsideSectionTitle =
   'mb-4 flex w-full items-center justify-center gap-3 text-center';
@@ -67,12 +71,12 @@ function FieldLabel({
   return (
     <label
       htmlFor={htmlFor}
-      className={labelBase}
+      className={FIELD_LABEL_CLASS}
       style={{ fontFamily: 'var(--font-inter)' }}
     >
       {children}
       {required ? (
-        <span className="ml-0.5 text-[#C9A84C]" aria-hidden>
+        <span className="ml-0.5 text-[#d4b45c]/90" aria-hidden>
           *
         </span>
       ) : null}
@@ -214,7 +218,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="p-6 sm:p-7 lg:p-8">
-                <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-4">
+                <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-5">
                   <div className="sm:col-span-1">
                     <FieldLabel htmlFor="contact-name" required>
                       Full Name
@@ -283,7 +287,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       error={serviceError}
                     />
                     {serviceError ? (
-                      <p className="mt-1 text-[11px] font-medium text-amber-400/95" role="alert">
+                      <p className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="alert">
                         Please select a service.
                       </p>
                     ) : null}
@@ -301,30 +305,32 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   </div>
                   <div className="sm:col-span-1">
                     <FieldLabel htmlFor="contact-date">Preferred Date</FieldLabel>
-                    <input id="contact-date" name="preferredDate" type="date" className={inputBase} />
+                    <input
+                      id="contact-date"
+                      name="preferredDate"
+                      type="date"
+                      className={`${inputBase} tabular-nums`}
+                    />
                   </div>
                 </div>
 
-                <div className="mt-1">
+                <div className="mt-3">
                   <FieldLabel htmlFor="contact-message">Message / Goals</FieldLabel>
                   <textarea
                     id="contact-message"
                     name="message"
                     rows={4}
-                    className={`${inputBase} min-h-24 resize-y`}
+                    className={`${inputBase} min-h-28 resize-y py-3`}
                     placeholder=""
                   />
-                  <p
-                    className="mt-2 text-[11px] leading-normal text-[#8b939e]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
+                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: 'var(--font-inter)' }}>
                     Tell us what you&apos;d like improved, protected, or restored.
                   </p>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-5">
                   <FieldLabel htmlFor="contact-photos">Photos</FieldLabel>
-                  <div className="rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(0,0,0,0.25)] px-3 py-2 transition-colors hover:border-[rgba(201,168,76,0.2)]">
+                  <div className="w-1/2 min-w-0 max-w-full rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(6,6,8,0.75)] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors hover:border-[rgba(201,168,76,0.2)] focus-within:border-[#a88b42] focus-within:ring-1 focus-within:ring-[#C9A84C]/20">
                     <input
                       id="contact-photos"
                       name="photos"
@@ -332,40 +338,39 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       accept="image/*"
                       multiple
                       onChange={handleFiles}
-                      className={`w-full cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.28)] file:bg-[rgba(201,168,76,0.08)] file:px-3 file:py-1.5 file:text-[10px] file:font-semibold file:uppercase file:tracking-[0.12em] file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.4)] hover:file:bg-[rgba(201,168,76,0.12)]`}
+                      className="w-full min-w-0 cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.24)] file:bg-[rgba(201,168,76,0.08)] file:px-2.5 file:py-1.5 file:text-[10px] file:font-semibold file:uppercase file:tracking-widest file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.38)] hover:file:bg-[rgba(201,168,76,0.12)]"
                     />
                   </div>
-                  <p
-                    className="mt-2 text-[11px] leading-normal text-[#8b939e]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
+                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: 'var(--font-inter)' }}>
                     Optional: Upload 2–3 photos for a more accurate estimate — helpful for paint defects,
                     swirl marks, interior wear, or PPF quotes.
                   </p>
                   {fileHint ? (
-                    <p className="mt-1 text-[11px] font-medium text-amber-400/90" role="status">
+                    <p className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="status">
                       {fileHint}
                     </p>
                   ) : null}
                 </div>
 
                 <div className="mt-8 border-t border-white/6 pt-7">
-                  <button
-                    type="submit"
-                    className="btn-shimmer relative w-full cursor-pointer overflow-hidden py-3.5 text-[11px] font-bold uppercase tracking-[0.16em] transition-all duration-300 md:py-4"
-                    style={{
-                      background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
-                      color: '#070709',
-                      fontFamily: 'var(--font-inter)',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      boxShadow:
-                        'inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -1px 0 rgba(80,56,22,0.2), 0 8px 24px rgba(0,0,0,0.38)',
-                    }}
-                  >
-                    <span className="relative z-10">Request your quote</span>
-                  </button>
+                  <div className="flex justify-center">
+                    <button
+                      type="submit"
+                      className="btn-shimmer relative w-auto cursor-pointer overflow-hidden px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-all duration-300"
+                      style={{
+                        background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
+                        color: '#070709',
+                        fontFamily: 'var(--font-inter)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        boxShadow:
+                          'inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -1px 0 rgba(80,56,22,0.2), 0 8px 24px rgba(0,0,0,0.38)',
+                      }}
+                    >
+                      <span className="relative z-10">Request your quote</span>
+                    </button>
+                  </div>
                   <p
-                    className="mt-3 text-center text-[11px] leading-relaxed text-[#8b939e]"
+                    className="mx-auto mt-3 max-w-[min(100%,36rem)] text-center text-[11px] leading-relaxed text-[#aeb8c6]"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     We&apos;ll review your request and reply with a tailored recommendation within 24 hours.

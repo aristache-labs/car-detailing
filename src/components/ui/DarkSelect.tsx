@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const triggerClass =
-  'w-full rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(255,255,255,0.035)] px-3.5 py-2.5 text-[13px] text-white/95 outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] hover:border-[rgba(201,168,76,0.22)] focus:border-[#a88b42] focus:ring-1 focus:ring-[#C9A84C]/22';
+  'min-h-[2.75rem] w-full items-center rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(6,6,8,0.88)] px-3.5 py-2.5 text-[13px] text-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] hover:border-[rgba(201,168,76,0.2)] focus:border-[#a88b42] focus:ring-1 focus:ring-[#C9A84C]/20';
 
 export type DarkSelectOption = { value: string; label: string };
 
@@ -66,9 +66,9 @@ export default function DarkSelect({
             : undefined
         }
       >
-        <span className={showPlaceholderStyle ? 'text-white/35' : undefined}>{display}</span>
+        <span className={showPlaceholderStyle ? 'text-white/38' : undefined}>{display}</span>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-[#c9a84c]/75 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`h-[18px] w-[18px] shrink-0 text-[#c9a84c]/80 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           strokeWidth={1.85}
           aria-hidden
         />
@@ -77,7 +77,7 @@ export default function DarkSelect({
         <ul
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-full z-60 mt-1 max-h-60 overflow-auto rounded-sm border border-white/12 bg-[#0c0c10] py-1 shadow-[0_16px_48px_rgba(0,0,0,0.55)]"
+          className="absolute left-0 right-0 top-full z-60 mt-1 max-h-60 overflow-auto rounded-sm border border-[rgba(201,168,76,0.12)] bg-[#0a0a0e] py-1 shadow-[0_16px_48px_rgba(0,0,0,0.55)]"
           style={{ fontFamily: 'var(--font-inter)' }}
         >
           {options.map((opt) => (
