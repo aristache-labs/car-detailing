@@ -6,11 +6,20 @@ const STEPS = [
   { title: 'You get a clear quote', detail: 'Timeline, package, and next steps — no pressure.' },
 ] as const;
 
+const BODY = 'var(--font-contact-body, var(--font-inter))';
+
 /** Below-the-fold trust + logistics — complements full Contact form */
 export default function ContactPageExtras() {
   return (
-    <div className="border-t border-white/[0.07]" style={{ background: 'var(--carbon-950)' }}>
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-12 md:grid-cols-2 md:gap-14 md:px-14 md:py-16">
+    <div className="relative border-t border-white/[0.07]" style={{ background: 'var(--carbon-950)' }}>
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-overlay"
+        aria-hidden
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        }}
+      />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-12 md:grid-cols-2 md:gap-14 md:px-14 md:py-16 md:[&>section:first-child]:pr-6 md:[&>section:last-child]:border-l md:[&>section:last-child]:border-[rgba(201,168,76,0.1)] md:[&>section:last-child]:pl-10">
         <section className="min-w-0 text-center md:text-left">
           <h2
             className="mb-6 text-[clamp(1.25rem,2.2vw,1.65rem)] font-black uppercase leading-[1.02] tracking-[0.04em] text-white/95 md:mb-7 md:text-[1.75rem]"
@@ -32,13 +41,13 @@ export default function ContactPageExtras() {
                 <div className="min-w-0 flex-1 pt-0.5">
                   <p
                     className="text-[14px] font-semibold leading-snug tracking-[0.01em] text-white/95 md:text-[15px]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                    style={{ fontFamily: BODY }}
                   >
                     {s.title}
                   </p>
                   <p
                     className="mt-1.5 text-[13px] leading-normal text-[#aeb8c6]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                    style={{ fontFamily: BODY }}
                   >
                     {s.detail}
                   </p>
@@ -73,13 +82,13 @@ export default function ContactPageExtras() {
               </div>
               <p
                 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
-                style={{ fontFamily: 'var(--font-inter)' }}
+                style={{ fontFamily: BODY }}
               >
                 Map preview
               </p>
               <p
                 className="max-w-[min(100%,19rem)] text-[12px] leading-[1.55] text-[#aeb8c6]"
-                style={{ fontFamily: 'var(--font-inter)' }}
+                style={{ fontFamily: BODY }}
               >
                 Embed Google Maps here when ready.
               </p>
@@ -87,7 +96,7 @@ export default function ContactPageExtras() {
           </div>
           <p
             className="mt-4 text-center text-[11px] font-medium uppercase tracking-[0.14em] text-[#8b939e] md:text-left"
-            style={{ fontFamily: 'var(--font-inter)' }}
+            style={{ fontFamily: BODY }}
           >
             Visits by appointment only
           </p>

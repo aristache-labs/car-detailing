@@ -50,6 +50,8 @@ const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
 const FIELD_LABEL_CLASS =
   'mb-2.5 block text-[11px] font-medium uppercase tracking-[0.18em] text-[#b89a4a]';
 
+const BODY_FONT = 'var(--font-contact-body, var(--font-inter))';
+
 const HELPER_TEXT_CLASS =
   'mt-2 max-w-[min(100%,36rem)] text-[11px] leading-relaxed text-[#aeb8c6]';
 
@@ -89,7 +91,7 @@ function FieldLabel({
     <label
       htmlFor={htmlFor}
       className={FIELD_LABEL_CLASS}
-      style={{ fontFamily: 'var(--font-inter)' }}
+      style={{ fontFamily: BODY_FONT }}
     >
       {children}
       {required ? (
@@ -149,6 +151,13 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
           backgroundSize: '80px 80px',
         }}
       />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay"
+        aria-hidden
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         {showIntro ? (
@@ -184,7 +193,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
               <span
                 className="text-center text-premium-micro tracking-[0.2em] md:text-left"
-                style={{ fontFamily: 'var(--font-inter)' }}
+                style={{ fontFamily: BODY_FONT }}
               >
                 Tell us what your vehicle needs and we&apos;ll reply with a tailored recommendation within 24
                 hours.
@@ -193,16 +202,32 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
           </div>
         ) : null}
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-10">
+        <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12 lg:gap-12">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
-            className="lg:col-span-8 overflow-visible rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.04)]"
+            className="flex min-h-0 overflow-hidden rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.04)] lg:col-span-7 lg:h-full"
           >
             <div
-              className="h-[2px] w-full"
+              className="relative hidden w-12 shrink-0 flex-col items-center justify-center border-r border-[rgba(201,168,76,0.14)] bg-[linear-gradient(180deg,rgba(201,168,76,0.07)_0%,rgba(6,6,8,0.98)_45%,rgba(4,4,6,0.99)_100%)] lg:flex"
+              aria-hidden
+            >
+              <span
+                className="select-none text-[9px] font-extrabold uppercase tracking-[0.42em] text-[#9a8060]"
+                style={{
+                  fontFamily: 'var(--font-orbitron)',
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                }}
+              >
+                Intake
+              </span>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col">
+            <div
+              className="h-[2px] w-full shrink-0"
               style={{
                 background: 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.55) 50%, transparent 100%)',
               }}
@@ -229,7 +254,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                 >
                   Request Received
                 </h3>
-                <p className="max-w-sm text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
+                <p className="max-w-sm text-sm" style={{ color: 'var(--text-secondary)', fontFamily: BODY_FONT }}>
                   We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
                 </p>
               </motion.div>
@@ -340,7 +365,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     className={`${inputBase} min-h-28 resize-y py-3`}
                     placeholder=""
                   />
-                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: 'var(--font-inter)' }}>
+                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
                     Tell us what you&apos;d like improved, protected, or restored.
                   </p>
                 </div>
@@ -358,7 +383,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       className="w-full min-w-0 cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.24)] file:bg-[rgba(201,168,76,0.08)] file:px-2.5 file:py-1.5 file:text-[10px] file:font-semibold file:uppercase file:tracking-widest file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.38)] hover:file:bg-[rgba(201,168,76,0.12)]"
                     />
                   </div>
-                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: 'var(--font-inter)' }}>
+                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
                     Optional: Upload 2–3 photos for a more accurate estimate — helpful for paint defects,
                     swirl marks, interior wear, or PPF quotes.
                   </p>
@@ -377,7 +402,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       style={{
                         background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
                         color: '#070709',
-                        fontFamily: 'var(--font-inter)',
+                        fontFamily: BODY_FONT,
                         border: '1px solid rgba(255,255,255,0.1)',
                         boxShadow:
                           'inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -1px 0 rgba(80,56,22,0.2), 0 8px 24px rgba(0,0,0,0.38)',
@@ -388,13 +413,14 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   </div>
                   <p
                     className="mx-auto mt-3 max-w-[min(100%,36rem)] text-center text-[11px] leading-relaxed text-[#aeb8c6]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                    style={{ fontFamily: BODY_FONT }}
                   >
                     We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
                   </p>
                 </div>
               </form>
             )}
+            </div>
           </motion.div>
 
           <motion.aside
@@ -402,7 +428,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.06 }}
-            className="flex flex-col overflow-hidden rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.035)] lg:col-span-4"
+            className="flex min-h-0 h-full flex-col overflow-hidden rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.035)] lg:col-span-5"
             aria-label="Why book with us and contact details"
           >
             <div
@@ -412,10 +438,10 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               }}
             />
 
-            <div className="flex flex-1 flex-col p-6 sm:p-7 lg:p-8">
+            <div className="flex min-h-0 flex-1 flex-col p-6 sm:p-7 lg:p-8">
               <div
                 className="md:border-l md:border-[rgba(201,168,76,0.22)] md:pl-5"
-                style={{ fontFamily: 'var(--font-inter)' }}
+                style={{ fontFamily: BODY_FONT }}
               >
                 <header className="pr-1 text-center md:text-left">
                   <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#b89a4a]">
@@ -446,12 +472,15 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                 </ul>
               </div>
 
+              {/* Fills extra height so contact/address align visually when sidebar matches form height */}
+              <div className="hidden min-h-0 lg:flex lg:flex-1" aria-hidden />
+
               <div
-                className="my-8 h-px w-full shrink-0 bg-[rgba(201,168,76,0.1)]"
+                className="my-8 h-px w-full shrink-0 bg-[rgba(201,168,76,0.1)] lg:my-0"
                 aria-hidden
               />
 
-              <div className="space-y-8" style={{ fontFamily: 'var(--font-inter)' }}>
+              <div className="space-y-8 lg:mt-6" style={{ fontFamily: BODY_FONT }}>
                 <div>
                   <div className={trustAsideSectionTitle}>
                     <div

@@ -39,7 +39,6 @@ const SOCIAL_LINKS: {
   {
     label: 'TikTok',
     href: 'https://www.tiktok.com/',
-    // Simple Icons (MIT) — viewBox 0 0 24 24
     path: 'M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z',
   },
   {
@@ -54,41 +53,55 @@ const SOCIAL_LINKS: {
   },
 ];
 
-const colHeading =
-  'mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A84C]';
+const BODY = 'var(--font-inter)';
+
+const sectionLabel =
+  'mb-3 border-l-2 border-[rgba(201,168,76,0.45)] pl-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#d4b86a] sm:mb-3.5';
 
 const linkClass =
-  'text-[13px] leading-snug text-white/70 transition-colors duration-200 hover:text-[#d8bb6c]';
+  'block rounded-sm py-1.5 text-[13px] leading-snug text-white/75 transition-colors duration-200 hover:bg-white/[0.03] hover:text-[#e8d4a8] active:bg-white/[0.05] sm:py-1';
+
+const noiseBg = {
+  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+} as const;
 
 export default function Footer() {
   return (
-    <footer className="relative" style={{ background: 'var(--carbon-950)' }}>
+    <footer className="relative overflow-hidden" style={{ background: 'var(--carbon-950)' }}>
       <div className="gold-divider" />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-overlay"
+        aria-hidden
+        style={noiseBg}
+      />
 
-      <div className="mx-auto max-w-7xl px-4 pb-5 pt-9 sm:px-8 md:px-14">
-        <div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)_minmax(0,0.95fr)_minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-x-8 lg:gap-y-0 xl:gap-x-10"
-          style={{ fontFamily: 'var(--font-inter)' }}
-        >
-          {/* 1 — Brand */}
-          <div className="order-1 sm:col-span-2 lg:col-span-1 lg:order-0">
-            <div className="mb-3 flex items-center gap-2">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-8 md:px-14" style={{ fontFamily: BODY }}>
+        {/* Desktop: 3 + 4 + 5. Mobile: brand → contact card → 2-col nav → legal */}
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:gap-x-10 lg:gap-y-0">
+          {/* Brand — compact wordmark; avoids mirroring the full navbar lockup */}
+          <div className="lg:col-span-3">
+            <div className="flex items-start gap-3 sm:items-center">
               <div
-                className="flex h-7 w-7 items-center justify-center rounded-full"
-                style={{ background: 'linear-gradient(135deg, #C9A84C, #FFD700)' }}
+                className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full shadow-[0_0_0_1px_rgba(201,168,76,0.25)] sm:h-8 sm:w-8"
+                style={{ background: 'linear-gradient(145deg, #d4b86a 0%, #9a7b2e 100%)' }}
               >
-                <Zap className="h-3.5 w-3.5 fill-black text-black" />
+                <Zap className="h-4 w-4 fill-black text-black sm:h-3.5 sm:w-3.5" aria-hidden />
               </div>
-              <span className="text-base font-black uppercase tracking-[0.18em]" style={{ fontFamily: 'var(--font-orbitron)' }}>
-                <span style={{ color: '#C9A84C' }}>APEX</span>
-                <span className="ml-1 text-white">DETAILING</span>
-              </span>
+              <div className="min-w-0">
+                <p
+                  className="text-[13px] font-bold uppercase leading-tight tracking-[0.2em] sm:text-xs sm:tracking-[0.22em]"
+                  style={{ fontFamily: 'var(--font-orbitron)' }}
+                >
+                  <span className="text-[#d4b86a]">Apex</span>
+                  <span className="text-white/95"> Detailing</span>
+                </p>
+                <p className="mt-2 max-w-[20rem] text-[13px] leading-[1.55] text-white/58 sm:mt-1.5 sm:text-[12px] sm:leading-relaxed">
+                  Premium detailing, correction, ceramic coating, and protection — built for vehicles that deserve more
+                  than a wash.
+                </p>
+              </div>
             </div>
-            <p className="max-w-sm text-[13px] leading-relaxed text-white/72">
-              Premium auto detailing, paint correction, ceramic coating, and protective finishes for vehicles that
-              deserve more.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2" aria-label="Social media">
+            <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-4" aria-label="Social media">
               {SOCIAL_LINKS.map(({ label, href, path }) => (
                 <a
                   key={label}
@@ -96,9 +109,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-sm border border-white/10 bg-white/2 text-white/45 transition-colors duration-200 hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/6 hover:text-[#d8bb6c]"
+                  className="flex h-10 w-10 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.14)] bg-[rgba(201,168,76,0.04)] text-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-200 hover:border-[rgba(201,168,76,0.35)] hover:bg-[rgba(201,168,76,0.08)] hover:text-[#d4b86a] sm:h-9 sm:w-9"
                 >
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <svg className="h-[15px] w-[15px] sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d={path} />
                   </svg>
                 </a>
@@ -106,77 +119,104 @@ export default function Footer() {
             </div>
           </div>
 
-          <nav className="order-3 lg:order-0" aria-label="Site">
-            <h2 className={colHeading}>Explore</h2>
-            <ul className="space-y-2">
-              {EXPLORE_LINKS.map(({ label, href }) => (
-                <li key={label}>
-                  <Link href={href} className={linkClass}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav className="order-4 lg:order-0" aria-label="Services">
-            <h2 className={colHeading}>Services</h2>
-            <ul className="space-y-2">
-              {SERVICE_LINKS.map(({ label, href }) => (
-                <li key={label}>
-                  <Link href={href} className={linkClass}>
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="order-2 sm:order-5 lg:order-0">
-            <h2 className={colHeading}>Contact</h2>
-            <ul className="space-y-2.5 text-[13px] text-white/72">
-              <li className="flex gap-2">
-                <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
-                <a href="tel:+40721000000" className={`${linkClass} block`}>
+          {/* Contact — card, 2×2 on mobile for density */}
+          <div className="rounded-sm border border-[rgba(201,168,76,0.12)] bg-[linear-gradient(165deg,rgba(201,168,76,0.06)_0%,rgba(8,8,10,0.92)_38%,rgba(6,6,8,0.98)_100%)] p-4 shadow-[0_12px_40px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-5 lg:col-span-4">
+            <h2
+              className="mb-4 text-[10px] font-bold uppercase tracking-[0.24em] text-[#b89a4a]"
+              style={{ fontFamily: 'var(--font-orbitron)' }}
+            >
+              Studio &amp; hours
+            </h2>
+            <div className="grid grid-cols-2 gap-4 sm:gap-5">
+              <div className="min-w-0">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                  <Phone className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
+                  Phone
+                </div>
+                <a href="tel:+40721000000" className="text-[13px] font-medium text-white/90 transition-colors hover:text-[#e8d4a8]">
                   +40 721 000 000
                 </a>
-              </li>
-              <li className="flex gap-2">
-                <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
-                <a href="mailto:info@apexdetailing.ro" className={`${linkClass} block`}>
+              </div>
+              <div className="min-w-0">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                  <Mail className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
+                  Email
+                </div>
+                <a
+                  href="mailto:info@apexdetailing.ro"
+                  className="break-all text-[12px] font-medium leading-snug text-white/90 transition-colors hover:text-[#e8d4a8] sm:text-[13px]"
+                >
                   info@apexdetailing.ro
                 </a>
-              </li>
-              <li className="flex gap-2">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
-                <span className="leading-snug">Bucharest · Ilfov</span>
-              </li>
-              <li className="flex gap-2">
-                <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C9A84C]/80" aria-hidden />
-                <span className="leading-snug">Mon–Sat · 09:00–18:00</span>
-              </li>
-            </ul>
+              </div>
+              <div className="min-w-0">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                  <MapPin className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
+                  Area
+                </div>
+                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">Bucharest · Ilfov</p>
+              </div>
+              <div className="min-w-0">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                  <Clock className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
+                  Hours
+                </div>
+                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">Mon–Sat · 09:00–18:00</p>
+              </div>
+            </div>
           </div>
 
-          <nav className="order-6 sm:order-4 lg:order-0" aria-label="Legal">
-            <h2 className={colHeading}>Legal</h2>
-            <ul className="space-y-2">
-              {LEGAL_LINKS.map(({ label, href }) => (
-                <li key={label}>
-                  <a href={href} className={linkClass}>
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Explore + Services + Legal — 2 col on mobile, 3 on lg */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:gap-x-8 lg:col-span-5 lg:grid-cols-3 lg:gap-x-6">
+            <nav aria-label="Site">
+              <h2 className={sectionLabel} style={{ fontFamily: 'var(--font-orbitron)' }}>
+                Explore
+              </h2>
+              <ul className="space-y-0.5">
+                {EXPLORE_LINKS.map(({ label, href }) => (
+                  <li key={label}>
+                    <Link href={href} className={linkClass}>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav aria-label="Services">
+              <h2 className={sectionLabel} style={{ fontFamily: 'var(--font-orbitron)' }}>
+                Services
+              </h2>
+              <ul className="space-y-0.5">
+                {SERVICE_LINKS.map(({ label, href }) => (
+                  <li key={label}>
+                    <Link href={href} className={linkClass}>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav className="col-span-2 border-t border-white/6 pt-6 lg:col-span-1 lg:border-t-0 lg:pt-0" aria-label="Legal">
+              <h2 className={sectionLabel} style={{ fontFamily: 'var(--font-orbitron)' }}>
+                Legal
+              </h2>
+              <ul className="flex flex-col gap-0.5">
+                {LEGAL_LINKS.map(({ label, href }) => (
+                  <li key={label}>
+                    <a href={href} className={linkClass}>
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
 
-        <div
-          className="mt-8 border-t border-white/8 pt-4"
-          style={{ fontFamily: 'var(--font-inter)' }}
-        >
-          <p className="text-center text-[11px] text-white/56 md:text-left">
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[rgba(201,168,76,0.08)] pt-6 sm:flex-row sm:items-center">
+          <p className="text-center text-[11px] tracking-[0.02em] text-white/45 sm:text-left">
             © {new Date().getFullYear()} Apex Detailing. All rights reserved.
           </p>
         </div>
