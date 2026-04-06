@@ -75,6 +75,13 @@ const mediaCardFrame =
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(201,168,76,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]';
 
+/** Same tokens as `ServicesCatalog` filter row — gradient fill when active, gold outline when idle. */
+const SERVICE_FILTER_BTN_ACTIVE =
+  'border border-transparent bg-linear-to-b from-[#ddc48a] from-0% via-[#cfa85a] via-48% to-[#b8924a] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)] active:translate-y-0';
+
+const SERVICE_FILTER_BTN_INACTIVE =
+  'border border-[rgba(207,168,90,0.2)] bg-[rgba(0,0,0,0.35)] text-[#d6b36a] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:-translate-y-px hover:border-[rgba(207,168,90,0.42)] hover:bg-[rgba(207,168,90,0.05)] hover:text-[#e0c088] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_0_1px_rgba(207,168,90,0.08)] active:translate-y-0';
+
 /** Service badge — smaller on narrow columns; full size from `md:` up (desktop unchanged). */
 const serviceBadgeClass =
   'inline-flex max-w-[min(100%,9.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2 py-0.5 text-[8px] font-bold uppercase leading-tight tracking-[0.12em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[10px] md:tracking-[0.15em]';
@@ -321,27 +328,26 @@ export default function ResultsPageClient() {
       {/* Mobile: mode tabs (centered) + gallery filter row */}
       <section className="border-b border-white/[0.07] bg-[#0a0a0a] md:hidden">
         <div className="mx-auto max-w-7xl px-4 pt-7 pb-2">
-          <div className="-mx-4 mb-7 flex justify-center overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex min-w-0 shrink-0 items-end justify-center gap-7 sm:gap-8">
-              {TABS.map(({ id, label }) => {
-                const active = activeTab === id;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => goToTab(id)}
-                    className={`relative shrink-0 pb-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] transition-colors duration-200 ${focusRing} ${
-                      active ? 'text-white' : 'text-white/32 hover:text-white/55'
-                    }`}
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    {label}
-                    {active ? (
-                      <span className="absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C]/90" aria-hidden />
-                    ) : null}
-                  </button>
-                );
-              })}
+          <div className="mb-7 flex justify-center">
+            <div className="w-fit max-w-full rounded-md border border-[#1a1a1a] bg-[#0f0f0f] p-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+              <div className="flex flex-wrap items-center justify-center gap-1.5">
+                {TABS.map(({ id, label }) => {
+                  const active = activeTab === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => goToTab(id)}
+                      className={`shrink-0 rounded-sm px-2.5 py-1.5 text-center text-[10px] font-bold uppercase leading-snug tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
+                        active ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
+                      }`}
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -363,10 +369,8 @@ export default function ResultsPageClient() {
                       key={id}
                       type="button"
                       onClick={() => setMobileGalleryFilter(id)}
-                      className={`shrink-0 rounded-sm border px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${focusRing} ${
-                        on
-                          ? 'border-[#C9A84C]/35 bg-[#C9A84C]/6 text-[#C9A84C]'
-                          : 'border-white/9 text-white/38 hover:border-white/18 hover:text-white/55'
+                      className={`shrink-0 rounded-sm px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
+                        on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                       }`}
                       style={{ fontFamily: 'var(--font-inter)' }}
                     >
@@ -383,29 +387,29 @@ export default function ResultsPageClient() {
       {/* Main: desktop side nav + content */}
       <section className="bg-[#0a0a0a] px-4 py-8 md:px-8 md:py-12">
         <div className="mx-auto flex max-w-7xl items-start gap-8 px-0 md:gap-12 md:px-0">
-          {/* Desktop: premium vertical tab stack */}
+          {/* Desktop: mode switches — grouped panel + Services-matched chip fills */}
           <nav
             aria-label="Results content"
-            className="sticky top-32 hidden w-45 shrink-0 flex-col gap-0.5 rounded-sm border border-white/9 bg-[#0c0c0c] p-1 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] md:flex"
+            className="sticky top-32 hidden w-[min(100%,10.5rem)] shrink-0 md:flex"
           >
-            {TABS.map(({ id, label }) => {
-              const active = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => goToTab(id)}
-                  className={`relative min-h-11 w-full rounded-[3px] border border-transparent px-3 py-2.5 text-left text-[10px] font-bold uppercase leading-snug tracking-[0.12em] transition-[color,background-color,border-color] duration-200 ${focusRing} ${
-                    active
-                      ? 'border-white/[0.07] bg-[#121212] text-white shadow-[inset_2px_0_0_0_#C9A84C]'
-                      : 'text-white/38 hover:bg-white/2.5 hover:text-white/62'
-                  }`}
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {label}
-                </button>
-              );
-            })}
+            <div className="flex w-full flex-col gap-2.5 rounded-md border border-[#1a1a1a] bg-[#0f0f0f] p-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+              {TABS.map(({ id, label }) => {
+                const active = activeTab === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => goToTab(id)}
+                    className={`w-full rounded-sm px-3 py-2 text-left text-[9px] font-bold uppercase leading-snug tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
+                      active ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
+                    }`}
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
           </nav>
 
           <div
@@ -423,10 +427,8 @@ export default function ResultsPageClient() {
                         key={id}
                         type="button"
                         onClick={() => setMobileGalleryFilter(id)}
-                        className={`rounded-sm border px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${focusRing} ${
-                          on
-                            ? 'border-[#C9A84C]/40 bg-[#C9A84C]/6 text-[#C9A84C]'
-                            : 'border-white/9 text-white/34 hover:border-white/18 hover:text-white/58'
+                        className={`rounded-sm px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
+                          on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                         }`}
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
@@ -447,7 +449,7 @@ export default function ResultsPageClient() {
                         duration: 0.2,
                         ease: 'easeOut',
                       }}
-                      className="group overflow-hidden rounded-sm border-0 bg-transparent md:border md:border-white/8 md:bg-white/2 md:transition-[border-color] md:duration-300 md:hover:border-[#C9A84C]/22"
+                      className="group overflow-hidden rounded-sm border border-white/8 bg-white/2 transition-[border-color] duration-300 hover:border-[#C9A84C]/22"
                     >
                       <button
                         type="button"
@@ -466,7 +468,7 @@ export default function ResultsPageClient() {
                           />
                         </div>
                       </button>
-                      <div className="text-left pt-3.5 pb-1.5 md:px-5 md:pb-6 md:pt-5">
+                      <div className="text-left px-4 pb-2.5 pt-3.5 md:px-5 md:pb-6 md:pt-5">
                         {/* Mobile: model left, short badge right, meta below — all left-aligned */}
                         <div className="md:hidden">
                           <div className="flex min-w-0 items-start justify-between gap-1.5">
