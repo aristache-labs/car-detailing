@@ -244,43 +244,44 @@ export default function ResultsPageClient() {
         </div>
       </section>
 
-      {/* Mobile: tab bar + gallery filter chips */}
+      {/* Mobile: mode tabs (centered) + gallery filter row */}
       <section className="border-b border-white/[0.07] bg-[#0a0a0a] md:hidden">
-        <div className="mx-auto max-w-7xl px-4">
-          <div
-            className="mb-4 flex items-center gap-5 overflow-x-auto border-b border-white/8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ scrollbarWidth: 'none' }}
-          >
-            {TABS.map(({ id, label }) => {
-              const active = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => goToTab(id)}
-                  className={`relative shrink-0 whitespace-nowrap pb-3 text-[10px] font-bold uppercase tracking-widest transition-colors duration-200 ${focusRing} ${
-                    active ? 'text-white' : 'text-white/30'
-                  }`}
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {label}
-                  {active ? <span className="absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C]" aria-hidden /> : null}
-                </button>
-              );
-            })}
+        <div className="mx-auto max-w-7xl px-4 pt-7 pb-2">
+          <div className="-mx-4 mb-7 flex justify-center overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex min-w-0 shrink-0 items-end justify-center gap-7 sm:gap-8">
+              {TABS.map(({ id, label }) => {
+                const active = activeTab === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => goToTab(id)}
+                    className={`relative shrink-0 pb-3 text-center text-[10px] font-bold uppercase tracking-[0.14em] transition-colors duration-200 ${focusRing} ${
+                      active ? 'text-white' : 'text-white/32 hover:text-white/55'
+                    }`}
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    {label}
+                    {active ? (
+                      <span className="absolute bottom-0 left-0 right-0 h-px bg-[#C9A84C]/90" aria-hidden />
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {activeTab === 'GALLERY' ? (
-            <div className="relative mb-5">
+            <div className="relative mb-7">
+              {/* Right-only fade: very subtle; no left fade so “ALL” stays fully legible */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-0 top-0 z-10 h-full w-5 bg-linear-to-r from-[#0a0a0a] to-transparent"
+                className="pointer-events-none absolute right-0 top-0 z-10 h-full w-6 bg-linear-to-l from-[#0a0a0a] via-[#0a0a0a]/70 to-transparent opacity-50"
               />
               <div
-                aria-hidden
-                className="pointer-events-none absolute right-0 top-0 z-10 h-full w-5 bg-linear-to-l from-[#0a0a0a] to-transparent"
-              />
-              <div className="flex gap-1.5 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                className="-mx-4 flex gap-2 overflow-x-auto scroll-py-1 pl-4 pr-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                style={{ scrollbarWidth: 'none' }}
+              >
                 {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
                   const on = mobileGalleryFilter === id;
                   return (
@@ -288,10 +289,10 @@ export default function ResultsPageClient() {
                       key={id}
                       type="button"
                       onClick={() => setMobileGalleryFilter(id)}
-                      className={`shrink-0 rounded-full border px-2.5 py-1 text-[8px] font-bold uppercase tracking-widest transition-all duration-200 ${focusRing} ${
+                      className={`shrink-0 rounded-sm border px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${focusRing} ${
                         on
-                          ? 'border-[#C9A84C]/40 bg-[#C9A84C]/8 text-[#C9A84C]'
-                          : 'border-white/10 text-white/30'
+                          ? 'border-[#C9A84C]/35 bg-[#C9A84C]/6 text-[#C9A84C]'
+                          : 'border-white/9 text-white/38 hover:border-white/18 hover:text-white/55'
                       }`}
                       style={{ fontFamily: 'var(--font-inter)' }}
                     >
@@ -308,29 +309,27 @@ export default function ResultsPageClient() {
       {/* Main: desktop side nav + content */}
       <section className="bg-[#0a0a0a] px-4 py-8 md:px-8 md:py-12">
         <div className="mx-auto flex max-w-7xl items-start gap-8 px-0 md:gap-12 md:px-0">
-          {/* Desktop: vertical nav */}
+          {/* Desktop: premium vertical tab stack */}
           <nav
             aria-label="Results content"
-            className="sticky top-32 hidden w-44 shrink-0 flex-col gap-1 pt-2 md:flex"
+            className="sticky top-32 hidden w-45 shrink-0 flex-col gap-0.5 rounded-sm border border-white/9 bg-[#0c0c0c] p-1 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] md:flex"
           >
-            {TABS.map(({ id, label }, i) => {
+            {TABS.map(({ id, label }) => {
               const active = activeTab === id;
               return (
-                <div key={id}>
-                  {i > 0 ? <div className="my-4 ml-4 h-px bg-white/8" aria-hidden /> : null}
-                  <button
-                    type="button"
-                    onClick={() => goToTab(id)}
-                    className={`w-full border-l-2 py-2 pl-4 text-left text-[11px] font-bold uppercase tracking-widest transition-all duration-250 ${focusRing} ${
-                      active
-                        ? 'border-[#C9A84C] text-white'
-                        : 'border-transparent text-white/25 hover:border-white/20 hover:text-white/50'
-                    }`}
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    {label}
-                  </button>
-                </div>
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => goToTab(id)}
+                  className={`relative min-h-11 w-full rounded-[3px] border border-transparent px-3 py-2.5 text-left text-[10px] font-bold uppercase leading-snug tracking-[0.12em] transition-[color,background-color,border-color] duration-200 ${focusRing} ${
+                    active
+                      ? 'border-white/[0.07] bg-[#121212] text-white shadow-[inset_2px_0_0_0_#C9A84C]'
+                      : 'text-white/38 hover:bg-white/2.5 hover:text-white/62'
+                  }`}
+                  style={{ fontFamily: 'var(--font-inter)' }}
+                >
+                  {label}
+                </button>
               );
             })}
           </nav>
@@ -342,7 +341,7 @@ export default function ResultsPageClient() {
           >
             {mainTab === 'gallery' && (
               <div>
-                <div className="mb-6 hidden flex-wrap items-center gap-2 md:flex">
+                <div className="mb-7 hidden flex-wrap items-center gap-2.5 md:flex">
                   {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
                     const on = mobileGalleryFilter === id;
                     return (
@@ -350,10 +349,10 @@ export default function ResultsPageClient() {
                         key={id}
                         type="button"
                         onClick={() => setMobileGalleryFilter(id)}
-                        className={`rounded-sm border px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest transition-all duration-200 ${focusRing} ${
+                        className={`rounded-sm border px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] transition-all duration-200 ${focusRing} ${
                           on
-                            ? 'border-[#C9A84C]/50 bg-[#C9A84C]/6 text-[#C9A84C]'
-                            : 'border-white/10 text-white/30 hover:border-white/25 hover:text-white/55'
+                            ? 'border-[#C9A84C]/40 bg-[#C9A84C]/6 text-[#C9A84C]'
+                            : 'border-white/9 text-white/34 hover:border-white/18 hover:text-white/58'
                         }`}
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
