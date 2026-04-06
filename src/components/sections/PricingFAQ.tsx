@@ -31,48 +31,48 @@ export default function PricingFAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="border-t border-white/[0.07] py-12 md:py-16" style={{ background: 'var(--carbon-950)' }}>
+    <section className="border-t border-white/[0.07] py-10 md:py-14" style={{ background: 'var(--carbon-950)' }}>
       <div className="mx-auto max-w-4xl px-4 sm:px-8 md:px-14">
-        <div className="mb-9 text-center md:mb-10 md:text-left">
+        <div className="mb-10 text-center md:mb-11 md:text-left">
           <div className="flex justify-center md:justify-start">
             <span className={FAQ_BADGE_CLASS} style={{ fontFamily: 'var(--font-inter)' }}>
               Pricing FAQ
             </span>
           </div>
           <h2
-            className="mt-3 text-[clamp(2rem,6vw,2.875rem)] font-black uppercase leading-[0.94] tracking-[0.035em] text-white/95 md:mt-3.5"
+            className="mt-3 font-black uppercase leading-[0.96] tracking-[0.028em] text-white/92 max-md:text-[clamp(1.5rem,5.2vw,1.8rem)] md:mt-3.5 md:text-[clamp(1.8rem,3vw,2.2rem)]"
             style={{ fontFamily: 'var(--font-bebas)' }}
           >
-            Clear pricing, <span className="text-[#d4b45c]">without guesswork</span>
+            Clear pricing, <span className="text-[#cab06a]">without guesswork</span>
           </h2>
           <p
-            className="mx-auto mt-4 max-w-xl text-[13px] leading-[1.6] text-[#aeb8c6] md:mx-0 md:mt-5 md:text-[15px]"
+            className="mx-auto mt-4 max-w-[min(100%,26rem)] text-[13px] leading-[1.58] text-[#a4adb8] md:mx-0 md:mt-5 md:text-[14px] md:leading-[1.62]"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             The pricing page sets direction. Inspection confirms the exact service scope, final quote, and the right combination for your vehicle.
           </p>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {FAQ_ITEMS.map((item, i) => {
             const isOpen = open === i;
             return (
               <div
                 key={item.q}
-                className="overflow-hidden rounded-sm border border-[rgba(201,168,76,0.11)] bg-[rgba(255,255,255,0.025)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+                className="overflow-hidden rounded-sm border border-[rgba(201,168,76,0.15)] bg-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.045)]"
               >
                 <button
                   type="button"
                   onClick={() => setOpen((v) => (v === i ? null : i))}
-                  className="flex w-full items-start justify-between gap-4 px-4 py-3.5 text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.02)] md:px-5 md:py-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A84C]/35"
+                  className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors duration-200 hover:bg-[rgba(255,255,255,0.028)] active:bg-[rgba(255,255,255,0.04)] md:px-5 md:py-[0.9rem] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A84C]/35"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                  <span className="min-w-0 flex-1 text-[14px] font-medium leading-snug tracking-[0.01em] text-white/95 md:text-[15px]">
+                  <span className="min-w-0 flex-1 text-[13px] font-semibold leading-snug tracking-[0.015em] text-white/93 md:text-[14px]">
                     {item.q}
                   </span>
                   <ChevronDown
-                    className={`mt-0.5 h-[18px] w-[18px] shrink-0 text-[#c9a84c]/85 transition-transform duration-200 ease-out ${isOpen ? 'rotate-180' : ''}`}
-                    strokeWidth={1.85}
+                    className={`h-5 w-5 shrink-0 text-[#b89a4a]/95 transition-transform duration-200 ease-out ${isOpen ? 'rotate-180' : ''}`}
+                    strokeWidth={2}
                     aria-hidden
                   />
                 </button>
@@ -85,7 +85,7 @@ export default function PricingFAQ() {
                       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <p
-                        className="border-t border-white/[0.07] bg-[rgba(0,0,0,0.18)] px-4 pb-4 pt-3.5 text-[13px] leading-[1.6] text-[#c4ccd6] md:px-5 md:text-[15px]"
+                        className="border-t border-[rgba(201,168,76,0.1)] bg-[rgba(5,5,7,0.45)] px-4 pb-[1.1rem] pt-4 text-[13px] leading-[1.62] text-[#aeb6c2] md:px-5 md:pb-5 md:text-[14px] md:leading-[1.65]"
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
                         {item.a}
