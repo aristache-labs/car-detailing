@@ -13,6 +13,7 @@ export type Language = 'en' | 'ro';
 
 type TranslationShape = {
   nav: {
+    home: string;
     services: string;
     stats: string;
     gallery: string;
@@ -40,6 +41,7 @@ type TranslationShape = {
 const translations: Record<Language, TranslationShape> = {
   en: {
     nav: {
+      home: 'Home',
       services: 'Services',
       stats: 'Stats',
       gallery: 'Gallery',
@@ -66,6 +68,7 @@ const translations: Record<Language, TranslationShape> = {
   },
   ro: {
     nav: {
+      home: 'Acasă',
       services: 'Servicii',
       stats: 'Statistici',
       gallery: 'Galerie',

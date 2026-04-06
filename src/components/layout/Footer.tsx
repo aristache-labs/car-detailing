@@ -5,10 +5,10 @@ import { Clock, Mail, MapPin, Phone, Zap } from 'lucide-react';
 
 const EXPLORE_LINKS = [
   { label: 'Home', href: '/' },
+  { label: 'Why Us', href: '/why-us' },
   { label: 'Services', href: '/services' },
   { label: 'Results', href: '/results' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Why Us', href: '/why-us' },
   { label: 'Contact', href: '/contact' },
 ] as const;
 

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import PageShell from '@/components/layout/PageShell';
+import InnerPageHeader from '@/components/pages/InnerPageHeader';
+import ContactPageExtras from '@/components/pages/ContactPageExtras';
 import Contact from '@/components/sections/Contact';
 
 export const metadata: Metadata = {
@@ -11,7 +13,13 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <PageShell>
-      <Contact />
+      <InnerPageHeader
+        eyebrow="Quote"
+        title="Contact"
+        description="Full intake, optional photos, and how to reach us — we reply with a clear recommendation."
+      />
+      <Contact showIntro={false} />
+      <ContactPageExtras />
     </PageShell>
   );
 }

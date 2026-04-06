@@ -6,6 +6,7 @@ import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
 import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const LANGUAGE_META: Record<Language, { code: string; flagSrc: string }> = {
   en: { code: 'En', flagSrc: '/images/flags/en.svg' },
@@ -118,14 +119,21 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, t } = useLanguage();
+  const pathname = usePathname();
 
   const navLinks = [
+    { label: t.nav.home, href: '/' },
+    { label: t.nav.whyUs, href: '/why-us' },
     { label: t.nav.services, href: '/services' },
     { label: t.nav.results, href: '/results' },
     { label: t.nav.pricing, href: '/pricing' },
-    { label: t.nav.whyUs, href: '/why-us' },
     { label: t.nav.contact, href: '/contact' },
   ];
+
+  const linkActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   const ctaLabel = language === 'ro' ? 'Solicită ofertă' : 'Get a Quote';
 
@@ -199,7 +207,7 @@ export default function Navbar() {
           {/* ── Desktop nav ── */}
           <nav className="hidden lg:flex items-center gap-6" aria-label="Primary navigation">
             {navLinks.map((link) => (
-              <NavLink key={link.href} href={link.href}>
+              <NavLink key={link.href} href={link.href} active={linkActive(link.href)}>
                 {link.label}
               </NavLink>
             ))}
@@ -291,25 +299,30 @@ export default function Navbar() {
 
             {/* Drawer links */}
             <nav className="flex flex-col px-6 py-8 gap-1 flex-1" aria-label="Mobile navigation">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeOverlays}
-                  className="text-left cursor-pointer py-3 transition-colors duration-150"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    color: TEXT_MUTED,
-                    borderBottom: '1px solid rgba(255,255,255,0.05)',
-                  }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#e8e8e8')}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = TEXT_MUTED)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const active = linkActive(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={closeOverlays}
+                    className="text-left cursor-pointer py-3 transition-colors duration-150"
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '1rem',
+                      fontWeight: active ? 600 : 500,
+                      color: active ? '#f0f0f0' : TEXT_MUTED,
+                      borderBottom: '1px solid rgba(255,255,255,0.05)',
+                    }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#e8e8e8')}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.color = active ? '#f0f0f0' : TEXT_MUTED;
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Drawer CTA */}
@@ -341,16 +354,25 @@ export default function Navbar() {
 }
 
 // ── Extracted NavLink to avoid repeated inline style logic ──
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+function NavLink({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <Link
       href={href}
-      className="cursor-pointer pb-px border-b border-transparent hover:border-[rgba(201,168,76,0.5)] hover:text-[#e3e3e3] transition-[color,border-color] duration-200"
+      className={`cursor-pointer pb-px border-b transition-[color,border-color] duration-200 ${
+        active ? 'border-[rgba(201,168,76,0.55)] text-[#f0f0f0]' : 'border-transparent hover:border-[rgba(201,168,76,0.5)] hover:text-[#e3e3e3]'
+      }`}
       style={{
         fontFamily: 'var(--font-inter)',
         fontSize: '0.875rem',
-        fontWeight: 500,
-        color: 'rgba(212,212,212,0.88)',
+        fontWeight: active ? 600 : 500,
         background: 'none',
       }}
     >

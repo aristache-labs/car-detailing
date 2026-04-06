@@ -63,8 +63,10 @@ const plans = [
 
 export default function Pricing({
   variant = 'full',
+  showHeader = true,
 }: {
   variant?: 'full' | 'preview';
+  showHeader?: boolean;
 } = {}) {
   const isPreview = variant === 'preview';
   const serviceLineCap = isPreview ? 3 : 5;
@@ -88,42 +90,43 @@ export default function Pricing({
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
-        {/* Section header */}
-        <div className="mb-8 md:mb-10 text-center md:text-left">
-          <span
-            className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-3"
-            style={{
-              color: '#E2C06A',
-              fontFamily: 'var(--font-orbitron)',
-              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-              border: '1px solid rgba(201,168,76,0.35)',
-            }}
-          >
-            Our Packages
-          </span>
-          <h2
-            className="text-5xl font-black leading-none md:text-7xl"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
-          >
-            CHOOSE YOUR{' '}
+        {showHeader ? (
+          <div className="mb-8 md:mb-10 text-center md:text-left">
             <span
+              className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-3"
               style={{
-                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#E2C06A',
+                fontFamily: 'var(--font-orbitron)',
+                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+                border: '1px solid rgba(201,168,76,0.35)',
               }}
             >
-              LEVEL
+              Our Packages
             </span>
-          </h2>
-          <div className="mt-4 flex items-center justify-center md:justify-start gap-2.5 md:gap-3">
-            <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
-            <span className="text-premium-micro tracking-[0.2em] text-center md:text-left" style={{ fontFamily: 'var(--font-inter)' }}>
-              Select the package direction that best matches your finish goals.
-            </span>
+            <h2
+              className="text-5xl font-black leading-none md:text-7xl"
+              style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
+            >
+              CHOOSE YOUR{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                LEVEL
+              </span>
+            </h2>
+            <div className="mt-4 flex items-center justify-center md:justify-start gap-2.5 md:gap-3">
+              <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+              <span className="text-premium-micro tracking-[0.2em] text-center md:text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+                Select the package direction that best matches your finish goals.
+              </span>
+            </div>
           </div>
-        </div>
+        ) : null}
 
         {/* Main package cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">

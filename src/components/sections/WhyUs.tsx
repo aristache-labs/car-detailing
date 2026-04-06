@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ClipboardCheck, Droplets, FileCheck2, FlaskConical, ShieldCheck, SlidersHorizontal } from 'lucide-react';
 
-const differentiators = [
+export const WHY_US_DIFFERENTIATORS = [
   {
     icon: ClipboardCheck,
     title: 'Precision-First Process',
@@ -32,9 +32,45 @@ const differentiators = [
     title: 'Transparent Pricing',
     description: 'Clear package structure, honest recommendations, and no surprise upsells.',
   },
-];
+] as const;
 
-export default function WhyUs() {
+export default function WhyUs({ leadColumn = true }: { leadColumn?: boolean }) {
+  const grid = (
+    <div
+      className={`grid grid-cols-1 gap-x-6 gap-y-3 ${leadColumn ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}
+    >
+      {WHY_US_DIFFERENTIATORS.map((item) => {
+        const Icon = item.icon;
+        return (
+          <div key={item.title} className="pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="flex items-start gap-2.5">
+              <Icon className="w-[25px] h-[25px] mt-px shrink-0" style={{ color: '#DFC16D' }} />
+              <div>
+                <h3
+                  className="text-[12px] font-bold uppercase tracking-[0.12em]"
+                  style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-orbitron)' }}
+                >
+                  {item.title}
+                </h3>
+                <p className="mt-1 text-xs leading-relaxed" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}>
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  if (!leadColumn) {
+    return (
+      <section className="relative py-10 md:py-12" style={{ background: 'var(--carbon-900)' }}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">{grid}</div>
+      </section>
+    );
+  }
+
   return (
     <section id="why-us" className="relative py-12 md:py-14" style={{ background: 'var(--carbon-900)' }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
@@ -75,32 +111,7 @@ export default function WhyUs() {
             </Link>
           </div>
 
-          <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
-            {differentiators.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title} className="pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div className="flex items-start gap-2.5">
-                    <Icon className="w-[25px] h-[25px] mt-px shrink-0" style={{ color: '#DFC16D' }} />
-                    <div>
-                      <h3
-                        className="text-[12px] font-bold uppercase tracking-[0.12em]"
-                        style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-orbitron)' }}
-                      >
-                        {item.title}
-                      </h3>
-                      <p
-                        className="mt-1 text-xs leading-relaxed"
-                        style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
-                      >
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <div className="lg:col-span-3">{grid}</div>
         </div>
       </div>
     </section>

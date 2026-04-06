@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import PageShell from '@/components/layout/PageShell';
+import InnerPageHeader from '@/components/pages/InnerPageHeader';
+import PricingFAQ from '@/components/sections/PricingFAQ';
 import Pricing from '@/components/sections/Pricing';
 
 export const metadata: Metadata = {
@@ -11,7 +13,13 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <PageShell>
-      <Pricing variant="full" />
+      <InnerPageHeader
+        eyebrow="Packages"
+        title="Pricing"
+        description="Transparent tiers and what moves the needle — final quotes always follow inspection."
+      />
+      <Pricing variant="full" showHeader={false} />
+      <PricingFAQ />
     </PageShell>
   );
 }

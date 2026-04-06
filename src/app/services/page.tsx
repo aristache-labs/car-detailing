@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import PageShell from '@/components/layout/PageShell';
-import ServicesMarquee from '@/components/sections/ServicesMarquee';
-import ServicesDetail from '@/components/sections/ServicesDetail';
+import InnerPageHeader from '@/components/pages/InnerPageHeader';
+import ServicesCatalog from '@/components/pages/ServicesCatalog';
 
 export const metadata: Metadata = {
   title: 'Services — Apex Detailing',
@@ -12,8 +12,12 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <PageShell>
-      <ServicesMarquee />
-      <ServicesDetail />
+      <InnerPageHeader
+        eyebrow="Scope & fit"
+        title="Services"
+        description="Browse by category, expand any card for what’s included, and request a quote when you’re ready. Full packages and add-ons are on Pricing."
+      />
+      <ServicesCatalog />
     </PageShell>
   );
 }

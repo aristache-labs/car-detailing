@@ -175,7 +175,7 @@ function DarkSelect({
   );
 }
 
-export default function Contact() {
+export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
   const [submitted, setSubmitted] = useState(false);
   const [fileHint, setFileHint] = useState('');
   const [service, setService] = useState('');
@@ -225,45 +225,47 @@ export default function Contact() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
-        <div className="mb-8 text-center md:mb-10 md:text-left">
-          <span
-            className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base"
-            style={{
-              color: '#E2C06A',
-              fontFamily: 'var(--font-orbitron)',
-              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-              border: '1px solid rgba(201,168,76,0.35)',
-            }}
-          >
-            Request a Quote
-          </span>
-          <h2
-            className="text-5xl font-black leading-none md:text-7xl"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
-          >
-            TELL US ABOUT YOUR{' '}
+        {showIntro ? (
+          <div className="mb-8 text-center md:mb-10 md:text-left">
             <span
+              className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base"
               style={{
-                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#E2C06A',
+                fontFamily: 'var(--font-orbitron)',
+                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
+                border: '1px solid rgba(201,168,76,0.35)',
               }}
             >
-              VEHICLE
+              Request a Quote
             </span>
-          </h2>
-          <div className="mt-4 flex items-center justify-center gap-2.5 md:justify-start md:gap-3">
-            <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
-            <span
-              className="text-center text-premium-micro tracking-[0.2em] md:text-left"
-              style={{ fontFamily: 'var(--font-inter)' }}
+            <h2
+              className="text-5xl font-black leading-none md:text-7xl"
+              style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
             >
-              Tell us what your vehicle needs and we&apos;ll reply with a tailored recommendation within 24
-              hours.
-            </span>
+              TELL US ABOUT YOUR{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                VEHICLE
+              </span>
+            </h2>
+            <div className="mt-4 flex items-center justify-center gap-2.5 md:justify-start md:gap-3">
+              <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+              <span
+                className="text-center text-premium-micro tracking-[0.2em] md:text-left"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                Tell us what your vehicle needs and we&apos;ll reply with a tailored recommendation within 24
+                hours.
+              </span>
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-10">
           <motion.div
