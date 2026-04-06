@@ -424,6 +424,7 @@ export default function ResultsPageClient() {
             )}
 
             {mainTab === 'beforeAfter' && (
+<<<<<<< HEAD
               <div className="space-y-10 md:space-y-12">
                 {/* Featured showcase: light intro above hero → compare → caption signature below */}
                 <div className="w-full min-w-0">
@@ -459,12 +460,26 @@ export default function ResultsPageClient() {
                     </p>
                   </header>
                   <div className="rounded-sm border border-white/10 bg-white/2 p-1 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] md:p-1.5">
+=======
+              <div className="space-y-14 md:space-y-16">
+                {/* Featured editorial — image-first, caption integrated below */}
+                <div className="overflow-hidden rounded-sm border border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
+                  {/* Slider with "Featured" badge overlaid */}
+                  <div className="relative p-1 md:p-1.5">
+                    <span
+                      className="absolute left-3.5 top-3.5 z-10 inline-flex items-center rounded-sm border border-[#C9A84C]/45 bg-black/75 px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.2em] text-[#C9A84C] backdrop-blur-sm md:left-4 md:top-4"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      Featured
+                    </span>
+>>>>>>> 001ecc5d5093edecfe99d9ddfb54971d6c77c26e
                     <BeforeAfterDragSlider
                       featured
                       before={featuredBeforeAfter.before}
                       after={featuredBeforeAfter.after}
                     />
                   </div>
+<<<<<<< HEAD
                   <div className="mt-4 md:mt-5">
                     <p
                       className="text-[clamp(1.35rem,2.8vw,1.65rem)] font-bold uppercase leading-tight tracking-[0.04em] text-white"
@@ -484,6 +499,48 @@ export default function ResultsPageClient() {
                 </div>
 
                 <div className="border-t border-white/[0.07] pt-10 md:pt-11">
+=======
+                  {/* Caption strip */}
+                  <div className="border-t border-white/[0.07] px-4 py-4 md:px-5 md:py-5">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                      <div className="min-w-0">
+                        <h2
+                          className="text-[clamp(1.75rem,5vw,2.75rem)] font-bold uppercase leading-none tracking-[0.02em] text-white"
+                          style={{ fontFamily: 'var(--font-bebas)' }}
+                        >
+                          {featuredBeforeAfter.vehicle}
+                        </h2>
+                        <p
+                          className="mt-1.5 text-[13px] font-medium leading-snug text-white/52 md:text-[14px]"
+                          style={{ fontFamily: 'var(--font-inter)' }}
+                        >
+                          {featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 flex-wrap items-center gap-2">
+                        {featuredBeforeAfter.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-sm border border-[#C9A84C]/32 px-2.5 py-0.5 text-[8px] font-bold uppercase tracking-[0.14em] text-[#C9A84C]/75"
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        <span
+                          className="text-[9px] font-medium uppercase tracking-[0.12em] text-white/30"
+                          style={{ fontFamily: 'var(--font-inter)' }}
+                        >
+                          · {studioTimeShort(featuredBeforeAfter.studioTime)} studio
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* More transformations */}
+                <div className="border-t border-white/[0.07] pt-10 md:pt-12">
+>>>>>>> 001ecc5d5093edecfe99d9ddfb54971d6c77c26e
                   <p
                     className="mb-6 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/38"
                     style={{ fontFamily: 'var(--font-inter)' }}
@@ -494,37 +551,56 @@ export default function ResultsPageClient() {
                     {beforeAfterItems.slice(1).map((ba) => (
                       <article
                         key={ba.id}
-                        className="overflow-hidden rounded-sm border border-white/8 bg-white/2 transition-[border-color] duration-300 hover:border-[#C9A84C]/22"
+                        className="overflow-hidden rounded-sm border border-white/8 bg-white/[0.02] transition-[border-color] duration-300 hover:border-[#C9A84C]/22"
                       >
-                        <div className="relative aspect-video w-full">
+                        <div className="relative aspect-video w-full overflow-hidden">
                           <div className="absolute inset-0 flex">
                             <div className="relative h-full w-1/2">
                               <Image src={ba.before} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
+                              <span
+                                className="absolute left-2 top-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-white/55"
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                Before
+                              </span>
                             </div>
-                            <div className="relative h-full w-1/2 border-l border-white/8">
+                            <div className="relative h-full w-1/2 border-l border-white/12">
                               <Image src={ba.after} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
+                              <span
+                                className="absolute right-2 top-2 text-[7px] font-semibold uppercase tracking-[0.14em] text-[#C9A84C]/80"
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                After
+                              </span>
                             </div>
                           </div>
                         </div>
-                        <div className="space-y-1.5 px-4 pb-5 pt-4">
-                          <h3
-                            className="text-[15px] font-semibold uppercase tracking-wide text-text-primary"
-                            style={{ fontFamily: 'var(--font-inter)' }}
-                          >
-                            {ba.vehicle}
-                          </h3>
-                          <p
-                            className="text-[11px] font-medium uppercase tracking-[0.08em] text-white/52"
-                            style={{ fontFamily: 'var(--font-inter)' }}
-                          >
-                            {ba.service}
-                          </p>
-                          <p
-                            className="text-[9px] font-medium uppercase tracking-[0.14em] text-white/34"
-                            style={{ fontFamily: 'var(--font-inter)' }}
-                          >
-                            Studio time · {studioTimeShort(ba.studioTime)}
-                          </p>
+                        <div className="flex items-start justify-between gap-4 border-t border-white/[0.07] px-4 py-3.5 md:py-4">
+                          <div className="min-w-0">
+                            <h3
+                              className="truncate text-[14px] font-semibold uppercase tracking-wide text-white md:text-[15px]"
+                              style={{ fontFamily: 'var(--font-inter)' }}
+                            >
+                              {ba.vehicle}
+                            </h3>
+                            <p
+                              className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-white/45"
+                              style={{ fontFamily: 'var(--font-inter)' }}
+                            >
+                              {ba.service}
+                            </p>
+                          </div>
+                          <div className="flex shrink-0 flex-col items-end gap-0.5">
+                            <span className="font-mono text-[12px] tabular-nums text-[#C9A84C]/52">
+                              {studioTimeShort(ba.studioTime)}
+                            </span>
+                            <span
+                              className="text-[8px] uppercase tracking-[0.1em] text-white/25"
+                              style={{ fontFamily: 'var(--font-inter)' }}
+                            >
+                              studio time
+                            </span>
+                          </div>
                         </div>
                       </article>
                     ))}
