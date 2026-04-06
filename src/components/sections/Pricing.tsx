@@ -7,24 +7,31 @@ import { servicePricingItems } from '@/data/service-pricing';
 
 const SUPPORT_BLOCKS = [
   {
+    id: 'ppf',
     title: 'PPF Coverage Planning',
     description:
       'Front-end, partial, and full-body film options are scoped around coverage goals, panel complexity, and finish type.',
     meta: 'Quoted after inspection',
   },
   {
+    id: 'combo',
     title: 'Multi-Service Combinations',
     description:
       'Correction, coating, interior, and specialty work can be combined into one studio plan when the vehicle needs a fuller reset.',
     meta: 'Built around your priorities',
   },
   {
+    id: 'bespoke',
     title: 'Bespoke Quote Support',
     description:
       'If the car has heavier defects, restoration needs, or multiple problem areas, we build a custom recommendation with final timing and pricing.',
     meta: 'Tailored after assessment',
   },
 ];
+
+/** Matches Results gallery service badge (`ResultsPageClient` `serviceBadgeClass`). */
+const SERVICE_BADGE_CLASS =
+  'inline-flex max-w-[min(100%,9.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2 py-0.5 text-[8px] font-bold uppercase leading-tight tracking-[0.12em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[10px] md:tracking-[0.15em]';
 
 export default function Pricing({
   variant = 'full',
@@ -326,36 +333,39 @@ export default function Pricing({
             </Link>
           </div>
         ) : (
-          <>
             <div className="mt-8 grid grid-cols-1 gap-4 border-t border-white/[0.07] pt-8 md:grid-cols-3">
               {SUPPORT_BLOCKS.map((block) => (
                 <div
-                  key={block.title}
-                  className="relative overflow-hidden rounded-sm border border-[rgba(201,168,76,0.16)] bg-[rgba(255,255,255,0.02)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+                  key={block.id}
+                  className="relative flex min-h-70 flex-col overflow-hidden rounded-sm border border-[rgba(201,168,76,0.11)] bg-[rgba(255,255,255,0.025)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
                 >
-                  <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-sm border border-[#C9A84C]/22 bg-[#C9A84C]/8">
-                    <Sparkles className="h-4 w-4 text-[#C9A84C]" />
+                  <div className="flex shrink-0 items-start justify-between gap-3">
+                    <span
+                      className={SERVICE_BADGE_CLASS}
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      Guidance
+                    </span>
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[2px] border border-[#C9A84C]/14 bg-[rgba(201,168,76,0.05)]">
+                      <Sparkles className="h-3.5 w-3.5 text-[#c9a84c]/90" strokeWidth={1.75} />
+                    </div>
+                  </div>
+                  <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-0.5 py-4 text-center">
+                    <h3
+                      className="max-w-full text-[0.875rem] font-black uppercase leading-[0.96] tracking-[0.04em] text-white/95 md:text-[clamp(1.125rem,2.6vw,1.5625rem)]"
+                      style={{ fontFamily: 'var(--font-bebas)' }}
+                    >
+                      {block.title}
+                    </h3>
+                    <p
+                      className="mt-3.5 max-w-88 text-[13px] leading-[1.55] text-[#c9d0d9]"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {block.description}
+                    </p>
                   </div>
                   <p
-                    className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d2b872]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    Support
-                  </p>
-                  <h3
-                    className="mt-3 max-w-56 text-[1.6rem] font-black uppercase leading-[0.94] tracking-[0.04em] text-white"
-                    style={{ fontFamily: 'var(--font-bebas)' }}
-                  >
-                    {block.title}
-                  </h3>
-                  <p
-                    className="mt-3 text-sm leading-relaxed text-[#d5dce7]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    {block.description}
-                  </p>
-                  <p
-                    className="mt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/55"
+                    className="shrink-0 self-start text-left text-[10px] font-medium uppercase tracking-[0.18em] text-[#b8a574]/95"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {block.meta}
@@ -363,41 +373,6 @@ export default function Pricing({
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 rounded-sm border border-[rgba(201,168,76,0.18)] bg-[rgba(12,12,14,0.95)] px-5 py-6 shadow-[0_16px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.03)] md:px-7 md:py-7">
-              <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                <div className="max-w-2xl text-center md:text-left">
-                  <p
-                    className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#d2b872]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    Next Step
-                  </p>
-                  <h3
-                    className="mt-2 text-[2rem] font-black uppercase leading-[0.92] tracking-[0.04em] text-white"
-                    style={{ fontFamily: 'var(--font-bebas)' }}
-                  >
-                    Need help choosing the right service?
-                  </h3>
-                  <p
-                    className="mt-3 text-sm leading-relaxed text-[#c8d1de] md:text-[15px]"
-                    style={{ fontFamily: 'var(--font-inter)' }}
-                  >
-                    If you are deciding between correction, coating, interior work, or a combined detail,
-                    we will recommend the right service path after a quick inspection.
-                  </p>
-                </div>
-                <div className="flex w-full flex-col gap-2.5 sm:flex-row md:w-auto">
-                  <Link href="/services" className="hero-cta-secondary w-full md:w-auto">
-                    View Services
-                  </Link>
-                  <Link href="/contact" className="hero-cta-primary w-full md:w-auto">
-                    Request a Quote
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </>
         )}
       </div>
     </section>
