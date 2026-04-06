@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowRight, ChevronDown, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown, X, ArrowRight } from 'lucide-react';
 import {
   SERVICE_FILTER_LABELS,
   servicesCatalog,
@@ -12,185 +12,217 @@ import {
   type ServiceCatalogFilter,
 } from '@/data/services-catalog';
 
-function firstOpenIdForFilter(f: ServiceCatalogFilter): string | null {
-  const list = f === 'all' ? servicesCatalog : servicesCatalog.filter((s) => s.filter === f);
-  return list[0]?.id ?? null;
-}
-
 /**
- * Single card — collapsed: horizontal row + Details; expanded: vertical stack + X + CTA.
- * Desktop: masonry-style flow via CSS columns (no row height coupling).
+ * Single card — vertical stack: full-width image + content (accordion expand below).
+ * CSS columns masonry on desktop; see `.services-grid` / `.service-card` in globals.css.
  */
 function ServiceCard({
   item,
   index,
   isOpen,
-  onOpen,
-  onClose,
+  onToggle,
 }: {
   item: ServiceCatalogItem;
   index: number;
   isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+  onToggle: () => void;
 }) {
+  const expandStyle: CSSProperties = {
+    maxHeight: isOpen ? 400 : 0,
+    opacity: isOpen ? 1 : 0,
+    overflow: 'hidden',
+    transition: isOpen
+      ? 'max-height 450ms cubic-bezier(0.4, 0, 0.2, 1), opacity 350ms ease'
+      : 'max-height 450ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease',
+  };
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className={`relative mb-4 inline-block w-full max-w-full min-w-0 break-inside-avoid overflow-hidden rounded-lg border bg-[#0f0f0f] align-top transition-[flex-direction] duration-300 ease-in-out ${
-        isOpen ? 'flex flex-col border-[#C9A84C]/40 shadow-[0_0_0_1px_rgba(201,168,76,0.12)]' : 'flex flex-row border-[#1a1a1a] hover:border-[#C9A84C]/25'
+      className={`service-card group relative max-w-full min-w-0 overflow-hidden rounded-lg border bg-[#0f0f0f] transition-all duration-300 ${
+        isOpen
+          ? 'border-[#C9A84C]/50 shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_0_1px_rgba(201,168,76,0.2)]'
+          : 'border-[#1a1a1a] hover:-translate-y-0.5 hover:border-[#C9A84C]/30 hover:shadow-[0_8px_24px_rgba(0,0,0,0.5)]'
       }`}
       data-state={isOpen ? 'open' : 'closed'}
     >
-      {!isOpen ? (
-        <>
+      <div className="flex min-h-0 flex-col">
+        <div
+          className={`relative w-full shrink-0 overflow-hidden transition-all duration-500 ease-in-out ${
+            isOpen ? 'h-[200px] md:h-[240px]' : 'h-[140px] md:h-[180px]'
+          }`}
+        >
+          <Image
+            src={item.imageSrc}
+            alt={item.imageAlt}
+            fill
+            className={`object-cover object-center transition-all duration-300 ${
+              !isOpen ? 'group-hover:brightness-110' : ''
+            }`}
+            sizes="(max-width:768px) 100vw, min(50vw, 28rem)"
+            priority={index === 0}
+          />
           <span
-            className="pointer-events-none absolute right-3 top-3 z-10 select-none font-mono text-[10px] text-[#333]"
+            className="pointer-events-none absolute right-3 top-3 z-10 select-none rounded-sm bg-black/40 px-1.5 py-0.5 font-mono text-[10px] text-white/50"
             aria-hidden
           >
             {item.number}
           </span>
-          <div className="relative h-[90px] w-[100px] shrink-0 self-stretch md:h-auto md:min-h-[110px] md:w-[160px] lg:w-[180px]">
-            <Image
-              src={item.imageSrc}
-              alt={item.imageAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width:768px) 100px, 180px"
-              priority={index === 0}
-            />
-          </div>
-          <div className="flex min-w-0 flex-1 flex-col justify-between p-3 md:p-4 md:pr-10">
-            <div className="min-w-0 pr-6 md:pr-0">
-              <h2
-                className="text-xs font-bold uppercase leading-tight tracking-wide text-white md:text-sm"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                {item.title}
-              </h2>
-              <p
-                className="mt-1 line-clamp-1 text-[9px] uppercase leading-snug tracking-widest text-[#C9A84C] md:mt-1 md:line-clamp-none md:text-[10px]"
-                style={{ fontFamily: 'var(--font-orbitron)' }}
-              >
-                {item.subtitle}
-              </p>
-              <p
-                className="mt-2 line-clamp-2 text-xs leading-relaxed text-[#888]"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                {item.idealFor}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={onOpen}
-              className="group mt-3 inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border border-[#C9A84C]/40 bg-[#0a0a0a]/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C9A84C] transition-all duration-300 hover:border-[#C9A84C]/55 hover:bg-[#C9A84C]/10 hover:text-white"
+        </div>
+
+        <div className="flex flex-col p-4">
+          <h2
+            className={`font-bold uppercase tracking-wide text-white ${
+              isOpen ? 'text-base' : 'text-sm'
+            }`}
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            {item.title}
+          </h2>
+          <p
+            className={`mt-1 uppercase tracking-[0.15em] text-[#C9A84C] ${
+              isOpen ? 'text-[11px]' : 'text-[10px]'
+            }`}
+            style={{ fontFamily: 'var(--font-orbitron)' }}
+          >
+            {item.subtitle}
+          </p>
+
+          {!isOpen ? (
+            <p
+              className="mt-2 line-clamp-2 text-xs leading-relaxed text-white/75 transition-all duration-300"
               style={{ fontFamily: 'var(--font-inter)' }}
-              aria-expanded={false}
             >
-              Details
-              <ChevronDown
-                className="h-3 w-3 shrink-0 transition-transform duration-500 ease-out group-hover:translate-y-px"
-                aria-hidden
-              />
-            </button>
-          </div>
-        </>
-      ) : (
-        <>
-          <button
-            type="button"
-            onClick={onClose}
-            className="absolute right-3 top-3 z-20 cursor-pointer rounded-sm p-1 text-[#444] transition-colors hover:text-white"
-            aria-label="Close details"
-          >
-            <X className="h-4 w-4" strokeWidth={2} />
-          </button>
+              {item.idealFor}
+            </p>
+          ) : null}
 
-          <div className="relative w-full shrink-0">
-            <div className="relative h-[200px] w-full md:h-[220px]">
-              <Image
-                src={item.imageSrc}
-                alt={item.imageAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width:768px) 100vw, min(50vw, 28rem)"
-                priority={index === 0}
-              />
-              <div
-                className="pointer-events-none absolute bottom-0 left-0 right-0 h-16"
-                style={{
-                  background: 'linear-gradient(to top, #0d0d0d, transparent)',
-                }}
-              />
-            </div>
-          </div>
-
-          <motion.div
-            className="w-full p-4 md:p-5"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          <div
+            className={!isOpen ? 'pointer-events-none' : undefined}
+            style={expandStyle}
+            aria-hidden={!isOpen}
           >
-            <div className="pr-8">
-              <h2
-                className="text-sm font-bold uppercase leading-tight tracking-wide text-white md:text-base"
+            <div className="pt-3">
+              <p
+                className="text-sm leading-relaxed text-white/75"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                {item.title}
-              </h2>
+                {item.description}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {item.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex rounded-sm border border-[#C9A84C]/25 bg-[#C9A84C]/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-[#C9A84C]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-            <p
-              className="mt-1 text-[10px] uppercase leading-snug tracking-widest text-[#C9A84C] md:text-[11px]"
-              style={{ fontFamily: 'var(--font-orbitron)' }}
-            >
-              {item.subtitle}
-            </p>
-            <p
-              className="mt-3 text-sm leading-relaxed"
-              style={{
-                color: 'var(--text-secondary)',
-                fontFamily: 'var(--font-inter)',
-              }}
-            >
-              {item.description}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {item.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex rounded-sm border border-[#C9A84C]/25 bg-[#C9A84C]/8 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-[#C9A84C]"
-                  style={{ fontFamily: 'var(--font-inter)' }}
+          </div>
+
+          {/* Premium action row — DETAILS / CLOSE share one family; REQUEST QUOTE primary, expanded only */}
+          <div
+            className={`flex w-full items-center gap-3 ${isOpen ? 'mt-5' : 'mt-4'} ${isOpen ? '' : 'justify-start'}`}
+          >
+            <div className="relative h-[34px] shrink-0">
+              <AnimatePresence mode="wait" initial={false}>
+                {!isOpen ? (
+                  <motion.button
+                    key="details"
+                    type="button"
+                    onClick={onToggle}
+                    aria-expanded={false}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -6 }}
+                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                    className="group/btn absolute left-0 top-0 inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-[#C9A84C]/28 bg-[rgba(0,0,0,0.45)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d4c49a] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:border-[#C9A84C]/55 hover:bg-[#C9A84C]/10 hover:text-[#ebe4cf] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_0_1px_rgba(201,168,76,0.12)]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    DETAILS
+                    <ChevronDown
+                      size={11}
+                      strokeWidth={2}
+                      className="transition-transform duration-300 ease-out group-hover/btn:translate-y-px"
+                      aria-hidden
+                    />
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    key="close"
+                    type="button"
+                    onClick={onToggle}
+                    aria-expanded={true}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -6 }}
+                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                    className="group/close absolute left-0 top-0 inline-flex cursor-pointer items-center gap-1.5 rounded-sm border border-[#C9A84C]/22 bg-[rgba(0,0,0,0.45)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#c8c4bc] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/8 hover:text-[#f0ede6] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    CLOSE
+                    <X size={11} strokeWidth={2} className="opacity-90 transition-transform duration-300 ease-out group-hover/close:scale-95" aria-hidden />
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {isOpen ? (
+              <>
+                <div className="min-w-0 flex-1" aria-hidden />
+                <motion.div
+                  initial={{ opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.32, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+                  className="shrink-0"
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <Link
-              href="/contact"
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-sm border border-[#C9A84C] py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-[#C9A84C] transition-all duration-200 hover:bg-[#C9A84C] hover:text-black"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              Request quote for this service
-              <ArrowRight className="h-4 w-4 shrink-0" />
-            </Link>
-          </motion.div>
-        </>
-      )}
+                  <Link
+                    href="/contact"
+                    className="group/quote inline-flex cursor-pointer items-center gap-2 rounded-sm border border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    REQUEST QUOTE
+                    <ArrowRight
+                      size={12}
+                      strokeWidth={2.25}
+                      className="opacity-95 transition-transform duration-300 ease-out group-hover/quote:translate-x-0.5"
+                      aria-hidden
+                    />
+                  </Link>
+                </motion.div>
+              </>
+            ) : null}
+          </div>
+        </div>
+      </div>
     </motion.article>
   );
 }
 
 export default function ServicesCatalog() {
   const [filter, setFilter] = useState<ServiceCatalogFilter>('all');
-  const [openId, setOpenId] = useState<string | null>(firstOpenIdForFilter('all'));
+  const [activeCard, setActiveCard] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     if (filter === 'all') return servicesCatalog;
     return servicesCatalog.filter((s) => s.filter === filter);
   }, [filter]);
+
+  const handleToggle = (id: string) => {
+    setActiveCard((prev) => {
+      if (prev === id) return null;
+      if (prev !== null) {
+        setTimeout(() => setActiveCard(id), 180);
+        return null;
+      }
+      return id;
+    });
+  };
 
   return (
     <div className="pb-14 pt-3 md:pb-20 md:pt-5" style={{ background: 'var(--carbon-950)' }}>
@@ -213,7 +245,7 @@ export default function ServicesCatalog() {
                   type="button"
                   onClick={() => {
                     setFilter(id);
-                    setOpenId(firstOpenIdForFilter(id));
+                    setActiveCard(null);
                   }}
                   className={`max-md:shrink-0 inline-flex min-h-10 items-center justify-center rounded-sm px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(207,168,90,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#070709] sm:min-h-[44px] sm:px-5 ${
                     active
@@ -229,17 +261,16 @@ export default function ServicesCatalog() {
           </div>
         </div>
 
-        <div className="services-grid columns-1 md:columns-2" style={{ columnGap: '1rem' }}>
+        <div className="services-grid columns-1 md:columns-2">
           {filtered.map((item, i) => {
-            const isOpen = openId === item.id;
+            const isOpen = activeCard === item.id;
             return (
               <ServiceCard
                 key={item.id}
                 item={item}
                 index={i}
                 isOpen={isOpen}
-                onOpen={() => setOpenId(item.id)}
-                onClose={() => setOpenId(null)}
+                onToggle={() => handleToggle(item.id)}
               />
             );
           })}

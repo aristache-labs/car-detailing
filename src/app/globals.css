@@ -617,3 +617,15 @@ body {
   .svc-clip-right { clip-path: polygon(0 0, 94% 0, 100% 100%, 0 100%); }
   .svc-clip-left  { clip-path: polygon(0 0, 100% 0, 100% 100%, 6% 100%); }
 }
+
+/* Services catalog — CSS columns masonry (see ServicesCatalog) */
+.services-grid {
+  column-gap: 16px;
+}
+
+.service-card {
+  break-inside: avoid;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px;
+}
