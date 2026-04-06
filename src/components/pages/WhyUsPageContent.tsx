@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
@@ -17,15 +17,9 @@ import {
   Star,
   X,
 } from 'lucide-react';
+import SectionBadge from '@/components/ui/SectionBadge';
 
 const GOLD = '#C9A84C';
-
-const BADGE_STYLE: CSSProperties = {
-  color: '#E2C06A',
-  fontFamily: 'var(--font-orbitron)',
-  background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-  border: '1px solid rgba(201,168,76,0.35)',
-};
 
 const PILLARS = [
   {
@@ -107,24 +101,6 @@ const STANDARD_POINTS = [
   'No generic upsells — only what your vehicle actually needs.',
   'Recommendations driven by paint condition, use case, and your finish goals.',
 ] as const;
-
-/** Matches homepage section badges (e.g. ServicesDetail “Our Services”, Process “Our Method”). */
-function SectionBadge({
-  children,
-  className = '',
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`inline-flex items-center justify-center px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base ${className}`}
-      style={BADGE_STYLE}
-    >
-      {children}
-    </span>
-  );
-}
 
 function ScrollReveal({
   children,
