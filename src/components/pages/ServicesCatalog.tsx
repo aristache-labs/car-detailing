@@ -204,7 +204,7 @@ export default function ServicesCatalog() {
             className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-linear-to-l from-[#070709] to-transparent md:hidden"
             aria-hidden
           />
-          <div className="-mx-4 flex max-md:flex-nowrap max-md:gap-2 max-md:overflow-x-auto max-md:scroll-smooth max-md:px-4 max-md:pb-1.5 max-md:[scrollbar-width:none] md:mx-0 md:flex-wrap md:gap-2 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+          <div className="-mx-4 flex max-md:flex-nowrap max-md:gap-2.5 max-md:overflow-x-auto max-md:scroll-smooth max-md:px-4 max-md:pb-2 max-md:[scrollbar-width:none] md:mx-0 md:flex-wrap md:gap-2.5 md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
             {SERVICE_FILTER_LABELS.map(({ id, label }) => {
               const active = filter === id;
               return (
@@ -215,10 +215,10 @@ export default function ServicesCatalog() {
                     setFilter(id);
                     setOpenId(firstOpenIdForFilter(id));
                   }}
-                  className={`max-md:shrink-0 rounded-sm border px-3.5 py-2 text-[10px] font-semibold uppercase tracking-widest transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C9A84C]/50 sm:px-4 sm:text-[11px] ${
+                  className={`max-md:shrink-0 inline-flex min-h-10 items-center justify-center rounded-sm px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(207,168,90,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#070709] sm:min-h-[44px] sm:px-5 ${
                     active
-                      ? 'border-[#C9A84C] bg-[#C9A84C] font-bold text-black shadow-[0_0_0_1px_rgba(201,168,76,0.25)]'
-                      : 'border-[#1e1e1e] bg-[#0f0f0f] text-[#666] hover:border-[#C9A84C]/40 hover:text-[#C9A84C]'
+                      ? 'border border-transparent bg-linear-to-b from-[#ddc48a] from-0% via-[#cfa85a] via-48% to-[#b8924a] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_12px_rgba(0,0,0,0.35),0_8px_24px_rgba(0,0,0,0.35)] active:translate-y-0'
+                      : 'border border-[rgba(207,168,90,0.2)] bg-[rgba(0,0,0,0.35)] text-[#d6b36a] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:-translate-y-px hover:border-[rgba(207,168,90,0.42)] hover:bg-[rgba(207,168,90,0.05)] hover:text-[#e0c088] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_0_1px_rgba(207,168,90,0.08)] active:translate-y-0'
                   }`}
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
