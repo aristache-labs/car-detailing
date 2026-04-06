@@ -13,10 +13,10 @@ const LANGUAGE_META: Record<Language, { code: string; flagSrc: string }> = {
   ro: { code: 'Ro', flagSrc: '/images/flags/ro.svg' },
 };
 
-// Centralised gold palette so changes propagate everywhere
+/** Mobile drawer CTA only — desktop uses `.nav-cta-desktop` in globals.css */
 const GOLD = '#C6A35A';
 const GOLD_HOVER = '#D0AE68';
-const TEXT_MUTED = 'var(--text-secondary)';
+const TEXT_MUTED = 'var(--text-muted)';
 
 // ── Language Dropdown ─────────────────────────────────────────────────────────
 function LanguageDropdown({
@@ -41,10 +41,7 @@ function LanguageDropdown({
         onClick={() => setLangOpen((v) => !v)}
         aria-label={ariaLabel}
         aria-expanded={langOpen}
-        className="flex items-center gap-1.5 cursor-pointer py-1.5 px-2 rounded transition-colors duration-200"
-        style={{ color: TEXT_MUTED, fontFamily: 'var(--font-inter)', fontSize: '0.8125rem' }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = '#d0d0d0')}
-        onMouseLeave={(e) => (e.currentTarget.style.color = TEXT_MUTED)}
+        className="flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 font-body text-[0.8125rem] font-medium tracking-wide text-text-muted transition-colors duration-200 hover:text-chrome-mid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-mid/35 focus-visible:ring-offset-2 focus-visible:ring-offset-carbon-950"
       >
         <Image
           src={LANGUAGE_META[language].flagSrc}
@@ -52,13 +49,12 @@ function LanguageDropdown({
           aria-hidden
           width={16}
           height={11}
-          className="rounded-[2px] object-cover"
-          style={{ width: 16, height: 11 }}
+          className="h-[11px] w-4 rounded-[2px] object-cover"
         />
-        <span style={{ letterSpacing: '0.02em' }}>{LANGUAGE_META[language].code}</span>
+        <span>{LANGUAGE_META[language].code}</span>
         <ChevronDown
-          className={`transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`}
-          style={{ width: 12, height: 12, opacity: 0.45 }}
+          className={`size-3 text-text-soft opacity-70 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`}
+          aria-hidden
         />
       </button>
 
@@ -69,26 +65,16 @@ function LanguageDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-1.5 min-w-[100px] overflow-hidden rounded-[6px]"
-            style={{
-              background: '#17171a',
-              border: '1px solid rgba(255,255,255,0.09)',
-            }}
+            className="absolute right-0 top-full mt-1.5 min-w-[100px] overflow-hidden rounded-md border border-white/10 bg-carbon-800 shadow-lg shadow-black/40"
           >
             {(['en', 'ro'] as const).map((option) => (
               <button
                 key={option}
                 type="button"
                 onClick={() => onSelect(option)}
-                className="flex w-full items-center justify-between px-3 py-2.5 text-left cursor-pointer transition-colors duration-150"
-                style={{
-                  fontFamily: 'var(--font-inter)',
-                  fontSize: '0.8125rem',
-                  color: language === option ? GOLD : TEXT_MUTED,
-                  background: 'transparent',
-                }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = 'transparent')}
+                className={`flex w-full cursor-pointer items-center justify-between px-3 py-2.5 text-left font-body text-[0.8125rem] transition-colors duration-150 hover:bg-white/4 ${
+                  language === option ? 'text-gold-mid' : 'text-text-muted'
+                }`}
               >
                 <span className="flex items-center gap-2">
                   <Image
@@ -97,12 +83,11 @@ function LanguageDropdown({
                     aria-hidden
                     width={16}
                     height={11}
-                    className="rounded-[2px] object-cover"
-                    style={{ width: 16, height: 11 }}
+                    className="h-[11px] w-4 rounded-[2px] object-cover"
                   />
                   <span>{LANGUAGE_META[option].code}</span>
                 </span>
-                {language === option && <Check style={{ width: 12, height: 12, color: GOLD }} />}
+                {language === option && <Check className="size-3 text-gold-mid" aria-hidden />}
               </button>
             ))}
           </motion.div>
@@ -155,6 +140,15 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler);
   }, [langOpen]);
 
+  useEffect(() => {
+    if (!langOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLangOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [langOpen]);
+
   const closeOverlays = () => {
     setMenuOpen(false);
     setLangOpen(false);
@@ -177,14 +171,10 @@ export default function Navbar() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-400"
-        style={{
-          background: scrolled ? 'rgba(9,9,11,0.97)' : 'rgba(9,9,11,0.88)',
-          backdropFilter: scrolled ? 'blur(6px)' : 'none',
-          borderBottom: '1px solid rgba(255,255,255,0.07)',
-        }}
+        data-scrolled={scrolled ? 'true' : 'false'}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-white/6.5 bg-carbon-950 transition-[box-shadow,border-color] duration-300 data-[scrolled=true]:border-white/10 data-[scrolled=true]:shadow-[0_10px_36px_rgba(0,0,0,0.42)]"
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-[76px] flex items-center justify-between gap-8">
+        <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-6 px-6 lg:h-[88px] lg:gap-8 lg:px-8">
 
           {/* ── Logo (matches footer: gradient mark + Orbitron wordmark) ── */}
           <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Apex Detailing — Home">
@@ -205,7 +195,7 @@ export default function Navbar() {
           </Link>
 
           {/* ── Desktop nav ── */}
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Primary navigation">
+          <nav className="hidden items-center gap-7 lg:flex xl:gap-8" aria-label="Primary navigation">
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href} active={linkActive(link.href)}>
                 {link.label}
@@ -214,22 +204,11 @@ export default function Navbar() {
           </nav>
 
           {/* ── Desktop right controls ── */}
-          <div className="hidden lg:flex items-center gap-5 shrink-0">
+          <div className="hidden shrink-0 items-center gap-5 lg:flex">
             <LanguageDropdown {...langDropdownProps} />
             <Link
               href="/contact"
-              className="cursor-pointer rounded-[8px] transition-colors duration-200"
-              style={{
-                background: GOLD,
-                color: '#0a0a0c',
-                fontFamily: 'var(--font-inter)',
-                fontSize: '0.8125rem',
-                fontWeight: 600,
-                letterSpacing: '0.03em',
-                padding: '10px 20px',
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD_HOVER)}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = GOLD)}
+              className="nav-cta-desktop btn-shimmer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-mid/40 focus-visible:ring-offset-2 focus-visible:ring-offset-carbon-950"
             >
               {ctaLabel}
             </Link>
@@ -250,6 +229,7 @@ export default function Navbar() {
           </div>
 
         </div>
+        <div className="gold-divider pointer-events-none opacity-[0.38]" aria-hidden />
       </header>
 
       {/* ── Mobile overlay ── */}
@@ -366,15 +346,9 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`cursor-pointer pb-px border-b transition-[color,border-color] duration-200 ${
-        active ? 'border-[rgba(201,168,76,0.55)] text-[#f0f0f0]' : 'border-transparent hover:border-[rgba(201,168,76,0.5)] hover:text-[#e3e3e3]'
-      }`}
-      style={{
-        fontFamily: 'var(--font-inter)',
-        fontSize: '0.875rem',
-        fontWeight: active ? 600 : 500,
-        background: 'none',
-      }}
+      data-active={active ? 'true' : 'false'}
+      className="nav-link-desktop"
+      aria-current={active ? 'page' : undefined}
     >
       {children}
     </Link>
