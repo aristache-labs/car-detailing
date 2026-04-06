@@ -18,9 +18,8 @@ function firstOpenIdForFilter(f: ServiceCatalogFilter): string | null {
 }
 
 /**
- * Single card component — identical markup for all services / filters.
- * Collapsed: horizontal row, Details only.
- * Expanded: vertical stack, full-width image, X close, tags + full-width CTA.
+ * Single card — collapsed: horizontal row + Details; expanded: vertical stack + X + CTA.
+ * Desktop: masonry-style flow via CSS columns (no row height coupling).
  */
 function ServiceCard({
   item,
@@ -37,45 +36,42 @@ function ServiceCard({
 }) {
   return (
     <motion.article
-      layout
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className={`relative flex w-full min-w-0 overflow-hidden rounded-lg border bg-[#0f0f0f] transition-[flex-direction] duration-300 ease-in-out ${
-        isOpen ? 'flex-col border-[#C9A84C]/40 shadow-[0_0_0_1px_rgba(201,168,76,0.12)]' : 'flex-row border-[#1a1a1a] hover:border-[#C9A84C]/25'
+      className={`relative mb-4 inline-block w-full max-w-full min-w-0 break-inside-avoid overflow-hidden rounded-lg border bg-[#0f0f0f] align-top transition-[flex-direction] duration-300 ease-in-out ${
+        isOpen ? 'flex flex-col border-[#C9A84C]/40 shadow-[0_0_0_1px_rgba(201,168,76,0.12)]' : 'flex flex-row border-[#1a1a1a] hover:border-[#C9A84C]/25'
       }`}
       data-state={isOpen ? 'open' : 'closed'}
     >
       {!isOpen ? (
         <>
-          <div className="relative h-full min-h-[110px] w-[140px] shrink-0 self-stretch sm:w-[160px] md:w-[180px]">
+          <span
+            className="pointer-events-none absolute right-3 top-3 z-10 select-none font-mono text-[10px] text-[#333]"
+            aria-hidden
+          >
+            {item.number}
+          </span>
+          <div className="relative h-[90px] w-[100px] shrink-0 self-stretch md:h-auto md:min-h-[110px] md:w-[160px] lg:w-[180px]">
             <Image
               src={item.imageSrc}
               alt={item.imageAlt}
               fill
               className="object-cover"
-              sizes="(max-width:768px) 160px, 180px"
+              sizes="(max-width:768px) 100px, 180px"
               priority={index === 0}
             />
           </div>
-          <div className="flex min-w-0 flex-1 flex-col justify-between p-3 md:p-4">
-            <div className="min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <h2
-                  className="text-xs font-bold uppercase leading-tight tracking-wide text-white md:text-sm"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {item.title}
-                </h2>
-                <span
-                  className="shrink-0 text-[10px] font-black text-white/35 md:text-[11px]"
-                  style={{ fontFamily: 'var(--font-bebas)', letterSpacing: '0.1em' }}
-                >
-                  {item.number}
-                </span>
-              </div>
+          <div className="flex min-w-0 flex-1 flex-col justify-between p-3 md:p-4 md:pr-10">
+            <div className="min-w-0 pr-6 md:pr-0">
+              <h2
+                className="text-xs font-bold uppercase leading-tight tracking-wide text-white md:text-sm"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
+                {item.title}
+              </h2>
               <p
-                className="mt-1 text-[9px] uppercase leading-snug tracking-widest text-[#C9A84C] md:text-[10px]"
+                className="mt-1 line-clamp-1 text-[9px] uppercase leading-snug tracking-widest text-[#C9A84C] md:mt-1 md:line-clamp-none md:text-[10px]"
                 style={{ fontFamily: 'var(--font-orbitron)' }}
               >
                 {item.subtitle}
@@ -90,12 +86,15 @@ function ServiceCard({
             <button
               type="button"
               onClick={onOpen}
-              className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-sm border border-[#C9A84C]/35 bg-[#C9A84C]/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-[#C9A84C] transition-colors hover:border-[#C9A84C]/60 hover:text-white"
+              className="group mt-3 inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full border border-[#C9A84C]/40 bg-[#0a0a0a]/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C9A84C] transition-all duration-300 hover:border-[#C9A84C]/55 hover:bg-[#C9A84C]/10 hover:text-white"
               style={{ fontFamily: 'var(--font-inter)' }}
               aria-expanded={false}
             >
               Details
-              <ChevronDown className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              <ChevronDown
+                className="h-3 w-3 shrink-0 transition-transform duration-500 ease-out group-hover:translate-y-px"
+                aria-hidden
+              />
             </button>
           </div>
         </>
@@ -117,7 +116,7 @@ function ServiceCard({
                 alt={item.imageAlt}
                 fill
                 className="object-cover"
-                sizes="(max-width:768px) 100vw, 50vw"
+                sizes="(max-width:768px) 100vw, min(50vw, 28rem)"
                 priority={index === 0}
               />
               <div
@@ -150,8 +149,11 @@ function ServiceCard({
               {item.subtitle}
             </p>
             <p
-              className="mt-3 text-sm leading-relaxed text-[#a0a0a0]"
-              style={{ fontFamily: 'var(--font-inter)' }}
+              className="mt-3 text-sm leading-relaxed"
+              style={{
+                color: 'var(--text-secondary)',
+                fontFamily: 'var(--font-inter)',
+              }}
             >
               {item.description}
             </p>
@@ -227,7 +229,7 @@ export default function ServicesCatalog() {
           </div>
         </div>
 
-        <div className="services-grid grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+        <div className="services-grid columns-1 md:columns-2" style={{ columnGap: '1rem' }}>
           {filtered.map((item, i) => {
             const isOpen = openId === item.id;
             return (
@@ -253,17 +255,17 @@ export default function ServicesCatalog() {
                 Book a free inspection and we&apos;ll recommend the right service.
               </p>
             </div>
-            <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center rounded-sm border border-[#C9A84C]/40 px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-widest text-[#C9A84C] transition-colors duration-200 hover:border-[#C9A84C] sm:px-4 sm:text-[11px]"
+                className="inline-flex w-full items-center justify-center rounded-sm border border-[#C9A84C]/40 py-2.5 text-center text-[11px] font-semibold uppercase tracking-widest text-[#C9A84C] transition-colors duration-200 hover:border-[#C9A84C] sm:w-auto sm:px-4"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 View packages
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-sm bg-[#C9A84C] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-widest text-black transition-colors duration-200 hover:bg-[#b8963e] sm:px-4 sm:text-[11px]"
+                className="inline-flex w-full items-center justify-center rounded-sm bg-[#C9A84C] py-2.5 text-center text-[11px] font-bold uppercase tracking-widest text-black transition-colors duration-200 hover:bg-[#b8963e] sm:w-auto sm:px-4"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 Get a quote

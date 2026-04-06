@@ -4,6 +4,7 @@ import SectionBadge from '@/components/ui/SectionBadge';
 /**
  * Shared editorial top band for inner pages — distinct from homepage section headers.
  * Use `variant="premium"` for Why Us–aligned badge + heading scale (e.g. /services).
+ * `title` may be a string or custom nodes (e.g. homepage-style split gradient title on /services).
  */
 export default function InnerPageHeader({
   eyebrow,
@@ -12,7 +13,7 @@ export default function InnerPageHeader({
   variant = 'default',
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   description: ReactNode;
   variant?: 'default' | 'premium';
 }) {
@@ -28,13 +29,17 @@ export default function InnerPageHeader({
               <SectionBadge className="mb-3 md:mb-4">{eyebrow}</SectionBadge>
             ) : null}
             <h1
-              className="text-5xl font-black uppercase leading-[0.92] tracking-[0.04em] md:text-6xl"
-              style={{ fontFamily: 'var(--font-bebas)', color: '#FFFFFF' }}
+              className="flex flex-nowrap items-baseline gap-x-2 text-nowrap uppercase leading-[0.92] tracking-[0.04em] md:gap-x-3"
+              style={{ fontFamily: 'var(--font-bebas)' }}
             >
-              {title}
+              {typeof title === 'string' ? (
+                <span className="text-5xl font-black text-white md:text-6xl">{title}</span>
+              ) : (
+                title
+              )}
             </h1>
             <div
-              className="mx-auto mt-5 max-w-sm text-sm leading-relaxed text-[#A0A0A0] md:mx-0 md:mt-6 md:max-w-lg md:text-base"
+              className="mx-auto mt-5 max-w-[280px] text-center text-sm leading-relaxed text-[#A0A0A0] md:mx-0 md:mt-6 md:max-w-lg md:text-left md:text-base"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               {description}
