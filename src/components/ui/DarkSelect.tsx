@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const triggerClass =
-  'w-full rounded-sm border border-white/12 bg-white/3 px-3 py-2.5 text-sm text-white outline-none transition-[border-color,box-shadow] [color-scheme:dark] placeholder:text-white/25 focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/35';
+  'w-full rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(255,255,255,0.035)] px-3.5 py-2.5 text-[13px] text-white/95 outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] hover:border-[rgba(201,168,76,0.22)] focus:border-[#a88b42] focus:ring-1 focus:ring-[#C9A84C]/22';
 
 export type DarkSelectOption = { value: string; label: string };
 
@@ -66,9 +66,10 @@ export default function DarkSelect({
             : undefined
         }
       >
-        <span className={showPlaceholderStyle ? 'text-white/40' : undefined}>{display}</span>
+        <span className={showPlaceholderStyle ? 'text-white/35' : undefined}>{display}</span>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-white/45 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 shrink-0 text-[#c9a84c]/75 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          strokeWidth={1.85}
           aria-hidden
         />
       </button>

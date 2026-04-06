@@ -9,32 +9,36 @@ const STEPS = [
 /** Below-the-fold trust + logistics — complements full Contact form */
 export default function ContactPageExtras() {
   return (
-    <div className="border-t border-white/[0.07]" style={{ background: 'var(--carbon-900)' }}>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-2 md:gap-12 md:px-14 md:py-16">
-        <section>
+    <div className="border-t border-white/[0.07]" style={{ background: 'var(--carbon-950)' }}>
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-12 md:grid-cols-2 md:gap-14 md:px-14 md:py-16">
+        <section className="min-w-0">
           <h2
-            className="mb-4 text-xl font-black tracking-[0.06em] md:text-2xl"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
+            className="mb-6 text-[clamp(1.25rem,2.2vw,1.65rem)] font-black uppercase leading-[1.02] tracking-[0.04em] text-white/95 md:mb-7 md:text-[1.75rem]"
+            style={{ fontFamily: 'var(--font-bebas)' }}
           >
-            WHAT HAPPENS <span style={{ color: '#C9A84C' }}>NEXT</span>
+            WHAT HAPPENS <span className="text-[#cab06a]">NEXT</span>
           </h2>
-          <ol className="space-y-4">
+          <ol className="space-y-6">
             {STEPS.map((s, i) => (
-              <li key={s.title} className="flex gap-3">
+              <li key={s.title} className="flex gap-4">
                 <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm text-xs font-black text-[#0a0a0c]"
-                  style={{
-                    fontFamily: 'var(--font-orbitron)',
-                    background: 'linear-gradient(135deg, #C9A84C, #e8c768)',
-                  }}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.38)] bg-[rgba(201,168,76,0.1)] text-[12px] font-bold text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+                  style={{ fontFamily: 'var(--font-orbitron)' }}
+                  aria-hidden
                 >
                   {i + 1}
                 </span>
-                <div>
-                  <p className="text-sm font-semibold text-white" style={{ fontFamily: 'var(--font-inter)' }}>
+                <div className="min-w-0 pt-0.5">
+                  <p
+                    className="text-[14px] font-semibold leading-snug tracking-[0.01em] text-white/95 md:text-[15px]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
                     {s.title}
                   </p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-white/60" style={{ fontFamily: 'var(--font-inter)' }}>
+                  <p
+                    className="mt-1.5 text-[13px] leading-normal text-[#aeb8c6]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
                     {s.detail}
                   </p>
                 </div>
@@ -43,37 +47,64 @@ export default function ContactPageExtras() {
           </ol>
         </section>
 
-        <section>
+        <section className="min-w-0">
           <h2
-            className="mb-4 text-xl font-black tracking-[0.06em] md:text-2xl"
-            style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
+            className="mb-6 text-[clamp(1.25rem,2.2vw,1.65rem)] font-black uppercase leading-[1.02] tracking-[0.04em] text-white/95 md:mb-7 md:text-[1.75rem]"
+            style={{ fontFamily: 'var(--font-bebas)' }}
           >
-            STUDIO <span style={{ color: '#C9A84C' }}>LOCATION</span>
+            STUDIO <span className="text-[#cab06a]">LOCATION</span>
           </h2>
-          <div
-            className="relative mb-4 aspect-video w-full overflow-hidden rounded-lg border border-white/10 bg-black/40"
-            style={{
-              backgroundImage: 'linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(10,10,14,0.9) 100%)',
-            }}
-          >
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center">
-              <MapPin className="h-8 w-8 text-[#C9A84C]/80" aria-hidden />
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/50" style={{ fontFamily: 'var(--font-inter)' }}>
+          <div className="relative mb-5 aspect-video w-full min-h-44 overflow-hidden rounded-sm border border-[rgba(201,168,76,0.14)] bg-[rgba(6,6,8,0.98)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_28px_rgba(0,0,0,0.35)]">
+            <div
+              className="pointer-events-none absolute inset-0 opacity-90"
+              style={{
+                background:
+                  'linear-gradient(145deg, rgba(201,168,76,0.07) 0%, rgba(8,8,10,0.97) 48%, rgba(4,4,6,0.99) 100%)',
+              }}
+            />
+            <div className="relative flex h-full min-h-[inherit] flex-col items-center justify-center gap-3 px-5 py-7 text-center sm:px-8">
+              <div
+                className="flex h-11 w-11 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.2)] bg-[rgba(201,168,76,0.07)]"
+                aria-hidden
+              >
+                <MapPin className="h-5 w-5 text-[#c9a84c]/95" strokeWidth={1.75} />
+              </div>
+              <p
+                className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
                 Map preview
               </p>
-              <p className="max-w-xs text-xs text-white/55" style={{ fontFamily: 'var(--font-inter)' }}>
+              <p
+                className="max-w-[min(100%,19rem)] text-[12px] leading-[1.55] text-[#aeb8c6]"
+                style={{ fontFamily: 'var(--font-inter)' }}
+              >
                 Embed Google Maps here when ready. Service by appointment — address shown in the contact column.
               </p>
             </div>
           </div>
-          <ul className="space-y-2 text-sm text-white/70" style={{ fontFamily: 'var(--font-inter)' }}>
-            <li className="flex items-start gap-2">
-              <Route className="mt-0.5 h-4 w-4 shrink-0 text-[#C9A84C]/80" aria-hidden />
-              <span>Bucharest · Ilfov — by appointment</span>
+          <ul className="space-y-3" style={{ fontFamily: 'var(--font-inter)' }}>
+            <li className="flex gap-3.5">
+              <div
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
+                aria-hidden
+              >
+                <Route className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
+              </div>
+              <p className="min-w-0 pt-1 text-[13px] leading-[1.45] text-[#c4ccd6]">
+                Bucharest · Ilfov — by appointment
+              </p>
             </li>
-            <li className="flex items-start gap-2">
-              <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#C9A84C]/80" aria-hidden />
-              <span>Mon–Sat · 09:00–18:00 (see form sidebar for detailed hours)</span>
+            <li className="flex gap-3.5">
+              <div
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
+                aria-hidden
+              >
+                <Clock className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
+              </div>
+              <p className="min-w-0 pt-1 text-[13px] leading-[1.45] text-[#c4ccd6]">
+                Mon–Sat · 09:00–18:00 (see form sidebar for detailed hours)
+              </p>
             </li>
           </ul>
         </section>

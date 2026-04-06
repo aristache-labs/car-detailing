@@ -39,7 +39,7 @@ export default function InnerPageHeader({
               )}
             </h1>
             <div
-              className="mx-auto mt-5 max-w-[280px] text-center text-sm leading-relaxed text-[#A0A0A0] md:mx-0 md:mt-6 md:max-w-lg md:text-left md:text-base"
+              className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-[#aeb8c6] md:mx-0 md:mt-5 md:text-left md:text-[15px]"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               {description}

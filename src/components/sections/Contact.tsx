@@ -47,10 +47,10 @@ const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
 ];
 
 const inputBase =
-  'w-full rounded-sm border border-white/[0.12] bg-white/[0.03] px-3 py-2.5 text-sm text-white outline-none transition-[border-color,box-shadow] [color-scheme:dark] placeholder:text-white/25 focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/35';
+  'w-full rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(255,255,255,0.035)] px-3.5 py-2.5 text-[13px] leading-normal text-white/95 outline-none transition-[border-color,background-color,box-shadow] [color-scheme:dark] placeholder:text-white/32 hover:border-[rgba(201,168,76,0.22)] focus:border-[#a88b42] focus:bg-[rgba(255,255,255,0.04)] focus:ring-1 focus:ring-[#C9A84C]/22';
 
 const labelBase =
-  'mb-1.5 block text-[9px] font-bold uppercase tracking-[0.16em]';
+  'mb-2 block text-[10px] font-semibold uppercase tracking-[0.13em] text-white/52';
 
 const trustAsideSectionTitle =
   'mb-4 flex w-full items-center justify-center gap-3 text-center';
@@ -68,7 +68,7 @@ function FieldLabel({
     <label
       htmlFor={htmlFor}
       className={labelBase}
-      style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}
+      style={{ fontFamily: 'var(--font-inter)' }}
     >
       {children}
       {required ? (
@@ -178,12 +178,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55 }}
-            className="lg:col-span-8 overflow-visible rounded-xl"
-            style={{
-              background: 'linear-gradient(160deg, rgba(17,17,26,0.92) 0%, rgba(10,10,15,0.96) 100%)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              boxShadow: '0 16px 48px rgba(0,0,0,0.38)',
-            }}
+            className="lg:col-span-8 overflow-visible rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.04)]"
           >
             <div
               className="h-[2px] w-full"
@@ -218,8 +213,8 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="p-5 sm:p-6 lg:p-7">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-3">
+              <form onSubmit={handleSubmit} className="p-6 sm:p-7 lg:p-8">
+                <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-4">
                   <div className="sm:col-span-1">
                     <FieldLabel htmlFor="contact-name" required>
                       Full Name
@@ -310,18 +305,18 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   </div>
                 </div>
 
-                <div className="mt-3">
+                <div className="mt-1">
                   <FieldLabel htmlFor="contact-message">Message / Goals</FieldLabel>
                   <textarea
                     id="contact-message"
                     name="message"
-                    rows={3}
-                    className={`${inputBase} min-h-22 resize-y`}
+                    rows={4}
+                    className={`${inputBase} min-h-24 resize-y`}
                     placeholder=""
                   />
                   <p
-                    className="mt-1.5 text-[11px] leading-snug"
-                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
+                    className="mt-2 text-[11px] leading-normal text-[#8b939e]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     Tell us what you&apos;d like improved, protected, or restored.
                   </p>
@@ -329,18 +324,20 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
 
                 <div className="mt-4">
                   <FieldLabel htmlFor="contact-photos">Photos</FieldLabel>
-                  <input
-                    id="contact-photos"
-                    name="photos"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFiles}
-                    className={`${inputBase} cursor-pointer py-2 text-xs file:mr-3 file:cursor-pointer file:rounded-sm file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:uppercase file:tracking-wider file:text-white`}
-                  />
+                  <div className="rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(0,0,0,0.25)] px-3 py-2 transition-colors hover:border-[rgba(201,168,76,0.2)]">
+                    <input
+                      id="contact-photos"
+                      name="photos"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleFiles}
+                      className={`w-full cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.28)] file:bg-[rgba(201,168,76,0.08)] file:px-3 file:py-1.5 file:text-[10px] file:font-semibold file:uppercase file:tracking-[0.12em] file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.4)] hover:file:bg-[rgba(201,168,76,0.12)]`}
+                    />
+                  </div>
                   <p
-                    className="mt-1.5 text-[11px] leading-snug"
-                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
+                    className="mt-2 text-[11px] leading-normal text-[#8b939e]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     Optional: Upload 2–3 photos for a more accurate estimate — helpful for paint defects,
                     swirl marks, interior wear, or PPF quotes.
@@ -352,24 +349,24 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   ) : null}
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-8 border-t border-white/6 pt-7">
                   <button
                     type="submit"
-                    className="btn-shimmer relative w-full cursor-pointer overflow-hidden py-3.5 text-[11px] font-black uppercase tracking-[0.18em] transition-all duration-300"
+                    className="btn-shimmer relative w-full cursor-pointer overflow-hidden py-3.5 text-[11px] font-bold uppercase tracking-[0.16em] transition-all duration-300 md:py-4"
                     style={{
                       background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
                       color: '#070709',
                       fontFamily: 'var(--font-inter)',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.1)',
                       boxShadow:
-                        'inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(80,56,22,0.22), 0 6px 20px rgba(0,0,0,0.4)',
+                        'inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -1px 0 rgba(80,56,22,0.2), 0 8px 24px rgba(0,0,0,0.38)',
                     }}
                   >
-                    <span className="relative z-10">Request Your Quote</span>
+                    <span className="relative z-10">Request your quote</span>
                   </button>
                   <p
-                    className="mt-2.5 text-center text-[11px] leading-relaxed"
-                    style={{ color: 'var(--text-soft)', fontFamily: 'var(--font-inter)' }}
+                    className="mt-3 text-center text-[11px] leading-relaxed text-[#8b939e]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
                   </p>
@@ -383,12 +380,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.06 }}
-            className="flex flex-col overflow-hidden rounded-xl lg:col-span-4"
-            style={{
-              background: 'linear-gradient(165deg, rgba(17,17,26,0.92) 0%, rgba(10,10,15,0.97) 100%)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              boxShadow: '0 16px 48px rgba(0,0,0,0.38)',
-            }}
+            className="flex flex-col overflow-hidden rounded-sm border border-[rgba(201,168,76,0.12)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.035)] lg:col-span-4"
             aria-label="Why book with us and contact details"
           >
             <div
@@ -398,32 +390,31 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               }}
             />
 
-            <div className="flex flex-1 flex-col p-5 sm:p-6 lg:p-7">
-              <header className="mb-5">
+            <div className="flex flex-1 flex-col p-6 sm:p-7 lg:p-8">
+              <header className="mb-6">
                 <p
-                  className="mb-2 text-[10px] font-bold tracking-[0.22em]"
-                  style={{ color: '#C9A84C', fontFamily: 'var(--font-inter)' }}
+                  className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#b8a574]"
+                  style={{ fontFamily: 'var(--font-inter)' }}
                 >
-                  WHY CLIENTS BOOK WITH US
+                  Why clients book with us
                 </p>
                 <h3
-                  className="text-[1.65rem] font-black leading-none tracking-[0.06em] sm:text-[1.85rem]"
-                  style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
+                  className="text-[1.5rem] font-black uppercase leading-[0.98] tracking-[0.04em] text-white/95 sm:text-[1.65rem]"
+                  style={{ fontFamily: 'var(--font-bebas)' }}
                 >
                   Fast, Clear, Professional
                 </h3>
               </header>
 
               <div
-                className="border-l-2 border-[#C9A84C]/35 pl-4"
+                className="border-l border-[rgba(201,168,76,0.28)] pl-4"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                <ul className="space-y-3">
+                <ul className="space-y-2.5">
                   {TRUST_BULLETS.map((line) => (
                     <li
                       key={line}
-                      className="text-[13px] leading-snug"
-                      style={{ color: 'var(--text-secondary)' }}
+                      className="text-[13px] leading-[1.45] text-[#c4ccd6]"
                     >
                       {line}
                     </li>
@@ -432,12 +423,11 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               </div>
 
               <div
-                className="my-6 h-px w-full shrink-0"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }}
+                className="my-6 h-px w-full shrink-0 bg-[rgba(201,168,76,0.12)]"
                 aria-hidden
               />
 
-              <div className="space-y-5" style={{ fontFamily: 'var(--font-inter)' }}>
+              <div className="space-y-6" style={{ fontFamily: 'var(--font-inter)' }}>
                 <div>
                   <div className={trustAsideSectionTitle}>
                     <div
@@ -446,8 +436,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       aria-hidden
                     />
                     <p
-                      className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-[#E2C06A]"
-                      style={{ textShadow: '0 0 24px rgba(201,168,76,0.15)' }}
+                      className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
                     >
                       Contact
                     </p>
@@ -457,28 +446,24 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       aria-hidden
                     />
                   </div>
-                  <div className="flex gap-3">
+                  <div className="mt-1 flex gap-3.5">
                     <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm"
-                      style={{
-                        background: 'rgba(201,168,76,0.08)',
-                        border: '1px solid rgba(201,168,76,0.22)',
-                      }}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
                       aria-hidden
                     >
-                      <Phone className="h-4 w-4" style={{ color: '#C9A84C' }} />
+                      <Phone className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--text-soft)' }}>
+                    <div className="min-w-0 flex-1 pt-0.5">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/45">
                         Phone
                       </p>
                       <a
                         href="tel:+40721000000"
-                        className="mt-0.5 block text-base font-semibold tracking-wide text-white transition-colors hover:text-[#f0d892]"
+                        className="mt-1 block text-[15px] font-semibold tracking-wide text-white transition-colors hover:text-[#e8d8b8]"
                       >
                         +40 721 000 000
                       </a>
-                      <p className="mt-1 text-[11px]" style={{ color: 'var(--text-soft)' }}>
+                      <p className="mt-1.5 text-[11px] leading-snug text-[#8b939e]">
                         Mon – Sat · 09:00 – 18:00
                       </p>
                     </div>
@@ -488,14 +473,14 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     href="https://wa.me/40721000000"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-sm border border-[#C9A84C]/28 bg-[#C9A84C]/6 px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#e8d49a] transition-colors hover:border-[#C9A84C]/45 hover:bg-[#C9A84C]/10"
+                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-sm border border-[rgba(201,168,76,0.22)] bg-[rgba(201,168,76,0.05)] px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.35)] hover:bg-[rgba(201,168,76,0.08)]"
                   >
-                    <MessageCircle className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
+                    <MessageCircle className="h-4 w-4 shrink-0 text-[#c9a84c]/90" strokeWidth={1.75} aria-hidden />
                     WhatsApp — quick message
                   </a>
                 </div>
 
-                <div className="border-t border-white/10 pt-5">
+                <div className="border-t border-white/[0.07] pt-6">
                   <div className={trustAsideSectionTitle}>
                     <div
                       className="h-px w-10 max-w-[32%] shrink-0"
@@ -503,8 +488,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       aria-hidden
                     />
                     <p
-                      className="shrink-0 text-[11px] font-bold uppercase tracking-[0.26em] text-[#E2C06A]"
-                      style={{ textShadow: '0 0 24px rgba(201,168,76,0.15)' }}
+                      className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
                     >
                       Address
                     </p>
@@ -514,52 +498,43 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       aria-hidden
                     />
                   </div>
-                  <div className="flex gap-3">
+                  <div className="mt-1 flex gap-3.5">
                     <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm"
-                      style={{
-                        background: 'rgba(201,168,76,0.08)',
-                        border: '1px solid rgba(201,168,76,0.22)',
-                      }}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
                       aria-hidden
                     >
-                      <MapPin className="h-4 w-4" style={{ color: '#C9A84C' }} />
+                      <MapPin className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-white">București</p>
-                      <p className="mt-0.5 text-[12px]" style={{ color: 'var(--text-soft)' }}>
+                    <div className="min-w-0 flex-1 pt-0.5">
+                      <p className="text-[14px] font-semibold text-white/95">București</p>
+                      <p className="mt-0.5 text-[12px] text-[#8b939e]">
                       By appointment only
                       </p>
-                      <p className="mt-2 text-[12px] leading-snug" style={{ color: 'var(--text-secondary)' }}>
+                      <p className="mt-2 text-[12px] leading-snug text-[#aeb8c6]">
                         Str. Industriei 14
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-4 flex gap-3">
+                  <div className="mt-5 flex gap-3.5">
                     <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm"
-                      style={{
-                        background: 'rgba(201,168,76,0.08)',
-                        border: '1px solid rgba(201,168,76,0.22)',
-                      }}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)]"
                       aria-hidden
                     >
-                      <Clock className="h-4 w-4" style={{ color: '#C9A84C' }} />
+                      <Clock className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em]" style={{ color: 'var(--text-soft)' }}>
+                    <div className="min-w-0 flex-1 pt-0.5">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/45">
                         Opening hours
                       </p>
-                      <ul className="mt-2 space-y-1.5">
+                      <ul className="mt-2 space-y-2">
                         {TRUST_STUDIO_HOURS.map(({ label, time }) => (
                           <li
                             key={label}
-                            className="flex items-baseline justify-between gap-4 text-[12px] leading-tight"
-                            style={{ color: 'var(--text-secondary)' }}
+                            className="flex items-baseline justify-between gap-6 border-b border-white/4 pb-2 text-[12px] leading-snug last:border-b-0 last:pb-0"
                           >
-                            <span style={{ color: 'var(--text-soft)' }}>{label}</span>
-                            <span className="shrink-0 font-medium tabular-nums text-white/85">{time}</span>
+                            <span className="text-[#9aa3ae]">{label}</span>
+                            <span className="shrink-0 tabular-nums text-[13px] font-medium text-white/88">{time}</span>
                           </li>
                         ))}
                       </ul>
