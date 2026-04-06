@@ -10,9 +10,11 @@ import { galleryPanels } from '@/data/gallery-cases';
 /* ── Inner drag slider ── */
 interface SliderProps {
   panel: GalleryPanel;
+  /** Eager-load when section is near viewport (improves LCP for hero imagery) */
+  imagePriority?: boolean;
 }
 
-function DragSlider({ panel }: SliderProps) {
+function DragSlider({ panel, imagePriority }: SliderProps) {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const containerRectRef = useRef<DOMRect | null>(null);
@@ -86,6 +88,7 @@ function DragSlider({ panel }: SliderProps) {
           src={panel.beforeImage}
           alt={`${panel.service} before`}
           fill
+          priority={imagePriority}
           sizes="(max-width: 768px) 92vw, (max-width: 1024px) 78vw, 50vw"
           className="object-cover"
         />
@@ -117,6 +120,7 @@ function DragSlider({ panel }: SliderProps) {
           src={panel.afterImage}
           alt={`${panel.service} after`}
           fill
+          priority={imagePriority}
           sizes="(max-width: 768px) 92vw, (max-width: 1024px) 78vw, 50vw"
           className="object-cover"
         />
@@ -263,7 +267,9 @@ export default function BeforeAfter({
             boxShadow: '0 10px 24px rgba(0,0,0,0.32)',
           }}
         >
-          {isNearViewport ? <DragSlider panel={displayPanels[active]} /> : null}
+          {isNearViewport ? (
+            <DragSlider panel={displayPanels[active]} imagePriority={isNearViewport} />
+          ) : null}
           <motion.div
             key={active}
             initial={{ opacity: 0, y: -8 }}
@@ -310,7 +316,7 @@ export default function BeforeAfter({
                 style={{ transform: 'skewX(2deg)' }}
               >
                 {isActive && isNearViewport ? (
-                  <DragSlider panel={panel} />
+                  <DragSlider panel={panel} imagePriority={isNearViewport} />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 gap-2">
                     <div

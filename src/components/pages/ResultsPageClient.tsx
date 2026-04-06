@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeftRight } from 'lucide-react';
 import SectionBadge from '@/components/ui/SectionBadge';
+import ImageLightbox, { type LightboxSlide } from '@/components/ui/ImageLightbox';
 import {
   beforeAfterItems,
   featuredBeforeAfter,
@@ -73,6 +74,14 @@ const metaGold = 'text-[9px] font-bold uppercase tracking-[0.18em] text-[#C9A84C
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(201,168,76,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]';
+
+/** Technical category label — rectangular, not pill; Gallery + More transformations */
+const categoryBadgeClass =
+  'inline-flex max-w-[min(100%,12rem)] shrink-0 items-center rounded-[2px] border border-[#C9A84C]/35 bg-[#0a0a0a] px-2 py-0.5 text-[8px] font-semibold uppercase leading-tight tracking-[0.12em] text-[#C9A84C] sm:max-w-none sm:text-[9px] sm:tracking-[0.14em]';
+
+/** Supporting description under cards — warmer neutral, readable on #0a0a0a */
+const cardDescriptionClass =
+  'text-[11px] font-normal leading-[1.62] text-[#c8c4bc] md:text-[12px] md:leading-[1.65]';
 
 function studioTimeShort(studioTime: string): string {
   const m = studioTime.match(/^(\d+)/);
@@ -174,13 +183,18 @@ function BeforeAfterDragSlider({
         style={{ left: `${pos}%`, transform: 'translateX(-50%)' }}
         aria-hidden
       />
-      <div
-        className="absolute top-3 z-4 flex w-full justify-between px-4 text-[8px] font-semibold uppercase tracking-[0.16em]"
-        style={{ pointerEvents: 'none' }}
+      <span
+        className="pointer-events-none absolute left-3 top-3 z-5 rounded-[2px] border border-white/22 bg-[rgba(8,8,10,0.9)] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/92 shadow-[0_1px_10px_rgba(0,0,0,0.45)]"
+        style={{ fontFamily: 'var(--font-inter)' }}
       >
-        <span className="text-white/72">Before</span>
-        <span className="text-[#C9A84C]/88">After</span>
-      </div>
+        Before
+      </span>
+      <span
+        className="pointer-events-none absolute right-3 top-3 z-5 rounded-[2px] border border-[#C9A84C]/38 bg-[rgba(8,8,10,0.9)] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#e8d8b8] shadow-[0_1px_10px_rgba(0,0,0,0.45)]"
+        style={{ fontFamily: 'var(--font-inter)' }}
+      >
+        After
+      </span>
       <div
         className="pointer-events-none absolute top-1/2 z-4 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A84C]/55 bg-[#0a0a0a]/95 text-[#C9A84C]"
         style={{ left: `${pos}%` }}
@@ -214,6 +228,42 @@ export default function ResultsPageClient() {
     setActiveTab(id);
     setMobileGalleryFilter('all');
   };
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxSlides, setLightboxSlides] = useState<LightboxSlide[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const moreTransformItems = useMemo(() => beforeAfterItems.slice(1), []);
+
+  const openGalleryLightbox = useCallback(
+    (clickedIndex: number) => {
+      setLightboxSlides(
+        galleryItemsForDisplay.map((item) => ({
+          src: item.image,
+          title: item.vehicle,
+          subtitle: item.service,
+        })),
+      );
+      setLightboxIndex(clickedIndex);
+      setLightboxOpen(true);
+    },
+    [galleryItemsForDisplay],
+  );
+
+  const openMoreTransformLightbox = useCallback(
+    (clickedIndex: number) => {
+      setLightboxSlides(
+        moreTransformItems.map((ba) => ({
+          src: ba.after,
+          title: ba.vehicle,
+          subtitle: ba.service,
+        })),
+      );
+      setLightboxIndex(clickedIndex);
+      setLightboxOpen(true);
+    },
+    [moreTransformItems],
+  );
 
   return (
     <div className="results-page min-h-screen bg-[#0a0a0a]">
@@ -377,43 +427,42 @@ export default function ResultsPageClient() {
                       }}
                       className="group overflow-hidden rounded-sm border-0 bg-transparent md:border md:border-white/8 md:bg-white/2 md:transition-[border-color] md:duration-300 md:hover:border-[#C9A84C]/22"
                     >
-                      <div className="relative aspect-3/2 overflow-hidden rounded-sm md:aspect-video md:rounded-none">
-                        <Image
-                          src={item.image}
-                          alt=""
-                          fill
-                          priority={index === 0}
-                          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-                          sizes="(max-width:768px) 50vw, 50vw"
-                        />
-                        <span className="absolute left-2 top-2 rounded-sm border border-[#C9A84C]/45 px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-widest text-[#C9A84C] md:hidden">
-                          {galleryCategoryBadge(item.category)}
-                        </span>
-                        <span className="absolute right-2 top-2 font-mono text-[9px] text-[#C9A84C]/70 tabular-nums md:hidden">
-                          {item.number}
-                        </span>
-                      </div>
-                      <div className="space-y-0 pt-2.5 pb-1 md:space-y-2 md:px-4 md:pb-5 md:pt-4">
-                        <div className="hidden items-baseline justify-between gap-3 border-b border-white/6 pb-2 md:flex">
-                          <span className={metaGold}>{galleryCategoryBadge(item.category)}</span>
-                          <span className="font-mono text-[10px] text-white/20 tabular-nums">{item.number}</span>
+                      <button
+                        type="button"
+                        onClick={() => openGalleryLightbox(index)}
+                        className={`relative block w-full cursor-zoom-in overflow-hidden rounded-sm text-left md:rounded-none ${focusRing}`}
+                        aria-label={`View ${item.vehicle} larger`}
+                      >
+                        <div className="relative aspect-3/2 md:aspect-video">
+                          <Image
+                            src={item.image}
+                            alt=""
+                            fill
+                            priority={index < 2}
+                            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                            sizes="(max-width:768px) 50vw, 50vw"
+                          />
                         </div>
-                        <p className="mb-0.5 text-[8px] font-bold uppercase tracking-widest text-[#C9A84C] md:hidden">
-                          {galleryCategoryBadge(item.category)}
-                        </p>
+                      </button>
+                      <div className="pt-3 pb-1 md:px-4 md:pb-5 md:pt-4">
+                        <div className="mb-2 md:mb-2.5">
+                          <span className={categoryBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
+                            {galleryCategoryBadge(item.category)}
+                          </span>
+                        </div>
                         <h3
-                          className="mb-0.5 text-[11px] font-bold uppercase leading-tight tracking-wide text-white md:mb-0 md:font-semibold md:text-[15px] md:leading-normal md:text-text-primary"
+                          className="text-[13px] font-semibold tracking-tight text-white md:text-[15px]"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item.vehicle}
                         </h3>
-                        <p className="mb-0 text-[8px] font-bold uppercase tracking-widest text-white/40 md:text-[9px] md:tracking-[0.12em] md:text-[#C9A84C]/75">
-                          {item.service}
-                        </p>
                         <p
-                          className="hidden text-[13px] leading-relaxed text-text-secondary md:block"
+                          className="mt-1 text-[10px] font-medium uppercase tracking-[0.12em] text-white/48 md:text-[11px]"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
+                          {item.service}
+                        </p>
+                        <p className={`mt-2 ${cardDescriptionClass}`} style={{ fontFamily: 'var(--font-inter)' }}>
                           {item.result}
                         </p>
                       </div>
@@ -474,20 +523,25 @@ export default function ResultsPageClient() {
                   </div>
                 </div>
 
-                <div className="border-t border-white/[0.07] pt-10 md:pt-11">
-                  <p
-                    className="mb-6 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/38"
+                <div className="border-t border-white/[0.07] pt-12 md:pt-14">
+                  <h2
+                    className="mb-8 max-w-xl text-[clamp(1.2rem,2.8vw,1.5rem)] font-semibold leading-snug tracking-[-0.02em] text-white md:mb-10"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     More transformations
-                  </p>
+                  </h2>
                   <div className="grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8">
-                    {beforeAfterItems.slice(1).map((ba) => (
+                    {moreTransformItems.map((ba, idx) => (
                       <article
                         key={ba.id}
                         className="overflow-hidden rounded-sm border border-white/8 bg-white/2 transition-[border-color] duration-300 hover:border-[#C9A84C]/22"
                       >
-                        <div className="relative aspect-video w-full">
+                        <button
+                          type="button"
+                          onClick={() => openMoreTransformLightbox(idx)}
+                          className={`relative block aspect-video w-full cursor-zoom-in overflow-hidden text-left ${focusRing}`}
+                          aria-label={`View ${ba.vehicle} result larger`}
+                        >
                           <div className="absolute inset-0 flex">
                             <div className="relative h-full w-1/2">
                               <Image src={ba.before} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
@@ -496,26 +550,36 @@ export default function ResultsPageClient() {
                               <Image src={ba.after} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
                             </div>
                           </div>
-                        </div>
-                        <div className="space-y-1.5 px-4 pb-5 pt-4">
+                        </button>
+                        <div className="border-t border-white/8 px-4 py-4 md:px-5 md:py-4">
+                          <div className="mb-2 md:mb-2.5">
+                            <span className={categoryBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
+                              {ba.tags[0] ?? 'Case'}
+                            </span>
+                          </div>
                           <h3
-                            className="text-[15px] font-semibold uppercase tracking-wide text-text-primary"
+                            className="text-[13px] font-semibold tracking-tight text-white md:text-[15px]"
                             style={{ fontFamily: 'var(--font-inter)' }}
                           >
                             {ba.vehicle}
                           </h3>
                           <p
-                            className="text-[11px] font-medium uppercase tracking-[0.08em] text-white/52"
+                            className="mt-1 text-[10px] font-medium uppercase tracking-[0.12em] text-white/48 md:text-[11px]"
                             style={{ fontFamily: 'var(--font-inter)' }}
                           >
                             {ba.service}
                           </p>
                           <p
-                            className="text-[9px] font-medium uppercase tracking-[0.14em] text-white/34"
+                            className="mt-1.5 text-[10px] font-normal tabular-nums text-white/32 md:text-[11px]"
                             style={{ fontFamily: 'var(--font-inter)' }}
                           >
-                            Studio time · {studioTimeShort(ba.studioTime)}
+                            {studioTimeShort(ba.studioTime)} studio time
                           </p>
+                          {ba.portfolioResult ? (
+                            <p className={`mt-2 ${cardDescriptionClass}`} style={{ fontFamily: 'var(--font-inter)' }}>
+                              {ba.portfolioResult}
+                            </p>
+                          ) : null}
                         </div>
                       </article>
                     ))}
@@ -566,6 +630,14 @@ export default function ResultsPageClient() {
           </div>
         </div>
       </section>
+
+      <ImageLightbox
+        open={lightboxOpen}
+        slides={lightboxSlides}
+        index={lightboxIndex}
+        onClose={() => setLightboxOpen(false)}
+        onIndexChange={setLightboxIndex}
+      />
     </div>
   );
 }

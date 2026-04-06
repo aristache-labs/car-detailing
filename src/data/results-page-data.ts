@@ -9,7 +9,6 @@ export type GalleryItem = {
   service: string;
   result: string;
   image: string;
-  number: string;
 };
 
 export type BeforeAfterItem = {
@@ -30,6 +29,8 @@ export type BeforeAfterItem = {
   featuredSupportingLine?: string;
   /** Small editorial label above featured compare (e.g. “Signature Transformation”) */
   featuredEyebrow?: string;
+  /** Short portfolio line under service (More transformations cards) */
+  portfolioResult?: string;
 };
 
 export type VideoItem = {
@@ -73,55 +74,49 @@ export const galleryItems: GalleryItem[] = [
     id: 'g1',
     category: 'correction',
     vehicle: 'Infiniti Q60',
-    service: 'Paint correction',
-    result: 'Swirl removal and mirror gloss with durable ceramic top coat.',
+    service: 'Paint Correction',
+    result: 'Refined defect removal with deep gloss clarity.',
     image: '/images/before-after/after-paint-correction.png',
-    number: '01',
   },
   {
     id: 'g2',
     category: 'ceramic',
     vehicle: 'BMW 3 Series',
-    service: 'Ceramic coating',
-    result: 'Hydrophobic finish and deeper gloss after full decontamination.',
+    service: 'Ceramic Coating',
+    result: 'Surface protection with stronger depth and water behavior.',
     image: '/images/before-after/after-ceramic-coating.png',
-    number: '02',
   },
   {
     id: 'g3',
     category: 'ppf',
     vehicle: 'BMW M4',
-    service: 'Front-end PPF',
-    result: 'Impact protection on high-wear zones with invisible film.',
+    service: 'Front-End PPF',
+    result: 'Clear film over high-wear zones with minimal visual weight.',
     image: '/images/before-after/after-PPF.png',
-    number: '03',
   },
   {
     id: 'g4',
     category: 'interior',
     vehicle: 'Mercedes-Benz GLC',
-    service: 'Interior detail',
-    result: 'Deep clean, leather conditioning, refreshed cabin finish.',
+    service: 'Interior Detail',
+    result: 'Cabin refresh with leather conditioning and a quiet finish.',
     image: '/images/before-after/after-Interior-deep-clean.png',
-    number: '04',
   },
   {
     id: 'g5',
     category: 'engine',
     vehicle: 'Audi S4',
-    service: 'Engine bay detail',
-    result: 'Degreased, dressed, and presentation-ready under the hood.',
+    service: 'Engine Bay Detail',
+    result: 'Engine bay presented clean, dressed, and controlled.',
     image: '/images/before-after/before-paint-correction.png',
-    number: '05',
   },
   {
     id: 'g6',
     category: 'correction',
     vehicle: 'Porsche 911',
-    service: 'Multi-stage polish',
-    result: 'Defect reduction and clarity for show-ready paint.',
+    service: 'Multi-Stage Polish',
+    result: 'Clarity and gloss dialed for a sharper paint read.',
     image: '/images/before-after/before-ceramic-coating.png',
-    number: '06',
   },
 ];
 
@@ -146,6 +141,7 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-ceramic-coating.png',
     tags: ['Ceramic', 'Decon'],
     studioTime: '11 hours',
+    portfolioResult: 'Hydrophobic finish with calibrated gloss depth.',
   },
   {
     id: 'ba3',
@@ -155,6 +151,7 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-PPF.png',
     tags: ['PPF'],
     studioTime: '16 hours',
+    portfolioResult: 'Film laid with clean edges and high-wear coverage.',
   },
   {
     id: 'ba4',
@@ -164,6 +161,7 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-Interior-deep-clean.png',
     tags: ['Interior'],
     studioTime: '6 hours',
+    portfolioResult: 'Surfaces reset for a composed, presentation-ready cabin.',
   },
 ];
 
