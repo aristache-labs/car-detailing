@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import PageShell from '@/components/layout/PageShell';
-import InnerPageHeader from '@/components/pages/InnerPageHeader';
-import ResultsGallery from '@/components/pages/ResultsGallery';
+import ResultsPageClient from '@/components/pages/ResultsPageClient';
 
 export const metadata: Metadata = {
   title: 'Results — Apex Detailing',
@@ -12,12 +11,7 @@ export const metadata: Metadata = {
 export default function ResultsPage() {
   return (
     <PageShell>
-      <InnerPageHeader
-        eyebrow="Proof"
-        title="Results"
-        description="Featured comparison plus a filterable gallery — ceramic, correction, PPF, interior, and more."
-      />
-      <ResultsGallery />
+      <ResultsPageClient />
     </PageShell>
   );
 }
