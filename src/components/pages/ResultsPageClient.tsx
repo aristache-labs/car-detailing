@@ -6,13 +6,15 @@ import type { CSSProperties } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeftRight } from 'lucide-react';
-import SectionBadge from '@/components/ui/SectionBadge';
 import ImageLightbox, { type LightboxSlide } from '@/components/ui/ImageLightbox';
+import InnerPageHeader from '@/components/pages/InnerPageHeader';
 import {
   beforeAfterItems,
   featuredBeforeAfter,
   galleryCategoryBadge,
+  galleryCategoryBadgeMobile,
   galleryItems,
+  serviceBadgeLabelMobile,
   videoItems,
   type GalleryFilterId,
   type MainTab,
@@ -70,18 +72,16 @@ const TITLE_GOLD: CSSProperties = {
 const mediaCardFrame =
   'overflow-hidden rounded-sm border border-white/[0.08] transition-[border-color] duration-300 hover:border-[#C9A84C]/22';
 
-const metaGold = 'text-[9px] font-bold uppercase tracking-[0.18em] text-[#C9A84C]/75';
-
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(201,168,76,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]';
 
-/** Technical category label — rectangular, not pill; Gallery + More transformations */
-const categoryBadgeClass =
-  'inline-flex max-w-[min(100%,12rem)] shrink-0 items-center rounded-[2px] border border-[#C9A84C]/35 bg-[#0a0a0a] px-2 py-0.5 text-[8px] font-semibold uppercase leading-tight tracking-[0.12em] text-[#C9A84C] sm:max-w-none sm:text-[9px] sm:tracking-[0.14em]';
+/** Service badge — smaller on narrow columns; full size from `md:` up (desktop unchanged). */
+const serviceBadgeClass =
+  'inline-flex max-w-[min(100%,9.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2 py-0.5 text-[8px] font-bold uppercase leading-tight tracking-[0.12em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[10px] md:tracking-[0.15em]';
 
-/** Supporting description under cards — warmer neutral, readable on #0a0a0a */
-const cardDescriptionClass =
-  'text-[11px] font-normal leading-[1.62] text-[#c8c4bc] md:text-[12px] md:leading-[1.65]';
+/** Caption meta — compact on mobile grid; relaxed from `md:` up. */
+const cardCaptionMetaClass =
+  'text-[10px] font-medium leading-snug tracking-[0.01em] text-[#cfc9bf] md:text-[11px] md:leading-[1.5]';
 
 function studioTimeShort(studioTime: string): string {
   const m = studioTime.match(/^(\d+)/);
@@ -234,6 +234,21 @@ export default function ResultsPageClient() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const moreTransformItems = useMemo(() => beforeAfterItems.slice(1), []);
+  const featuredCaseBadge = (featuredBeforeAfter.featuredEyebrow ?? 'Featured case').toUpperCase();
+  const featuredMetaAll = (
+    `${studioTimeShort(featuredBeforeAfter.studioTime)} studio time · ${
+      featuredBeforeAfter.featuredTreatmentLine ??
+      featuredBeforeAfter.featuredMetaLine ??
+      featuredBeforeAfter.tags.join(' · ')
+    }`
+  )
+    .split('·')
+    .map((token) => token.trim())
+    .filter(Boolean);
+  /** Mobile: first three segments on one centered row; remainder on a second centered row */
+  const featuredMetaPrimary = featuredMetaAll.slice(0, 3);
+  const featuredMetaTail =
+    featuredMetaAll.length > 3 ? featuredMetaAll.slice(3).join(' · ') : null;
 
   const openGalleryLightbox = useCallback(
     (clickedIndex: number) => {
@@ -241,7 +256,7 @@ export default function ResultsPageClient() {
         galleryItemsForDisplay.map((item) => ({
           src: item.image,
           title: item.vehicle,
-          subtitle: item.service,
+          subtitle: item.metaLine,
         })),
       );
       setLightboxIndex(clickedIndex);
@@ -256,7 +271,7 @@ export default function ResultsPageClient() {
         moreTransformItems.map((ba) => ({
           src: ba.after,
           title: ba.vehicle,
-          subtitle: ba.service,
+          subtitle: ba.captionMeta ?? ba.service,
         })),
       );
       setLightboxIndex(clickedIndex);
@@ -267,34 +282,41 @@ export default function ResultsPageClient() {
 
   return (
     <div className="results-page min-h-screen bg-[#0a0a0a]">
-      {/* Page intro — same structure + classes as Services `InnerPageHeader` premium (client-safe duplicate). */}
-      <section
-        className="border-b border-white/[0.07] pt-20 pb-8 md:pt-24 md:pb-10"
-        style={{ background: 'var(--carbon-950)' }}
-      >
-        <div className="mx-auto max-w-5xl px-4 md:max-w-7xl md:px-14">
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <SectionBadge className="mb-3 md:mb-4">PROOF</SectionBadge>
-            <h1
-              className="flex flex-nowrap items-baseline gap-x-2 text-nowrap uppercase leading-[0.92] tracking-[0.04em] md:gap-x-3"
-              style={{ fontFamily: 'var(--font-bebas)' }}
+      {/* Page intro — same `InnerPageHeader` premium band as /services (badge, title scale, body). */}
+      <InnerPageHeader
+        variant="premium"
+        eyebrow="PROOF"
+        title={
+          <>
+            <span
+              className="shrink-0 font-black leading-[0.92] text-[clamp(2.75rem,9vw,4.5rem)] md:text-[clamp(3.25rem,5vw,4rem)]"
+              style={TITLE_SILVER}
             >
-              <span
-                className="shrink-0 font-black leading-[0.92] text-[clamp(2.75rem,9vw,4.5rem)] md:text-[clamp(3.25rem,5vw,4rem)]"
-                style={TITLE_SILVER}
-              >
-                Our
-              </span>
-              <span
-                className="shrink-0 font-black leading-[0.92] text-[clamp(2.75rem,9vw,4.5rem)] md:text-[clamp(3.25rem,5vw,4rem)]"
-                style={TITLE_GOLD}
-              >
-                Results
-              </span>
-            </h1>
-          </div>
-        </div>
-      </section>
+              Our
+            </span>
+            <span
+              className="shrink-0 font-black leading-[0.92] text-[clamp(2.75rem,9vw,4.5rem)] md:text-[clamp(3.25rem,5vw,4rem)]"
+              style={TITLE_GOLD}
+            >
+              Results
+            </span>
+          </>
+        }
+        description={
+          <>
+            Browse gallery work, compare before-and-afters, and watch short reels from the studio. Explore full scope
+            on{' '}
+            <Link href="/services" className="text-[#C9A84C] underline-offset-4 transition-colors hover:underline">
+              Services
+            </Link>
+            , and packages on{' '}
+            <Link href="/pricing" className="text-[#C9A84C] underline-offset-4 transition-colors hover:underline">
+              Pricing
+            </Link>
+            .
+          </>
+        }
+      />
 
       {/* Mobile: mode tabs (centered) + gallery filter row */}
       <section className="border-b border-white/[0.07] bg-[#0a0a0a] md:hidden">
@@ -444,27 +466,50 @@ export default function ResultsPageClient() {
                           />
                         </div>
                       </button>
-                      <div className="pt-3 pb-1 md:px-4 md:pb-5 md:pt-4">
-                        <div className="mb-2 md:mb-2.5">
-                          <span className={categoryBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
-                            {galleryCategoryBadge(item.category)}
-                          </span>
+                      <div className="text-left pt-3.5 pb-1.5 md:px-5 md:pb-6 md:pt-5">
+                        {/* Mobile: model left, short badge right, meta below — all left-aligned */}
+                        <div className="md:hidden">
+                          <div className="flex min-w-0 items-start justify-between gap-1.5">
+                            <h3
+                              className="min-w-0 flex-1 pr-1 text-left text-[13px] font-semibold leading-snug tracking-[-0.01em] text-white/95"
+                              style={{ fontFamily: 'var(--font-inter)' }}
+                            >
+                              {item.vehicle}
+                            </h3>
+                            <span
+                              className={`${serviceBadgeClass} max-w-none shrink-0 self-start whitespace-nowrap`}
+                              style={{ fontFamily: 'var(--font-inter)' }}
+                            >
+                              {galleryCategoryBadgeMobile(item.category)}
+                            </span>
+                          </div>
+                          <p
+                            className={`mt-1.5 text-left ${cardCaptionMetaClass}`}
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {item.metaLine}
+                          </p>
                         </div>
-                        <h3
-                          className="text-[13px] font-semibold tracking-tight text-white md:text-[15px]"
-                          style={{ fontFamily: 'var(--font-inter)' }}
-                        >
-                          {item.vehicle}
-                        </h3>
-                        <p
-                          className="mt-1 text-[10px] font-medium uppercase tracking-[0.12em] text-white/48 md:text-[11px]"
-                          style={{ fontFamily: 'var(--font-inter)' }}
-                        >
-                          {item.service}
-                        </p>
-                        <p className={`mt-2 ${cardDescriptionClass}`} style={{ fontFamily: 'var(--font-inter)' }}>
-                          {item.result}
-                        </p>
+                        {/* Desktop: model + full badge row, then meta */}
+                        <div className="hidden md:block">
+                          <div className="mb-1.5 flex min-w-0 items-start justify-between gap-3 md:mb-2">
+                            <h3
+                              className="min-w-0 flex-1 pt-0.5 text-[15px] font-semibold tracking-[-0.01em] text-white/95"
+                              style={{ fontFamily: 'var(--font-inter)' }}
+                            >
+                              {item.vehicle}
+                            </h3>
+                            <span className={serviceBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
+                              {galleryCategoryBadge(item.category)}
+                            </span>
+                          </div>
+                          <p
+                            className={`mt-1.5 max-w-88 text-left ${cardCaptionMetaClass}`}
+                            style={{ fontFamily: 'var(--font-inter)' }}
+                          >
+                            {item.metaLine}
+                          </p>
+                        </div>
                       </div>
                     </motion.article>
                   ))}
@@ -485,50 +530,77 @@ export default function ResultsPageClient() {
                       />
                     </div>
                     <div className="border-t border-white/10 px-4 py-4 sm:px-5 sm:py-5 md:px-6 md:py-6">
+                      <div className="mb-2 flex items-center justify-between gap-1.5 md:mb-3 md:gap-3">
+                        <p
+                          className="min-w-0 flex-1 text-[clamp(1.2rem,5.5vw,1.65rem)] font-bold uppercase leading-[0.98] tracking-[0.03em] text-white md:text-[clamp(1.5rem,4.2vw,2.125rem)]"
+                          style={{ fontFamily: 'var(--font-bebas)' }}
+                        >
+                          {featuredBeforeAfter.vehicle}
+                        </p>
+                        <span
+                          className={`${serviceBadgeClass} max-w-none shrink-0 whitespace-nowrap`}
+                          style={{ fontFamily: 'var(--font-inter)' }}
+                        >
+                          {featuredCaseBadge}
+                        </span>
+                      </div>
                       <p
-                        className="mb-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#C9A84C]/58 sm:text-[10px] sm:tracking-[0.18em]"
-                        style={{ fontFamily: 'var(--font-inter)' }}
-                      >
-                        {featuredBeforeAfter.featuredEyebrow ?? 'Signature transformation'}
-                      </p>
-                      <p
-                        className="text-[clamp(1.5rem,4.2vw,2.125rem)] font-bold uppercase leading-[0.98] tracking-[0.03em] text-white"
-                        style={{ fontFamily: 'var(--font-bebas)' }}
-                      >
-                        {featuredBeforeAfter.vehicle}
-                      </p>
-                      <p
-                        className="mt-2 max-w-2xl text-[13px] font-medium leading-snug text-white/82 sm:text-[14px] md:leading-relaxed"
+                        className="max-w-2xl text-left text-[12px] font-medium leading-snug text-white/82 sm:text-[13px] md:text-[14px] md:leading-relaxed"
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
                         {featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service}
                       </p>
-                      <p
-                        className="mt-3 max-w-2xl text-[11px] leading-[1.55] text-white/42 sm:text-[12px] md:mt-3.5"
+                      {/* Desktop: single metadata row — flush left (no horizontal centering) */}
+                      <div
+                        className="mt-3 hidden text-[10px] leading-[1.55] text-[#d5c8ac] sm:text-[11px] md:block"
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
-                        <span className="tabular-nums text-white/48">
-                          {studioTimeShort(featuredBeforeAfter.studioTime)} studio time
-                        </span>
-                        <span className="mx-1.5 text-white/22 sm:mx-2" aria-hidden>
-                          ·
-                        </span>
-                        <span>
-                          {featuredBeforeAfter.featuredTreatmentLine ??
-                            featuredBeforeAfter.featuredMetaLine ??
-                            featuredBeforeAfter.tags.join(' · ')}
-                        </span>
-                      </p>
+                        <div className="flex max-w-3xl flex-wrap items-center gap-x-2 gap-y-1 text-left">
+                          {featuredMetaAll.map((token, idx) => (
+                            <span key={`${token}-${idx}`} className="inline-flex items-center">
+                              {idx > 0 ? <span className="mr-2 text-white/25">•</span> : null}
+                              <span className={idx === 0 ? 'tabular-nums' : ''}>{token}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      {/* Mobile: same segments as desktop, left-aligned editorial stack */}
+                      <div className="mt-3 md:hidden" style={{ fontFamily: 'var(--font-inter)' }}>
+                        <p className="text-left text-[10px] leading-relaxed text-[#d5c8ac] sm:text-[11px]">
+                          {featuredMetaPrimary.map((token, idx) => (
+                            <span key={`m-${token}-${idx}`}>
+                              {idx > 0 ? <span className="text-white/25"> · </span> : null}
+                              <span className={idx === 0 ? 'tabular-nums' : ''}>{token}</span>
+                            </span>
+                          ))}
+                        </p>
+                        {featuredMetaTail ? (
+                          <p className="mt-2 text-left text-[10px] leading-relaxed text-[#d5c8ac] sm:text-[11px]">
+                            {featuredMetaTail}
+                          </p>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-t border-white/[0.07] pt-12 md:pt-14">
                   <h2
-                    className="mb-8 max-w-xl text-[clamp(1.2rem,2.8vw,1.5rem)] font-semibold leading-snug tracking-[-0.02em] text-white md:mb-10"
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                    className="mb-8 flex flex-wrap items-baseline justify-center gap-x-2 uppercase leading-[0.92] tracking-[0.04em] md:mb-10 md:justify-start md:gap-x-3"
+                    style={{ fontFamily: 'var(--font-bebas)' }}
                   >
-                    More transformations
+                    <span
+                      className="shrink-0 font-black text-[clamp(1.75rem,4.2vw,2.5rem)]"
+                      style={TITLE_SILVER}
+                    >
+                      More
+                    </span>
+                    <span
+                      className="shrink-0 font-black text-[clamp(1.75rem,4.2vw,2.5rem)]"
+                      style={TITLE_GOLD}
+                    >
+                      Transformations
+                    </span>
                   </h2>
                   <div className="grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8">
                     {moreTransformItems.map((ba, idx) => (
@@ -551,35 +623,52 @@ export default function ResultsPageClient() {
                             </div>
                           </div>
                         </button>
-                        <div className="border-t border-white/8 px-4 py-4 md:px-5 md:py-4">
-                          <div className="mb-2 md:mb-2.5">
-                            <span className={categoryBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
-                              {ba.tags[0] ?? 'Case'}
-                            </span>
+                        <div className="border-t border-white/8 px-4 py-3.5 text-left md:px-5 md:py-5">
+                          <div className="md:hidden">
+                            <div className="flex min-w-0 items-start justify-between gap-1.5">
+                              <h3
+                                className="min-w-0 flex-1 pr-1 text-left text-[13px] font-semibold leading-snug tracking-[-0.01em] text-white/95"
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                {ba.vehicle}
+                              </h3>
+                              <span
+                                className={`${serviceBadgeClass} max-w-none shrink-0 self-start whitespace-nowrap`}
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                {serviceBadgeLabelMobile(ba.serviceBadgeLabel)}
+                              </span>
+                            </div>
+                            {ba.captionMeta ? (
+                              <p
+                                className={`mt-1.5 text-left ${cardCaptionMetaClass}`}
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                {ba.captionMeta}
+                              </p>
+                            ) : null}
                           </div>
-                          <h3
-                            className="text-[13px] font-semibold tracking-tight text-white md:text-[15px]"
-                            style={{ fontFamily: 'var(--font-inter)' }}
-                          >
-                            {ba.vehicle}
-                          </h3>
-                          <p
-                            className="mt-1 text-[10px] font-medium uppercase tracking-[0.12em] text-white/48 md:text-[11px]"
-                            style={{ fontFamily: 'var(--font-inter)' }}
-                          >
-                            {ba.service}
-                          </p>
-                          <p
-                            className="mt-1.5 text-[10px] font-normal tabular-nums text-white/32 md:text-[11px]"
-                            style={{ fontFamily: 'var(--font-inter)' }}
-                          >
-                            {studioTimeShort(ba.studioTime)} studio time
-                          </p>
-                          {ba.portfolioResult ? (
-                            <p className={`mt-2 ${cardDescriptionClass}`} style={{ fontFamily: 'var(--font-inter)' }}>
-                              {ba.portfolioResult}
-                            </p>
-                          ) : null}
+                          <div className="hidden md:block">
+                            <div className="mb-1.5 flex min-w-0 items-start justify-between gap-3 md:mb-2">
+                              <h3
+                                className="min-w-0 flex-1 text-[15px] font-semibold tracking-[-0.01em] text-white/95"
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                {ba.vehicle}
+                              </h3>
+                              <span className={serviceBadgeClass} style={{ fontFamily: 'var(--font-inter)' }}>
+                                {ba.serviceBadgeLabel}
+                              </span>
+                            </div>
+                            {ba.captionMeta ? (
+                              <p
+                                className={`mt-1.5 max-w-lg text-left ${cardCaptionMetaClass}`}
+                                style={{ fontFamily: 'var(--font-inter)' }}
+                              >
+                                {ba.captionMeta}
+                              </p>
+                            ) : null}
+                          </div>
                         </div>
                       </article>
                     ))}
@@ -649,6 +738,12 @@ function VideoCard({ item }: { item: VideoItem }) {
   return (
     <article className={mediaCardFrame}>
       <div className="group relative aspect-video bg-black">
+        <span
+          className="pointer-events-none absolute right-2 top-2 z-30 rounded-[2px] border border-white/15 bg-black/60 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-white/85 tabular-nums backdrop-blur-[2px] md:right-2.5 md:top-2.5 md:text-[10px]"
+          style={{ fontFamily: 'var(--font-inter)' }}
+        >
+          {item.duration}
+        </span>
         {!playing ? (
           <>
             <Image
@@ -664,7 +759,7 @@ function VideoCard({ item }: { item: VideoItem }) {
                 setPlaying(true);
                 requestAnimationFrame(() => void videoRef.current?.play());
               }}
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0 z-10 flex items-center justify-center"
               aria-label={`Play ${item.label}`}
             >
               <span className="flex h-12 w-12 items-center justify-center rounded-full border border-black/20 bg-[#C9A84C] text-black shadow-sm transition-opacity duration-300 group-hover:opacity-95">
@@ -673,23 +768,26 @@ function VideoCard({ item }: { item: VideoItem }) {
             </button>
           </>
         ) : (
-          <video ref={videoRef} className="h-full w-full object-cover" controls playsInline poster={item.thumbnail}>
+          <video ref={videoRef} className="relative z-0 h-full w-full object-cover" controls playsInline poster={item.thumbnail}>
             <source src={item.src ?? '/videos/showcase.mp4'} type="video/mp4" />
           </video>
         )}
       </div>
-      <div className="space-y-2 px-4 pb-5 pt-3">
-        <div className="flex items-center justify-between gap-2 border-b border-white/6 pb-2 text-[9px] font-bold uppercase tracking-[0.18em]">
-          <span className="text-[#C9A84C]/75">Video</span>
-          <span className="text-white/40">{item.duration}</span>
+      <div className="px-4 pb-5 pt-3">
+        <div className="flex min-w-0 items-start justify-between gap-2 md:gap-3">
+          <h3
+            className="min-w-0 flex-1 pr-1 text-left text-[14px] font-semibold uppercase tracking-wide text-text-primary md:text-[15px]"
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            {item.vehicle}
+          </h3>
+          <span
+            className={`${serviceBadgeClass} max-w-none shrink-0 self-start whitespace-nowrap`}
+            style={{ fontFamily: 'var(--font-inter)' }}
+          >
+            {item.badgeLabel}
+          </span>
         </div>
-        <h3
-          className="text-[15px] font-semibold uppercase tracking-wide text-text-primary"
-          style={{ fontFamily: 'var(--font-inter)' }}
-        >
-          {item.vehicle}
-        </h3>
-        <p className={metaGold}>{item.service}</p>
       </div>
     </article>
   );

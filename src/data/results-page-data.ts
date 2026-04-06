@@ -7,7 +7,8 @@ export type GalleryItem = {
   category: Exclude<GalleryFilterId, 'all'>;
   vehicle: string;
   service: string;
-  result: string;
+  /** One short editorial meta line under the vehicle (e.g. “Stage 2 correction • Deep gloss finish”) */
+  metaLine: string;
   image: string;
 };
 
@@ -29,14 +30,18 @@ export type BeforeAfterItem = {
   featuredSupportingLine?: string;
   /** Small editorial label above featured compare (e.g. “Signature Transformation”) */
   featuredEyebrow?: string;
-  /** Short portfolio line under service (More transformations cards) */
-  portfolioResult?: string;
+  /** Short editorial meta under vehicle title (More transformations cards) */
+  captionMeta?: string;
+  /** Full uppercase service label for card badge (homepage-aligned naming) */
+  serviceBadgeLabel: string;
 };
 
 export type VideoItem = {
   id: string;
   vehicle: string;
   service: string;
+  /** Uppercase label for card badge (homepage service-chip style) */
+  badgeLabel: string;
   thumbnail: string;
   duration: string;
   label: string;
@@ -53,16 +58,43 @@ export const GALLERY_FILTERS: { id: GalleryFilterId; label: string }[] = [
   { id: 'engine', label: 'Engine' },
 ];
 
-const categoryLabel: Record<Exclude<GalleryFilterId, 'all'>, string> = {
-  correction: 'Correction',
-  ceramic: 'Ceramic',
-  ppf: 'PPF',
-  interior: 'Interior',
-  engine: 'Engine',
+/** Full service names for Results cards — matches homepage service naming. */
+const categoryFullServiceBadge: Record<Exclude<GalleryFilterId, 'all'>, string> = {
+  correction: 'PAINT CORRECTION',
+  ceramic: 'CERAMIC COATING',
+  ppf: 'PPF PROTECTION',
+  interior: 'INTERIOR DETAILING',
+  engine: 'ENGINE BAY DETAILING',
 };
 
 export function galleryCategoryBadge(cat: Exclude<GalleryFilterId, 'all'>): string {
-  return categoryLabel[cat];
+  return categoryFullServiceBadge[cat];
+}
+
+/** Compact badge copy for narrow breakpoints — same order as `categoryFullServiceBadge`. */
+const categoryMobileShortBadge: Record<Exclude<GalleryFilterId, 'all'>, string> = {
+  correction: 'PAINT',
+  ceramic: 'CERAMIC',
+  ppf: 'PPF',
+  interior: 'INTERIOR',
+  engine: 'ENGINE',
+};
+
+export function galleryCategoryBadgeMobile(cat: Exclude<GalleryFilterId, 'all'>): string {
+  return categoryMobileShortBadge[cat];
+}
+
+const fullServiceBadgeToMobileShort: Record<string, string> = {
+  'PAINT CORRECTION': 'PAINT',
+  'CERAMIC COATING': 'CERAMIC',
+  'PPF PROTECTION': 'PPF',
+  'INTERIOR DETAILING': 'INTERIOR',
+  'ENGINE BAY DETAILING': 'ENGINE',
+};
+
+/** Maps full `serviceBadgeLabel` strings to mobile short chips (More transformations). */
+export function serviceBadgeLabelMobile(fullLabel: string): string {
+  return fullServiceBadgeToMobileShort[fullLabel] ?? fullLabel;
 }
 
 /**
@@ -75,7 +107,7 @@ export const galleryItems: GalleryItem[] = [
     category: 'correction',
     vehicle: 'Infiniti Q60',
     service: 'Paint Correction',
-    result: 'Refined defect removal with deep gloss clarity.',
+    metaLine: 'Stage 2 correction • Deep gloss finish',
     image: '/images/before-after/after-paint-correction.png',
   },
   {
@@ -83,7 +115,7 @@ export const galleryItems: GalleryItem[] = [
     category: 'ceramic',
     vehicle: 'BMW 3 Series',
     service: 'Ceramic Coating',
-    result: 'Surface protection with stronger depth and water behavior.',
+    metaLine: 'Hydrophobic finish • Enhanced surface depth',
     image: '/images/before-after/after-ceramic-coating.png',
   },
   {
@@ -91,7 +123,7 @@ export const galleryItems: GalleryItem[] = [
     category: 'ppf',
     vehicle: 'BMW M4',
     service: 'Front-End PPF',
-    result: 'Clear film over high-wear zones with minimal visual weight.',
+    metaLine: 'High-wear protection • Near-invisible finish',
     image: '/images/before-after/after-PPF.png',
   },
   {
@@ -99,7 +131,7 @@ export const galleryItems: GalleryItem[] = [
     category: 'interior',
     vehicle: 'Mercedes-Benz GLC',
     service: 'Interior Detail',
-    result: 'Cabin refresh with leather conditioning and a quiet finish.',
+    metaLine: 'Cabin reset • Leather conditioning',
     image: '/images/before-after/after-Interior-deep-clean.png',
   },
   {
@@ -107,7 +139,7 @@ export const galleryItems: GalleryItem[] = [
     category: 'engine',
     vehicle: 'Audi S4',
     service: 'Engine Bay Detail',
-    result: 'Engine bay presented clean, dressed, and controlled.',
+    metaLine: 'Clean bay detail • Controlled factory finish',
     image: '/images/before-after/before-paint-correction.png',
   },
   {
@@ -115,7 +147,7 @@ export const galleryItems: GalleryItem[] = [
     category: 'correction',
     vehicle: 'Porsche 911',
     service: 'Multi-Stage Polish',
-    result: 'Clarity and gloss dialed for a sharper paint read.',
+    metaLine: 'Defect refinement • Sharper gloss response',
     image: '/images/before-after/before-ceramic-coating.png',
   },
 ];
@@ -132,6 +164,7 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     featuredEyebrow: 'Signature Transformation',
     editorialSubtitle: 'Multi-Stage Paint Correction & Ceramic Protection',
     featuredTreatmentLine: 'Defect removal · Gloss refinement · Long-term protection',
+    serviceBadgeLabel: 'PAINT CORRECTION',
   },
   {
     id: 'ba2',
@@ -141,7 +174,8 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-ceramic-coating.png',
     tags: ['Ceramic', 'Decon'],
     studioTime: '11 hours',
-    portfolioResult: 'Hydrophobic finish with calibrated gloss depth.',
+    captionMeta: 'Hydrophobic finish • Calibrated gloss depth',
+    serviceBadgeLabel: 'CERAMIC COATING',
   },
   {
     id: 'ba3',
@@ -151,7 +185,8 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-PPF.png',
     tags: ['PPF'],
     studioTime: '16 hours',
-    portfolioResult: 'Film laid with clean edges and high-wear coverage.',
+    captionMeta: 'Clean film edges • High-wear coverage',
+    serviceBadgeLabel: 'PPF PROTECTION',
   },
   {
     id: 'ba4',
@@ -161,7 +196,8 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-Interior-deep-clean.png',
     tags: ['Interior'],
     studioTime: '6 hours',
-    portfolioResult: 'Surfaces reset for a composed, presentation-ready cabin.',
+    captionMeta: 'Cabin reset • Presentation-ready surfaces',
+    serviceBadgeLabel: 'INTERIOR DETAILING',
   },
 ];
 
@@ -173,6 +209,7 @@ export const videoItems: VideoItem[] = [
     id: 'v1',
     vehicle: 'BMW M4',
     service: 'Process reel',
+    badgeLabel: 'PROCESS REEL',
     thumbnail: '/images/before-after/after-PPF.png',
     duration: '0:45',
     label: 'Highlight',
@@ -182,6 +219,7 @@ export const videoItems: VideoItem[] = [
     id: 'v2',
     vehicle: 'Porsche 911',
     service: 'Ceramic + correction',
+    badgeLabel: 'CERAMIC + CORRECTION',
     thumbnail: '/images/before-after/after-ceramic-coating.png',
     duration: '1:12',
     label: 'Walkthrough',
