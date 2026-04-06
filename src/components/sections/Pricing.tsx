@@ -5,13 +5,6 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { servicePricingItems } from '@/data/service-pricing';
 
-const EXPLAINERS = [
-  'Starting prices set a clear baseline.',
-  'Final quotes follow in-person inspection.',
-  'Vehicle size and condition affect scope.',
-  'Add-ons and bundles can be layered in.',
-];
-
 const SUPPORT_BLOCKS = [
   {
     title: 'PPF Coverage Planning',
@@ -66,6 +59,55 @@ export default function Pricing({
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
+        <style>{`
+          .service-badge {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            transform: translateY(-50%);
+            z-index: 2;
+            background: #c9a227;
+            color: #0a0a0a;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            font-family: var(--font-inter), system-ui, sans-serif;
+          }
+          .popular-ribbon {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            width: 90px;
+            height: 90px;
+            overflow: hidden;
+            z-index: 10;
+            pointer-events: none;
+            border-top-right-radius: inherit;
+          }
+          .popular-ribbon::before {
+            content: 'MOST REQUESTED';
+            position: absolute;
+            top: 18px;
+            right: -22px;
+            width: 100px;
+            padding: 5px 0;
+            background: #c9a227;
+            color: #0a0a0a;
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-align: center;
+            transform: rotate(45deg);
+            transform-origin: center;
+            font-family: var(--font-inter), system-ui, sans-serif;
+            box-shadow: none;
+          }
+        `}</style>
         {showHeader ? (
           <div className="mb-8 text-center md:mb-10 md:text-left">
             <span
@@ -119,30 +161,6 @@ export default function Pricing({
           </div>
         ) : null}
 
-        {!isPreview ? (
-          <div className="mb-6 grid grid-cols-1 gap-3 md:mb-8 md:grid-cols-2 xl:grid-cols-4">
-            {EXPLAINERS.map((item) => (
-              <div
-                key={item}
-                className="rounded-sm border border-[rgba(201,168,76,0.14)] bg-[rgba(255,255,255,0.02)] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
-              >
-                <p
-                  className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#d2b872]"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  Pricing Notes
-                </p>
-                <p
-                  className="mt-1.5 text-sm leading-relaxed text-[#dbe3ee]"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {item}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : null}
-
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {cards.map((card, index) => (
             <motion.article
@@ -152,80 +170,49 @@ export default function Pricing({
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: Math.min(index * 0.05, 0.18), duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -3, transition: { duration: 0.22, ease: 'easeOut' } }}
-              className="group relative flex min-h-120 flex-col overflow-hidden rounded-sm border bg-[rgba(15,15,15,0.96)]"
+              className="group relative flex min-h-110 flex-col overflow-visible rounded-[1.35rem] border bg-[rgba(15,15,15,0.96)]"
               style={{
-                borderColor: card.featured ? 'rgba(201,168,76,0.42)' : 'rgba(255,255,255,0.08)',
-                boxShadow: card.featured
-                  ? '0 16px 44px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)'
-                  : '0 12px 36px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.03)',
+                borderColor: card.featured ? '#c9a227' : '#2a2a2a',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
               }}
             >
+              {card.featured ? <div className="popular-ribbon" aria-hidden /> : null}
+
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 z-0 rounded-[inherit] pointer-events-none"
                 style={{
                   background: card.featured
-                    ? 'radial-gradient(ellipse at top right, rgba(201,168,76,0.1), transparent 58%)'
+                    ? 'radial-gradient(ellipse at top right, rgba(201,168,76,0.06), transparent 58%)'
                     : 'radial-gradient(ellipse at top right, rgba(255,255,255,0.035), transparent 62%)',
                 }}
               />
-              <div
-                className="absolute left-0 top-0 h-px w-full"
-                style={{
-                  background: card.featured
-                    ? 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.75) 50%, transparent 100%)'
-                    : 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.16) 50%, transparent 100%)',
-                }}
-              />
 
-              <div className="relative z-10 flex h-full flex-col p-5 sm:p-6">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p
-                      className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d2b872]"
-                      style={{ fontFamily: 'var(--font-inter)' }}
-                    >
-                      {card.badge}
-                    </p>
-                    <p
-                      className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/35"
-                      style={{ fontFamily: 'var(--font-orbitron)' }}
-                    >
-                      {card.number}
-                    </p>
-                  </div>
-                  {card.featured ? (
-                    <span
-                      className="inline-flex items-center rounded-sm border border-[#C9A84C]/30 bg-[#C9A84C]/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.16em] text-[#e7ce88]"
-                      style={{ fontFamily: 'var(--font-orbitron)' }}
-                    >
-                      Most Requested
-                    </span>
-                  ) : null}
-                </div>
+              <span className="service-badge">{card.badge}</span>
 
+              <div className="relative z-10 flex h-full flex-col p-4 pt-6 sm:p-5 sm:pt-7">
                 <h3
-                  className="mt-5 text-[2rem] font-black uppercase leading-[0.92] tracking-[0.04em] text-white"
+                  className="mt-0 text-[1.78rem] font-black uppercase leading-[0.9] tracking-[0.035em] text-white"
                   style={{ fontFamily: 'var(--font-bebas)' }}
                 >
                   {card.title}
                 </h3>
                 <p
-                  className="mt-2 text-[12px] leading-relaxed text-[#d5dce7]"
+                  className="mt-1.5 min-h-[2.6rem] text-[11px] leading-relaxed text-[#d5dce7]"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.subtitle}
                 </p>
 
-                <div className="mt-5 border-y border-white/8 py-4">
+                <div className="mt-4 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-4 py-3.5">
                   <p
-                    className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45"
+                    className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/42"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {card.priceLabel}
                   </p>
-                  <div className="mt-1 flex items-end gap-2">
+                  <div className="mt-1.5 flex items-end gap-1.5">
                     <span
-                      className="text-[2rem] font-black leading-none tabular-nums"
+                      className="text-[1.7rem] font-black leading-none tabular-nums"
                       style={{
                         fontFamily: 'var(--font-orbitron)',
                         color: card.featured ? '#e7ce88' : '#eef3fa',
@@ -240,23 +227,29 @@ export default function Pricing({
                       RON
                     </span>
                   </div>
+                  <p
+                    className="mt-2 text-[11px] leading-relaxed text-[#aab5c4]"
+                    style={{ fontFamily: 'var(--font-inter)' }}
+                  >
+                    Final quote confirmed after inspection.
+                  </p>
                 </div>
 
                 <p
-                  className="mt-4 text-sm leading-relaxed text-[#b8c2d0]"
+                  className="mt-4 text-[13px] leading-relaxed text-[#b8c2d0]"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.summary}
                 </p>
 
-                <div className="mt-5">
+                <div className="mt-4">
                   <p
-                    className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#d2b872]"
+                    className="mb-2.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#d2b872]"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     Typical Scope
                   </p>
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-2">
                     {card.includedItems.map((item) => (
                       <li key={item} className="flex items-start gap-2">
                         <Check
@@ -264,7 +257,7 @@ export default function Pricing({
                           strokeWidth={2.4}
                         />
                         <span
-                          className="text-[13px] leading-relaxed text-[#e0e6ef]"
+                          className="text-[12px] leading-relaxed text-[#e0e6ef]"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item}
@@ -274,10 +267,10 @@ export default function Pricing({
                   </ul>
                 </div>
 
-                <div className="mt-auto pt-5">
+                <div className="mt-auto pt-4">
                   <div
                     aria-hidden
-                    className="mb-4 h-px w-full"
+                    className="mb-3.5 h-px w-full"
                     style={{
                       background: card.featured
                         ? 'linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.5) 50%, transparent 100%)'
@@ -286,14 +279,17 @@ export default function Pricing({
                   />
                   <Link
                     href="/contact"
-                    className={`group inline-flex w-full items-center justify-center gap-2 ${
-                      card.featured ? 'hero-cta-primary' : 'hero-cta-secondary'
+                    className={`group inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
+                      card.featured
+                        ? 'border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)]'
+                        : 'border-[#C9A84C]/26 bg-[rgba(0,0,0,0.42)] text-[#ddc27a] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:-translate-y-px hover:border-[#C9A84C]/48 hover:bg-[#C9A84C]/8 hover:text-[#f0ddab] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_0_1px_rgba(201,168,76,0.1)]'
                     }`}
+                    style={{ fontFamily: 'var(--font-inter)', WebkitTapHighlightColor: 'transparent' }}
                   >
-                    {card.ctaLabel}
+                    Request Quote
                     <ArrowRight
-                      className="h-[15px] w-[15px] shrink-0 opacity-90 transition-transform duration-300 group-hover:translate-x-0.5"
-                      strokeWidth={2.2}
+                      className="h-[14px] w-[14px] shrink-0 opacity-90 transition-transform duration-200 group-hover:translate-x-0.5"
+                      strokeWidth={2.25}
                     />
                   </Link>
                 </div>
