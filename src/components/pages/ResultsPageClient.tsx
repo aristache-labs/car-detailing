@@ -147,9 +147,23 @@ function BeforeAfterDragSlider({
       role="img"
       aria-label="Before and after comparison, slide to compare"
     >
-      <Image src={before} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 42vw" priority />
+      <Image
+        src={before}
+        alt=""
+        fill
+        className="object-cover"
+        sizes={featured ? '(max-width:768px) 100vw, min(1100px, 72vw)' : '(max-width:768px) 100vw, 50vw'}
+        priority
+      />
       <div className="absolute inset-0 z-1" style={{ clipPath: `inset(0 0 0 ${pos}%)` }}>
-        <Image src={after} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 42vw" priority />
+        <Image
+          src={after}
+          alt=""
+          fill
+          className="object-cover"
+          sizes={featured ? '(max-width:768px) 100vw, min(1100px, 72vw)' : '(max-width:768px) 100vw, 50vw'}
+          priority
+        />
       </div>
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-3 h-14 bg-linear-to-b from-black/45 to-transparent"
@@ -179,7 +193,7 @@ function BeforeAfterDragSlider({
           featured ? 'bottom-3 text-[8px]' : 'bottom-2.5 text-[9px]'
         }`}
       >
-        {featured ? 'SLIDE TO COMPARE' : 'Drag to compare'}
+        {featured ? 'Slide to compare' : 'Drag to compare'}
       </p>
     </div>
   );
@@ -228,22 +242,6 @@ export default function ResultsPageClient() {
                 Results
               </span>
             </h1>
-            <div
-              className="mx-auto mt-5 max-w-[280px] text-center text-sm leading-relaxed text-[#A0A0A0] md:mx-0 md:mt-6 md:max-w-lg md:text-left md:text-base"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              Proof of workmanship — browse photos, compare transformations, and watch process reels in one place.{' '}
-              Full packages and add-ons are on{' '}
-              <span className="whitespace-nowrap">
-                <Link
-                  href="/pricing"
-                  className="text-[#C9A84C] underline-offset-4 transition-colors hover:underline"
-                >
-                  Pricing
-                </Link>
-                .
-              </span>
-            </div>
           </div>
         </div>
       </section>
@@ -426,52 +424,66 @@ export default function ResultsPageClient() {
             )}
 
             {mainTab === 'beforeAfter' && (
-              <div className="space-y-14 md:space-y-16">
-                {/* Featured editorial case — ~42/58, balanced composition */}
-                <div className="flex flex-col gap-10 md:grid md:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] md:items-center md:gap-12 lg:gap-14">
-                  <div className="flex min-w-0 flex-col justify-center space-y-6 md:space-y-7 md:pr-2 lg:pr-4">
-                    <p
-                      className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#C9A84C]/58"
+              <div className="space-y-10 md:space-y-12">
+                {/* Featured showcase: light intro above hero → compare → caption signature below */}
+                <div className="w-full min-w-0">
+                  {/* Editorial project header (v2): meta line → title → treatment — no uppercase eyebrow */}
+                  <header className="mb-8">
+                    <div
+                      className="mb-2.5 flex flex-wrap items-center gap-2 text-[13px] leading-normal"
                       style={{ fontFamily: 'var(--font-inter)' }}
                     >
-                      Featured transformation
-                    </p>
-                    <div className="space-y-3">
-                      <h2
-                        className="text-[clamp(2rem,5vw,2.75rem)] font-bold uppercase leading-[0.95] tracking-[0.02em] text-white md:text-[clamp(2.25rem,2.8vw,3rem)]"
-                        style={{ fontFamily: 'var(--font-bebas)' }}
-                      >
-                        {featuredBeforeAfter.vehicle}
-                      </h2>
-                      <p
-                        className="max-w-md text-[14px] font-medium leading-relaxed text-white/78 md:text-[15px]"
-                        style={{ fontFamily: 'var(--font-inter)' }}
-                      >
-                        {featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service}
-                      </p>
+                      <span className="font-semibold text-[#d4af37]">
+                        {featuredBeforeAfter.featuredEyebrow ?? 'Signature Transformation'}
+                      </span>
+                      <span className="text-white/30" aria-hidden>
+                        ·
+                      </span>
+                      <span className="font-normal text-white/50">
+                        {studioTimeShort(featuredBeforeAfter.studioTime)} studio time
+                      </span>
                     </div>
-                    <p
-                      className="max-w-md text-[10px] font-medium uppercase tracking-[0.14em] text-white/36"
+                    <h2
+                      className="mb-2 max-w-[600px] text-[22px] font-semibold leading-tight tracking-[-0.03em] text-white md:text-[32px]"
                       style={{ fontFamily: 'var(--font-inter)' }}
                     >
-                      {featuredBeforeAfter.featuredMetaLine ??
+                      {featuredBeforeAfter.editorialSubtitle ?? featuredBeforeAfter.service}
+                    </h2>
+                    <p
+                      className="m-0 text-[15px] font-normal leading-relaxed text-white/45"
+                      style={{ fontFamily: 'var(--font-inter)' }}
+                    >
+                      {featuredBeforeAfter.featuredTreatmentLine ??
+                        featuredBeforeAfter.featuredMetaLine ??
                         `${featuredBeforeAfter.tags.join(' · ')} · ${studioTimeShort(featuredBeforeAfter.studioTime)} studio time`}
                     </p>
+                  </header>
+                  <div className="rounded-sm border border-white/10 bg-white/2 p-1 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] md:p-1.5">
+                    <BeforeAfterDragSlider
+                      featured
+                      before={featuredBeforeAfter.before}
+                      after={featuredBeforeAfter.after}
+                    />
                   </div>
-                  <div className="min-w-0 w-full">
-                    <div className="mx-auto w-full max-w-2xl md:mx-0 md:max-w-none">
-                      <div className="rounded-sm border border-white/10 bg-white/2 p-1 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] md:p-1.5">
-                        <BeforeAfterDragSlider
-                          featured
-                          before={featuredBeforeAfter.before}
-                          after={featuredBeforeAfter.after}
-                        />
-                      </div>
-                    </div>
+                  <div className="mt-4 md:mt-5">
+                    <p
+                      className="text-[clamp(1.35rem,2.8vw,1.65rem)] font-bold uppercase leading-tight tracking-[0.04em] text-white"
+                      style={{ fontFamily: 'var(--font-bebas)' }}
+                    >
+                      {featuredBeforeAfter.vehicle}
+                    </p>
+                    {featuredBeforeAfter.featuredSupportingLine ? (
+                      <p
+                        className="mt-1.5 max-w-xl text-[12px] font-normal leading-relaxed text-white/42"
+                        style={{ fontFamily: 'var(--font-inter)' }}
+                      >
+                        {featuredBeforeAfter.featuredSupportingLine}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
 
-                <div className="border-t border-white/[0.07] pt-10 md:pt-12">
+                <div className="border-t border-white/[0.07] pt-10 md:pt-11">
                   <p
                     className="mb-6 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/38"
                     style={{ fontFamily: 'var(--font-inter)' }}

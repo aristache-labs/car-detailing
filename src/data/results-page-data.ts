@@ -24,6 +24,12 @@ export type BeforeAfterItem = {
   editorialSubtitle?: string;
   /** Single meta line for featured block, e.g. "Correction · Ceramic · 14h studio time" */
   featuredMetaLine?: string;
+  /** Treatment / steps line below the main title (featured block, v2 layout) */
+  featuredTreatmentLine?: string;
+  /** Optional caption line under the compare hero (featured only) */
+  featuredSupportingLine?: string;
+  /** Small editorial label above featured compare (e.g. “Signature Transformation”) */
+  featuredEyebrow?: string;
 };
 
 export type VideoItem = {
@@ -128,8 +134,9 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     after: '/images/before-after/after-paint-correction.png',
     tags: ['Correction', 'Ceramic'],
     studioTime: '14 hours',
-    editorialSubtitle: 'Paint Correction & Ceramic Protection',
-    featuredMetaLine: 'Correction · Ceramic · 14h studio time',
+    featuredEyebrow: 'Signature Transformation',
+    editorialSubtitle: 'Multi-Stage Paint Correction & Ceramic Protection',
+    featuredTreatmentLine: 'Defect removal · Gloss refinement · Long-term protection',
   },
   {
     id: 'ba2',
