@@ -84,7 +84,7 @@ const SERVICE_FILTER_BTN_INACTIVE =
 
 /** Service badge — smaller on narrow columns; full size from `md:` up (desktop unchanged). */
 const serviceBadgeClass =
-  'inline-flex max-w-[min(100%,9.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2 py-0.5 text-[8px] font-bold uppercase leading-tight tracking-[0.12em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[10px] md:tracking-[0.15em]';
+  'inline-flex max-w-[min(100%,10.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2.5 py-1 text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[10px] md:tracking-[0.12em]';
 
 /** Caption meta — compact on mobile grid; relaxed from `md:` up. */
 const cardCaptionMetaClass =
@@ -372,7 +372,7 @@ export default function ResultsPageClient() {
                       key={id}
                       type="button"
                       onClick={() => setMobileGalleryFilter(id)}
-                      className={`shrink-0 rounded-sm px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
+                      className={`shrink-0 rounded-sm px-3 py-2 text-[11px] font-semibold uppercase tracking-widest transition-all duration-300 ease-out ${focusRing} ${
                         on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                       }`}
                       style={{ fontFamily: 'var(--font-inter)' }}
@@ -403,7 +403,7 @@ export default function ResultsPageClient() {
                       key={id}
                       type="button"
                       onClick={() => goToTab(id)}
-                      className={`w-full rounded-sm px-3.5 py-2.5 text-left text-[10px] font-semibold uppercase leading-snug tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
+                      className={`w-full rounded-sm px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase leading-snug tracking-widest transition-all duration-300 ease-out ${focusRing} ${
                         active ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                       }`}
                       style={{ fontFamily: 'var(--font-inter)' }}
@@ -430,7 +430,7 @@ export default function ResultsPageClient() {
                           key={id}
                           type="button"
                           onClick={() => setMobileGalleryFilter(id)}
-                          className={`rounded-sm px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
+                          className={`rounded-sm px-4 py-2 text-[11px] font-semibold uppercase tracking-widest transition-all duration-300 ease-out ${focusRing} ${
                             on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                           }`}
                           style={{ fontFamily: 'var(--font-inter)' }}

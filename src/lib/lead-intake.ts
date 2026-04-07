@@ -11,6 +11,12 @@ export type LeadRequest = {
   photoCount?: number;
 };
 
+export const CURRENT_YEAR = new Date().getFullYear();
+export const MAX_PHOTO_COUNT = 3;
+export const MAX_PHOTO_SIZE_MB = 8;
+export const MAX_PHOTO_SIZE_BYTES = MAX_PHOTO_SIZE_MB * 1024 * 1024;
+export const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'] as const;
+
 /** Maximum character lengths for each field — keeps mailto URIs well under browser limits */
 const FIELD_LIMITS: Record<string, number> = {
   name: 120,
@@ -51,6 +57,29 @@ export function buildLeadRequest(formData: FormData): LeadRequest {
   };
 }
 
+export function validateLeadRequest(lead: LeadRequest) {
+  if (!lead.name || !lead.phone || !lead.email || !lead.vehicle || !lead.service) {
+    return 'Please complete all required fields before sending your request.';
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) {
+    return 'Please enter a valid email address.';
+  }
+
+  if (lead.year) {
+    const year = Number(lead.year);
+    if (!Number.isInteger(year) || year < 1980 || year > CURRENT_YEAR + 1) {
+      return `Vehicle year must be between 1980 and ${CURRENT_YEAR + 1}.`;
+    }
+  }
+
+  if (lead.photoCount && lead.photoCount > MAX_PHOTO_COUNT) {
+    return `Please upload up to ${MAX_PHOTO_COUNT} photos.`;
+  }
+
+  return null;
+}
+
 /**
  * Maximum safe mailto body length. Most desktop email clients handle ~2000 chars
  * in the URI; we leave headroom for subject, encoding overhead, and long field values.
@@ -77,9 +106,13 @@ export function buildLeadSummary(lead: LeadRequest) {
   return lines.join('\n');
 }
 
+export function buildLeadSubject(lead: LeadRequest) {
+  return `Quote request - ${lead.vehicle || 'vehicle detail'}`;
+}
+
 export function buildLeadMailtoHref(emailHref: string, lead: LeadRequest) {
   const email = emailHref.replace(/^mailto:/, '');
-  const subject = `Quote request - ${lead.vehicle || 'vehicle detail'}`;
+  const subject = buildLeadSubject(lead);
   const body = buildLeadSummary(lead).slice(0, MAILTO_BODY_LIMIT);
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }

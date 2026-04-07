@@ -57,7 +57,7 @@ const SOCIAL_LINKS: {
 const BODY = 'var(--font-inter)';
 
 const sectionLabel =
-  'mb-3 border-l-2 border-[rgba(201,168,76,0.45)] pl-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-soft sm:mb-3.5';
+  'mb-3 border-l-2 border-[rgba(201,168,76,0.45)] pl-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-gold-soft sm:mb-3.5';
 
 const linkClass =
   'block rounded-sm py-1.5 text-[13px] leading-snug text-white/80 transition-colors duration-200 hover:bg-white/[0.03] hover:text-[var(--gold-soft)] active:bg-white/[0.05] sm:py-1';
@@ -94,7 +94,7 @@ export default function Footer() {
                 </div>
               </div>
               <p
-                className="col-start-2 min-w-0 text-[clamp(0.75rem,2.8vw,0.8125rem)] font-bold uppercase leading-[1.15] tracking-[0.18em] sm:text-xs sm:tracking-[0.2em]"
+              className="col-start-2 min-w-0 text-[clamp(0.8125rem,2.8vw,0.875rem)] font-bold uppercase leading-[1.15] tracking-[0.12em] sm:text-sm sm:tracking-[0.14em]"
                 style={{ fontFamily: 'var(--font-orbitron)' }}
               >
                 <span style={{ color: 'var(--gold-soft)' }}>APEX</span>
@@ -126,14 +126,14 @@ export default function Footer() {
           {/* Contact — card, 2×2 on mobile for density */}
           <div className="rounded-sm border border-[rgba(201,168,76,0.12)] bg-[linear-gradient(165deg,rgba(201,168,76,0.06)_0%,rgba(8,8,10,0.92)_38%,rgba(6,6,8,0.98)_100%)] p-4 shadow-[0_12px_40px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-5 lg:col-span-4">
             <h2
-              className="mb-4 text-[10px] font-bold uppercase tracking-[0.24em] text-gold-dark"
+              className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-gold-dark"
               style={{ fontFamily: 'var(--font-orbitron)' }}
             >
               Studio &amp; hours
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:gap-5">
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-gold-dark">
                   <Phone className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Phone
                 </div>
@@ -142,7 +142,7 @@ export default function Footer() {
                 </a>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-gold-dark">
                   <Mail className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Email
                 </div>
@@ -154,14 +154,14 @@ export default function Footer() {
                 </a>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-gold-dark">
                   <MapPin className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Area
                 </div>
                 <p className="text-[12px] font-medium leading-snug text-white/84 sm:text-[13px]">{SITE_CONTACT.area}</p>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-gold-dark">
                   <Clock className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Hours
                 </div>

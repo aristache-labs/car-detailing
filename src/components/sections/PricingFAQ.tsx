@@ -5,10 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/components/providers/LanguageProvider';
-
-/** Same visual language as gallery badges, slightly larger for section prominence. */
-const FAQ_BADGE_CLASS =
-  'inline-flex max-w-[min(100%,12rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2.5 py-1 text-[10px] font-bold uppercase leading-tight tracking-[0.13em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,18rem)] md:px-4 md:py-1.5 md:text-[11px] md:tracking-[0.15em]';
+import SectionBadge from '@/components/ui/SectionBadge';
 
 const FAQ_COPY = {
   en: {
@@ -75,9 +72,9 @@ export default function PricingFAQ() {
       <div className="mx-auto max-w-4xl px-4 sm:px-8 md:px-14">
         <div className="mb-10 text-center md:mb-11 md:text-left">
           <div className="flex justify-center md:justify-start">
-            <span className={FAQ_BADGE_CLASS} style={{ fontFamily: 'var(--font-inter)' }}>
+            <SectionBadge className="max-w-[min(100%,12rem)] md:max-w-[min(100%,18rem)]">
               {copy.eyebrow}
-            </span>
+            </SectionBadge>
           </div>
           <h2
             className="mt-3 font-black uppercase leading-[0.96] tracking-[0.028em] text-white/92 max-md:text-[clamp(1.5rem,5.2vw,1.8rem)] md:mt-3.5 md:text-[clamp(1.8rem,3vw,2.2rem)]"
@@ -149,7 +146,7 @@ export default function PricingFAQ() {
         <div className="mt-8 flex justify-center md:justify-start">
           <Link
             href="/contact"
-            className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[#C9A84C]/45 bg-[rgba(201,168,76,0.06)] px-5 py-2.5 text-center text-[11px] font-bold uppercase tracking-[0.15em] text-[#e7c979] transition-colors hover:bg-[rgba(201,168,76,0.12)]"
+            className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.13em] text-[#e1c273] transition-colors hover:bg-[rgba(201,168,76,0.1)]"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             {copy.cta}

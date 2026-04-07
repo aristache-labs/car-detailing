@@ -210,7 +210,7 @@ function StatBlock({
       >
         {text}
       </p>
-      <p className="mt-1 max-w-48 text-xs font-bold uppercase tracking-widest text-text-quiet">
+      <p className="mt-1 max-w-48 text-[13px] font-semibold uppercase tracking-[0.12em] text-text-quiet">
         {label}
       </p>
     </div>
@@ -327,7 +327,7 @@ export default function WhyUsPageContent() {
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
                 }}
               >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#666]">Vehicles refined</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#666]">Vehicles refined</p>
                 <p
                   className="mt-0.5 text-2xl leading-none tracking-[0.04em] text-[#C9A84C]"
                   style={{ fontFamily: 'var(--font-bebas)' }}
@@ -342,7 +342,7 @@ export default function WhyUsPageContent() {
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
                 }}
               >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-[#666]">Owner rating</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#666]">Owner rating</p>
                 <p
                   className="mt-0.5 text-2xl leading-none tracking-[0.04em] text-[#C9A84C]"
                   style={{ fontFamily: 'var(--font-bebas)' }}
@@ -391,7 +391,7 @@ export default function WhyUsPageContent() {
                         <Icon className="h-5 w-5 shrink-0 text-[#C9A84C]" strokeWidth={2} />
                       </div>
                       <span
-                        className="pt-0.5 text-[10px] font-bold tabular-nums tracking-widest text-[#3a3a3a] transition-colors group-hover:text-[#5a5a5a]"
+                        className="pt-0.5 text-[11px] font-semibold tabular-nums tracking-[0.12em] text-[#3a3a3a] transition-colors group-hover:text-[#5a5a5a]"
                         style={{ fontFamily: 'var(--font-orbitron)' }}
                         aria-hidden
                       >
@@ -399,7 +399,7 @@ export default function WhyUsPageContent() {
                       </span>
                     </div>
                     <h3
-                      className="relative mt-4 text-[11px] font-bold uppercase leading-snug tracking-[0.14em] text-[#C9A84C] md:text-xs md:tracking-widest"
+                      className="relative mt-4 text-[12px] font-semibold uppercase leading-snug tracking-widest text-[#C9A84C] md:text-[13px] md:tracking-[0.12em]"
                       style={{ fontFamily: 'var(--font-orbitron)' }}
                     >
                       {p.title}
@@ -566,7 +566,7 @@ export default function WhyUsPageContent() {
                 <StarRow />
                 <span className="text-sm font-semibold tabular-nums text-white">4.9 / 5</span>
               </div>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#707070]">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#707070]">
                 Ceramic · PPF · Correction
               </span>
             </div>
@@ -589,7 +589,7 @@ export default function WhyUsPageContent() {
                     <StarRow />
                   </div>
                   <span
-                    className="mt-4 inline-flex w-fit rounded-sm border border-[rgba(201,168,76,0.2)] bg-[rgba(201,168,76,0.08)] px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-[#d4b060]"
+                    className="mt-4 inline-flex w-fit rounded-sm border border-[rgba(201,168,76,0.2)] bg-[rgba(201,168,76,0.08)] px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-[#d4b060]"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {t.badge.toUpperCase()}
@@ -603,7 +603,7 @@ export default function WhyUsPageContent() {
                   <div className="mt-auto border-t border-white/6 pt-4">
                     <p className="text-sm font-semibold tracking-wide text-white">{t.name}</p>
                     <p className="mt-0.5 text-xs text-[#666]">{t.car}</p>
-                    <p className="mt-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#C9A84C]">
+                    <p className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C9A84C]">
                       <ShieldCheck className="h-2.5 w-2.5 shrink-0 opacity-90" strokeWidth={2} aria-hidden />
                       Verified owner
                     </p>
@@ -647,13 +647,13 @@ export default function WhyUsPageContent() {
                   className="grid grid-cols-[minmax(0,0.62fr)_minmax(3.25rem,0.19fr)_minmax(3.25rem,0.19fr)] gap-x-1 border-b border-white/8 bg-[#111] sm:grid-cols-[minmax(0,0.62fr)_minmax(3.5rem,0.19fr)_minmax(3.5rem,0.19fr)]"
                   style={{ fontFamily: 'var(--font-orbitron)' }}
                 >
-                  <div className="min-w-0 px-2 py-2.5 pl-2.5 pr-1 text-[8px] font-bold uppercase leading-tight tracking-[0.16em] text-[#666]">
+                  <div className="min-w-0 px-2 py-2.5 pl-2.5 pr-1 text-[10px] font-semibold uppercase leading-tight tracking-widest text-[#666]">
                     Feature
                   </div>
-                  <div className="flex items-center justify-center border-x border-[rgba(201,168,76,0.2)] bg-[rgba(201,168,76,0.09)] px-1 py-2.5 text-center text-[8px] font-semibold uppercase leading-tight tracking-[0.14em] text-[#E2C06A]">
+                  <div className="flex items-center justify-center border-x border-[rgba(201,168,76,0.2)] bg-[rgba(201,168,76,0.09)] px-1 py-2.5 text-center text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-[#E2C06A]">
                     Apex
                   </div>
-                  <div className="flex items-center justify-center px-1 py-2.5 text-center text-[8px] font-bold uppercase leading-tight tracking-[0.14em] text-[#555]">
+                  <div className="flex items-center justify-center px-1 py-2.5 text-center text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-[#555]">
                     Typical
                   </div>
                 </div>

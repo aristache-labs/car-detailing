@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import SectionBadge from '@/components/ui/SectionBadge';
 
 const ALL_TESTIMONIALS = [
   {
@@ -336,18 +337,16 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
                         ))}
                       </motion.div>
                       <motion.span
-                        className="px-2.5 py-[3px] text-[9px] font-bold tracking-[0.16em] uppercase shrink-0"
+                        className="shrink-0"
                         style={{
-                          background: 'rgba(201,168,76,0.07)',
-                          border: '1px solid rgba(201,168,76,0.2)',
-                          color: 'rgba(201,168,76,0.85)',
-                          fontFamily: 'var(--font-inter)',
                         }}
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: 0.14 }}
                       >
-                        {t.serviceBadge.toUpperCase()}
+                        <SectionBadge className="px-2.5 py-[3px] text-[10px] tracking-[0.12em]">
+                          {t.serviceBadge}
+                        </SectionBadge>
                       </motion.span>
                     </div>
 

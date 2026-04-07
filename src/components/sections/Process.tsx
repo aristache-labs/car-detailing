@@ -177,16 +177,14 @@ function ProcessTrack({
 
         {cue && (
           <span
-            className="absolute rounded-sm border border-[#c9a84c]/15 px-2 py-[2px] text-[9px] uppercase tracking-[0.22em]"
+            className="absolute rounded-sm border border-[#c9a84c]/16 bg-[rgba(8,8,11,0.88)] px-2 py-[2px] text-[10px] font-semibold uppercase tracking-[0.18em]"
             style={{
               left: 28,
               transform: 'translateX(-50%)',
               top: index === 0 ? '-0.8rem' : 'auto',
               bottom: isLast ? '-0.95rem' : 'auto',
               color: 'rgba(226,192,106,0.86)',
-              background: 'rgba(8,8,11,0.88)',
               fontFamily: 'var(--font-orbitron)',
-              fontWeight: 600,
             }}
           >
             {cue}
@@ -230,16 +228,14 @@ function ProcessTrack({
 
         {cue && (
           <span
-            className="absolute rounded-sm border border-[#c9a84c]/15 px-2 py-[2px] text-[10px] uppercase tracking-[0.24em]"
+            className="absolute rounded-sm border border-[#c9a84c]/16 bg-[rgba(8,8,11,0.9)] px-2 py-[2px] text-[10px] font-semibold uppercase tracking-[0.18em]"
             style={{
               left: desktopLeft,
               transform: 'translateX(-50%)',
               top: index === 0 ? '-0.85rem' : 'auto',
               bottom: isLast ? '-1.05rem' : 'auto',
               color: 'rgba(226,192,106,0.86)',
-              background: 'rgba(8,8,11,0.9)',
               fontFamily: 'var(--font-orbitron)',
-              fontWeight: 600,
             }}
           >
             {cue}
@@ -299,12 +295,12 @@ export default function Process() {
             style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
           >
             PIT STOP{' '}
-            <span className="text-gold-metal">PROCESS</span>
+            <span style={{ color: 'var(--gold-soft)' }}>PROCESS</span>
           </h2>
 
           <div className="mt-4 flex items-center justify-center md:justify-start gap-2.5 md:gap-3">
             <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
-            <span className="text-premium-micro tracking-[0.2em] text-center md:text-left" style={{ fontFamily: 'var(--font-inter)' }}>
+            <span className="text-center text-[11px] uppercase tracking-widest text-text-muted md:text-left md:text-[12px]" style={{ fontFamily: 'var(--font-inter)' }}>
               From inspection to final delivery
             </span>
           </div>
@@ -383,17 +379,14 @@ export default function Process() {
         >
           <Link
             href="/contact"
-            className="btn-shimmer inline-flex cursor-pointer px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300"
+            className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.06)] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-[#e1c273] transition-colors duration-200 hover:bg-[rgba(201,168,76,0.1)]"
             style={{
-              background: 'linear-gradient(135deg, var(--gold-mid), var(--gold-bright))',
-              color: 'var(--carbon-950)',
               fontFamily: 'var(--font-inter)',
-              clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)',
             }}
           >
             Start Your Booking
           </Link>
-          <span className="text-premium-micro tracking-[0.18em]" style={{ fontFamily: 'var(--font-inter)' }}>
+          <span className="text-[11px] uppercase tracking-widest text-text-muted md:text-[12px]" style={{ fontFamily: 'var(--font-inter)' }}>
             Same-day response guaranteed
           </span>
         </motion.div>

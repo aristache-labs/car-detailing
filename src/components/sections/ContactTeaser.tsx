@@ -50,10 +50,8 @@ export default function ContactTeaser() {
         <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center md:justify-start justify-center">
           <Link
             href="/contact"
-            className="btn-shimmer inline-flex items-center justify-center gap-2 px-8 py-3 text-[11px] font-black uppercase tracking-[0.18em]"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#e1c273] transition-colors duration-200 hover:bg-[rgba(201,168,76,0.1)]"
             style={{
-              background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
-              color: '#070709',
               fontFamily: 'var(--font-inter)',
             }}
           >
@@ -61,7 +59,7 @@ export default function ContactTeaser() {
           </Link>
           <a
             href={SITE_CONTACT.phoneHref}
-            className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition-colors hover:border-[#C9A84C]/45 hover:text-[#f0d892]"
+            className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:border-[#C9A84C]/45 hover:text-[#f0d892]"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             <Phone className="h-4 w-4 text-[#C9A84C]" aria-hidden />

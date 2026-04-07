@@ -59,17 +59,9 @@ export default function InnerPageHeader({
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         {eyebrow ? (
-          <span
-            className="mb-3 inline-flex px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] md:text-xs"
-            style={{
-              color: '#E2C06A',
-              fontFamily: 'var(--font-orbitron)',
-              background: 'linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%)',
-              border: '1px solid rgba(201,168,76,0.28)',
-            }}
-          >
+          <SectionBadge className="mb-3 md:mb-4">
             {eyebrow}
-          </span>
+          </SectionBadge>
         ) : null}
         <h1
           className="max-w-4xl text-4xl font-black leading-[0.95] tracking-[0.04em] md:text-6xl"

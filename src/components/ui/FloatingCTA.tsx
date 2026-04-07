@@ -56,10 +56,11 @@ export default function FloatingCTA() {
             exit={{ opacity: 0, scale: 0.85 }}
             transition={{ duration: 0.2 }}
             onClick={scrollToTop}
-            className={`${fab} btn-shimmer`}
+            className={fab}
             style={{
-              background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-              color: '#070709',
+              background: 'rgba(201,168,76,0.12)',
+              border: '1px solid rgba(201,168,76,0.4)',
+              color: '#e2c06a',
             }}
             aria-label="Back to top"
             title="Back to top"

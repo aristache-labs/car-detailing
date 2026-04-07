@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { WHY_US_DIFFERENTIATORS } from '@/components/sections/WhyUs';
+import SectionBadge from '@/components/ui/SectionBadge';
 
 /** Compact homepage block — same structure as Why Us page intro + grid; links to full Why Us + PIT STOP */
 export default function WhyUsPreview() {
@@ -13,17 +14,9 @@ export default function WhyUsPreview() {
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-5 lg:gap-10">
           <div className="text-center lg:col-span-2 lg:text-left">
-            <span
-              className="inline-flex items-center px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] md:text-xs"
-              style={{
-                color: '#E2C06A',
-                fontFamily: 'var(--font-orbitron)',
-                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-                border: '1px solid rgba(201,168,76,0.32)',
-              }}
-            >
+            <SectionBadge className="px-3 py-1.5 md:text-xs">
               Why Apex Detailing
-            </span>
+            </SectionBadge>
             <h2
               className="mt-3 text-3xl font-black leading-[0.95] tracking-[0.03em] md:text-4xl lg:text-[2.75rem]"
               style={{ fontFamily: 'var(--font-bebas)', color: 'var(--text-primary)' }}
@@ -41,10 +34,8 @@ export default function WhyUsPreview() {
             <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
               <Link
                 href="/why-us"
-                className="btn-shimmer inline-flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em]"
+                className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#e1c273] transition-colors duration-200 hover:bg-[rgba(201,168,76,0.1)]"
                 style={{
-                  background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-                  color: '#070709',
                   fontFamily: 'var(--font-inter)',
                 }}
               >
@@ -53,7 +44,7 @@ export default function WhyUsPreview() {
               </Link>
               <Link
                 href="/#process"
-                className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A84C]/90 transition-colors hover:text-[#e8d49a]"
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C9A84C]/90 transition-colors hover:text-[#e8d49a]"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 See our process

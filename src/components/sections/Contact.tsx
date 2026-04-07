@@ -5,7 +5,15 @@ import { motion } from 'framer-motion';
 import { Clock, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
 import DarkSelect from '@/components/ui/DarkSelect';
 import { SITE_CONTACT } from '@/data/site-config';
-import { buildLeadMailtoHref, buildLeadRequest, buildLeadWhatsAppHref, type LeadRequest } from '@/lib/lead-intake';
+import {
+  ALLOWED_PHOTO_TYPES,
+  buildLeadRequest,
+  CURRENT_YEAR,
+  MAX_PHOTO_COUNT,
+  MAX_PHOTO_SIZE_BYTES,
+  MAX_PHOTO_SIZE_MB,
+  type LeadRequest,
+} from '@/lib/lead-intake';
 
 const SERVICE_OPTIONS = [
   'Exterior Detailing',
@@ -105,20 +113,18 @@ function FieldLabel({
   );
 }
 
-const CURRENT_YEAR = new Date().getFullYear();
-const MAX_PHOTO_SIZE_MB = 8;
-const MAX_PHOTO_SIZE_BYTES = MAX_PHOTO_SIZE_MB * 1024 * 1024;
-const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
-
 export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
-  const [preparedLead, setPreparedLead] = useState<LeadRequest | null>(null);
+  const [submittedLead, setSubmittedLead] = useState<LeadRequest | null>(null);
+  const [submissionReference, setSubmissionReference] = useState('');
+  const [deliveryMethod, setDeliveryMethod] = useState<'email' | 'inbox' | ''>('');
+  const [submitError, setSubmitError] = useState('');
   const [fileHint, setFileHint] = useState('');
   const [service, setService] = useState('');
   const [condition, setCondition] = useState('');
   const [serviceError, setServiceError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: { preventDefault(): void; currentTarget: HTMLFormElement }) => {
+  const handleSubmit = async (e: { preventDefault(): void; currentTarget: HTMLFormElement }) => {
     e.preventDefault();
     if (submitting) return;
     if (!service) {
@@ -129,9 +135,35 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
       return;
     }
     setServiceError(false);
+    setSubmitError('');
     setSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const lead = buildLeadRequest(formData);
+
     try {
-      setPreparedLead(buildLeadRequest(new FormData(e.currentTarget)));
+      const response = await fetch('/api/quote-request', {
+        method: 'POST',
+        body: formData,
+      });
+      const payload = (await response.json()) as {
+        error?: string;
+        leadId?: string;
+        delivery?: 'email' | 'inbox';
+      };
+
+      if (!response.ok || !payload.leadId || !payload.delivery) {
+        throw new Error(payload.error || 'We could not send your request right now.');
+      }
+
+      setSubmittedLead(lead);
+      setSubmissionReference(payload.leadId);
+      setDeliveryMethod(payload.delivery);
+      e.currentTarget.reset();
+      setService('');
+      setCondition('');
+      setFileHint('');
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'We could not send your request right now.');
     } finally {
       setSubmitting(false);
     }
@@ -143,8 +175,8 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
       setFileHint('');
       return;
     }
-    if (f.length > 3) {
-      setFileHint('Please choose up to 3 photos.');
+    if (f.length > MAX_PHOTO_COUNT) {
+      setFileHint(`Please choose up to ${MAX_PHOTO_COUNT} photos.`);
       e.target.value = '';
       return;
     }
@@ -155,7 +187,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
       return;
     }
     const badType = Array.from(f).find(
-      (file) => file.type && !ALLOWED_PHOTO_TYPES.includes(file.type),
+      (file) => file.type && !ALLOWED_PHOTO_TYPES.some((allowedType) => allowedType === file.type),
     );
     if (badType) {
       setFileHint(`"${badType.name}" isn't a supported image type. Use JPEG, PNG, WebP, or HEIC.`);
@@ -164,11 +196,6 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
     }
     setFileHint('');
   };
-
-  const mailtoHref = preparedLead ? buildLeadMailtoHref(SITE_CONTACT.emailHref, preparedLead) : SITE_CONTACT.emailHref;
-  const whatsappHref = preparedLead
-    ? buildLeadWhatsAppHref(SITE_CONTACT.whatsappHref, preparedLead)
-    : SITE_CONTACT.whatsappHref;
 
   return (
     <section
@@ -268,7 +295,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               }}
             />
 
-            {preparedLead ? (
+            {submittedLead ? (
                <motion.div
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -289,39 +316,22 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   className="mb-2 text-3xl font-black tracking-[0.05em]"
                   style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
                 >
-                   Request ready to send
+                   Request received
                  </h3>
                  <p className="max-w-xl text-sm leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: BODY_FONT }}>
-                   Your details are ready. Choose how you&apos;d like to send them, and we&apos;ll reply with a tailored
-                   recommendation within 24 business hours.
+                   We&apos;ve received your request and will reply within 24 business hours.
                  </p>
                  <p className="mt-3 max-w-lg text-[11px] leading-relaxed text-[#aeb8c6]" style={{ fontFamily: BODY_FONT }}>
-                   We don&apos;t submit this form silently in the background yet, so the handoff always stays visible and
-                   easy to verify.
+                   Delivery route: {deliveryMethod === 'email' ? 'studio email inbox' : 'project lead inbox'}.
+                   Reference: <span className="font-semibold text-white/85">{submissionReference}</span>
                  </p>
-                 {preparedLead.photoCount ? (
+                 {submittedLead.photoCount ? (
                    <p className="mt-2 max-w-lg text-[11px] leading-relaxed text-[#d4b45c]" style={{ fontFamily: BODY_FONT }}>
-                     {preparedLead.photoCount} photo{preparedLead.photoCount > 1 ? 's were' : ' was'} selected. Please attach
-                     them when your email or WhatsApp window opens.
+                     {submittedLead.photoCount} photo{submittedLead.photoCount > 1 ? 's were' : ' was'} received with
+                     your request.
                    </p>
                  ) : null}
                  <div className="mt-6 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
-                   <a
-                     href={mailtoHref}
-                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-5 text-[12px] font-semibold uppercase tracking-widest text-[#e4c77e] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.11)]"
-                     style={{ fontFamily: BODY_FONT }}
-                   >
-                     Email request
-                   </a>
-                   <a
-                     href={whatsappHref}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.05)] px-5 text-[12px] font-semibold uppercase tracking-widest text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.08)]"
-                     style={{ fontFamily: BODY_FONT }}
-                   >
-                     WhatsApp request
-                   </a>
                    <a
                      href={SITE_CONTACT.phoneHref}
                      className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 bg-white/3 px-5 text-[12px] font-semibold uppercase tracking-[0.09em] text-white/88 transition-colors hover:border-white/18 hover:bg-white/5"
@@ -331,11 +341,15 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                    </a>
                    <button
                      type="button"
-                     onClick={() => setPreparedLead(null)}
+                     onClick={() => {
+                       setSubmittedLead(null);
+                       setSubmissionReference('');
+                       setDeliveryMethod('');
+                     }}
                      className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 px-5 text-[12px] font-semibold uppercase tracking-[0.09em] text-white/70 transition-colors hover:border-white/18 hover:text-white/90"
                      style={{ fontFamily: BODY_FONT }}
                    >
-                     Edit details
+                     Send another request
                    </button>
                  </div>
                </motion.div>
@@ -411,7 +425,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                      />
                      {serviceError ? (
                        <p id="contact-service-error" className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="alert">
-                         Choose the service you want quoted so we can prepare the right handoff.
+                         Choose the service you want quoted so we can send the right request.
                        </p>
                      ) : null}
                    </div>
@@ -474,6 +488,11 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       {fileHint}
                     </p>
                   ) : null}
+                  {submitError ? (
+                    <p className="mt-1.5 text-[11px] font-medium text-[#f0b3a8]" role="alert">
+                      {submitError}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className="mt-8 border-t border-white/6 pt-7">
@@ -489,15 +508,15 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                           'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(80,56,22,0.14), 0 8px 22px rgba(0,0,0,0.34)',
                       }}
                     >
-                      <span className="relative z-10">{submitting ? 'Preparing…' : 'Request your quote'}</span>
+                      <span className="relative z-10">{submitting ? 'Sending...' : 'Send request'}</span>
                     </button>
                   </div>
                   <p
                     className="mx-auto mt-3 max-w-[min(100%,36rem)] text-center text-[11px] leading-relaxed text-[#aeb8c6]"
                     style={{ fontFamily: BODY_FONT }}
                   >
-                     Next step: we prepare the request, then you choose email or WhatsApp to send it through the channel
-                     you prefer.
+                     Your request is sent to our server first. If delivery is temporarily unavailable, call or WhatsApp
+                     us directly using the details on the right.
                   </p>
                 </div>
               </form>

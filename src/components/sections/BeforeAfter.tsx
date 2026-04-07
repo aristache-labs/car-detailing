@@ -98,7 +98,7 @@ function DragSlider({ panel, imagePriority }: SliderProps) {
           aria-hidden
         />
         <span
-          className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase"
+          className="relative z-10 px-2.5 py-1 text-[11px] font-semibold tracking-widest uppercase"
           style={{
             background: 'rgba(0,0,0,0.7)',
             color: 'rgba(255,255,255,0.5)',
@@ -130,7 +130,7 @@ function DragSlider({ panel, imagePriority }: SliderProps) {
           aria-hidden
         />
         <span
-          className="relative z-10 px-2 py-1 text-[10px] font-bold tracking-widest uppercase ml-auto"
+          className="relative z-10 ml-auto px-2.5 py-1 text-[11px] font-semibold tracking-widest uppercase"
           style={{
             background: 'rgba(0,0,0,0.7)',
             color: panel.afterAccent,
@@ -190,7 +190,7 @@ export default function BeforeAfter({
       <div className="px-4 sm:px-8 md:px-14 mb-5 md:mb-6 flex items-end justify-between gap-4">
         <div className="text-center md:text-left mx-auto md:mx-0">
           <span
-            className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-2"
+            className="mb-2 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.12em] md:text-base"
             style={{
               color: '#E2C06A',
               fontFamily: 'var(--font-orbitron)',
@@ -219,7 +219,7 @@ export default function BeforeAfter({
           <div className="mt-4 flex flex-row items-center justify-center md:justify-start gap-2.5 md:gap-3">
             <div className="h-px w-10 md:w-14 shrink-0" style={{ background: 'rgba(201,168,76,0.55)' }} />
             <span
-              className="text-[10px] leading-snug tracking-[0.14em] md:text-premium-micro md:tracking-[0.26em] max-w-[290px] md:max-w-none text-left md:text-left"
+              className="max-w-[290px] text-left text-[11px] leading-snug tracking-[0.08em] md:max-w-none md:text-[12px] md:tracking-[0.12em]"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               See how proper correction, coating, and detailing transform the finish.
@@ -243,7 +243,7 @@ export default function BeforeAfter({
               key={p.id}
               type="button"
               onClick={() => setActive(p.id)}
-              className="px-3 py-1.5 text-[10px] font-bold tracking-[0.16em] uppercase transition-all duration-200"
+              className="px-3 py-1.5 text-[11px] font-semibold tracking-widest uppercase transition-all duration-200"
               style={{
                 color: active === p.id ? '#C9A84C' : 'rgba(154,154,176,0.9)',
                 background: active === p.id ? 'rgba(201,168,76,0.1)' : 'rgba(255,255,255,0.02)',
@@ -282,7 +282,7 @@ export default function BeforeAfter({
             }}
           >
             <span
-              className="text-[10px] font-bold tracking-widest uppercase"
+              className="text-[11px] font-semibold tracking-widest uppercase"
               style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
             >
               {displayPanels[active].service}
@@ -351,7 +351,7 @@ export default function BeforeAfter({
                   }}
                 >
                   <span
-                    className="text-[10px] font-bold tracking-widest uppercase"
+                    className="text-[11px] font-semibold tracking-widest uppercase"
                     style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
                   >
                     {panel.service}
@@ -399,7 +399,7 @@ export default function BeforeAfter({
           ].map((item) => (
             <div key={item.label} className="min-w-0 text-center">
               <p
-                className="inline-flex px-2.5 py-1 text-[9px] font-black tracking-[0.18em] uppercase"
+                className="inline-flex px-2.5 py-1.5 text-[10px] font-semibold tracking-widest uppercase"
                 style={{
                   color: '#E2C06A',
                   fontFamily: 'var(--font-orbitron)',
@@ -421,7 +421,7 @@ export default function BeforeAfter({
         <div className="px-4 sm:px-8 md:px-14 mt-6 flex justify-center">
           <Link
             href="/results"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-200 border border-[#C9A84C]/45 text-[#E7C979] hover:bg-[#C9A84C]/10"
+            className="inline-flex items-center gap-2 border border-[#C9A84C]/45 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#E7C979] transition-colors duration-200 hover:bg-[#C9A84C]/10"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             View full results gallery

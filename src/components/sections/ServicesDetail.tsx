@@ -479,7 +479,7 @@ function ServiceRow({ service }: ServiceRowProps) {
 
           {/* Subtitle */}
           <p
-            className="text-[10px] font-bold tracking-[0.22em] uppercase mb-4"
+            className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em]"
             style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
           >
             {service.subtitle}
@@ -501,10 +501,10 @@ function ServiceRow({ service }: ServiceRowProps) {
             {service.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2.5 py-0.5 text-[9px] font-bold tracking-widest uppercase"
+                className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em]"
                 style={{
-                  background: 'rgba(201,168,76,0.07)',
-                  border: '1px solid rgba(201,168,76,0.18)',
+                  background: 'rgba(201,168,76,0.05)',
+                  border: '1px solid rgba(201,168,76,0.14)',
                   color: '#C9A84C',
                   fontFamily: 'var(--font-inter)',
                 }}
@@ -517,23 +517,9 @@ function ServiceRow({ service }: ServiceRowProps) {
           {/* CTA */}
           <Link
             href="/contact"
-            className="group inline-flex items-center gap-2 px-4 py-2 mx-auto lg:mx-0 text-[10px] font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300"
+            className="group mx-auto inline-flex min-h-11 items-center gap-2 rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#e1c273] transition-colors duration-200 hover:bg-[rgba(201,168,76,0.1)] lg:mx-0"
             style={{
-              color: '#E7C979',
               fontFamily: 'var(--font-inter)',
-              border: '1px solid rgba(201,168,76,0.45)',
-              background: 'linear-gradient(135deg, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.06) 100%)',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = '#0A0A0D';
-              (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, #C9A84C 0%, #E8C768 100%)';
-              (e.currentTarget as HTMLElement).style.borderColor = '#E8C768';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = '#E7C979';
-              (e.currentTarget as HTMLElement).style.background =
-                'linear-gradient(135deg, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.06) 100%)';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.45)';
             }}
           >
             Request Consultation
@@ -560,12 +546,12 @@ export default function ServicesDetail({
       {/* Section header */}
       <div className="px-8 md:px-14 pt-16 pb-8 flex flex-col md:flex-row md:items-center items-center gap-4 md:gap-5 text-center md:text-left">
         <span
-          className="px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase"
+          className="px-4 py-2 text-sm font-black uppercase tracking-[0.12em] md:text-base"
           style={{
             color: '#E2C06A',
             fontFamily: 'var(--font-orbitron)',
-            background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-            border: '1px solid rgba(201,168,76,0.35)',
+            background: 'rgba(201,168,76,0.06)',
+            border: '1px solid rgba(201,168,76,0.24)',
           }}
         >
           Our Services
@@ -574,7 +560,7 @@ export default function ServicesDetail({
           className="h-px w-32 md:flex-1 md:w-auto"
           style={{ background: 'rgba(201,168,76,0.28)' }}
         />
-        <span className="text-[10px] md:text-xs font-semibold tracking-[0.22em] uppercase" style={{ fontFamily: 'var(--font-inter)' }}>
+        <span className="text-[11px] font-semibold uppercase tracking-[0.1em] md:text-xs md:tracking-[0.12em]" style={{ fontFamily: 'var(--font-inter)' }}>
           {String(services.length).padStart(2, '0')} Specializations
         </span>
       </div>
@@ -616,7 +602,7 @@ export default function ServicesDetail({
           {variant === 'preview' ? (
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-[10px] md:text-xs font-bold tracking-[0.16em] uppercase border border-[#C9A84C]/40 text-[#E7C979] hover:bg-[#C9A84C]/10 transition-colors"
+              className="inline-flex items-center gap-2 border border-[#C9A84C]/40 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/10 md:text-xs"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               View all services
@@ -625,14 +611,9 @@ export default function ServicesDetail({
           ) : null}
           <Link
             href="/contact"
-            className="btn-shimmer flex items-center gap-2 px-6 py-2.5 text-[10px] md:text-xs font-bold tracking-[0.16em] uppercase cursor-pointer transition-all duration-300"
+            className="flex min-h-11 items-center gap-2 rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#e1c273] transition-colors duration-200 hover:bg-[rgba(201,168,76,0.1)] md:text-xs"
             style={{
-              background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-              color: '#070709',
               fontFamily: 'var(--font-inter)',
-              border: '1px solid rgba(255,215,0,0.35)',
-              boxShadow: '0 0 24px rgba(201,168,76,0.2)',
-              clipPath: 'polygon(0 0, calc(100% - 9px) 0, 100% 100%, 0 100%)',
             }}
           >
             Book a Service
