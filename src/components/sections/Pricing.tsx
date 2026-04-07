@@ -164,10 +164,10 @@ export default function Pricing({
               className="flex flex-wrap items-baseline justify-center gap-x-2 uppercase leading-[0.92] tracking-[0.04em] md:justify-start md:gap-x-3"
               style={{ fontFamily: 'var(--font-bebas)' }}
             >
-              <span className="text-metal shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]">
+              <span className="shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)] text-white/95">
                 {copy.headingA}
               </span>
-              <span className="text-gold-metal shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]">
+              <span className="shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)] text-[#d6b36a]">
                 {copy.headingB}
               </span>
             </h2>

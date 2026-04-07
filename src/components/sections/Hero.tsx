@@ -92,11 +92,7 @@ export default function Hero() {
             <span
               className="block text-[clamp(3.5rem,6vw,7rem)]"
               style={{
-                background:
-                  'linear-gradient(165deg, #f0f4f8 0%, #dce0e0 35%, #ffffff 48%, #c8d0d0 58%, #8a9aa8 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#f3f5f7',
                 lineHeight: 0.92,
               }}
             >
@@ -105,11 +101,7 @@ export default function Hero() {
             <span
               className="block text-[clamp(2.8rem,4.5vw,5.5rem)]"
               style={{
-                background:
-                  'linear-gradient(165deg, #ead8b8 0%, #d6b36a 28%, #cfa85a 52%, #b8924a 78%, #8a6a38 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
+                color: '#d6b36a',
                 lineHeight: 0.92,
               }}
             >
@@ -157,7 +149,7 @@ export default function Hero() {
               key={item}
               className="flex items-center justify-center lg:justify-start gap-2.5 text-[13px]"
               style={{
-                color: 'rgba(210, 212, 222, 0.82)',
+                color: 'rgba(210, 212, 222, 0.74)',
                 fontFamily: 'var(--font-inter)',
                 letterSpacing: '0.01em',
               }}

@@ -1,4 +1,5 @@
-import { MapPin } from 'lucide-react';
+import { ArrowUpRight, MapPin } from 'lucide-react';
+import { SITE_CONTACT } from '@/data/site-config';
 
 const STEPS = [
   { title: 'We review your request', detail: 'Usually within a few hours on business days.' },
@@ -84,14 +85,30 @@ export default function ContactPageExtras() {
                 className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#b8a574]"
                 style={{ fontFamily: BODY }}
               >
-                Map preview
+                Studio location
+              </p>
+              <p
+                className="max-w-[min(100%,19rem)] text-[12px] font-medium leading-[1.55] text-white/92"
+                style={{ fontFamily: BODY }}
+              >
+                {SITE_CONTACT.addressLine}
               </p>
               <p
                 className="max-w-[min(100%,19rem)] text-[12px] leading-[1.55] text-[#aeb8c6]"
                 style={{ fontFamily: BODY }}
               >
-                Embed Google Maps here when ready.
+                {SITE_CONTACT.area}. Exact timing is confirmed after booking so arrivals stay smooth and private.
               </p>
+              <a
+                href={SITE_CONTACT.mapsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 inline-flex min-h-11 items-center gap-2 rounded-sm border border-[rgba(201,168,76,0.22)] bg-[rgba(201,168,76,0.06)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.32)] hover:bg-[rgba(201,168,76,0.09)]"
+                style={{ fontFamily: BODY }}
+              >
+                Open in Maps
+                <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.8} />
+              </a>
             </div>
           </div>
           <p

@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -58,8 +57,8 @@ const translations: Record<Language, TranslationShape> = {
       headlineBottom: 'Detailing & Paint Protection',
       description:
         'Paint correction, ceramic coating, PPF and interior restoration — delivered with professional-grade products and meticulous attention to detail.',
-      primaryCta: 'Book a Free Inspection',
-      secondaryCta: 'View Our Results',
+      primaryCta: 'Request a Quote',
+      secondaryCta: 'See Real Results',
       trust1: 'Certified premium products',
       trust2: 'Quote within 24 hours',
       trust3: 'Written warranty available',
@@ -85,8 +84,8 @@ const translations: Record<Language, TranslationShape> = {
       headlineBottom: 'Detailing & Protectie Vopsea',
       description:
         'Corectie lac, coating ceramic, PPF si restaurare interior — realizate cu produse profesionale premium si atentie meticuloasa la detalii.',
-      primaryCta: 'Programeaza o inspectie gratuita',
-      secondaryCta: 'Vezi rezultatele noastre',
+      primaryCta: 'Solicita oferta',
+      secondaryCta: 'Vezi rezultate reale',
       trust1: 'Produse premium certificate',
       trust2: 'Oferta in maximum 24 de ore',
       trust3: 'Garantie scrisa disponibila',
@@ -105,19 +104,6 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export default function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem('apex-language');
-    if (saved === 'en' || saved === 'ro') {
-      const raf = window.requestAnimationFrame(() => setLanguage(saved));
-      return () => window.cancelAnimationFrame(raf);
-    }
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem('apex-language', language);
-    document.documentElement.lang = language;
-  }, [language]);
 
   const value = useMemo(
     () => ({

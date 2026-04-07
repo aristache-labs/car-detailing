@@ -43,12 +43,6 @@ const TRUST_BULLETS = [
   'Written warranty on selected services',
 ];
 
-const TRUST_STUDIO_HOURS = [
-  { label: 'Mon – Fri', time: '09:00 – 19:00' },
-  { label: 'Saturday', time: '09:00 – 16:00' },
-  { label: 'Sunday', time: 'By appointment' },
-] as const;
-
 const SERVICE_SELECT_OPTIONS = SERVICE_OPTIONS.map((s) => ({ value: s, label: s }));
 
 const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
@@ -480,8 +474,8 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     />
                   </div>
                    <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
-                     Optional: choose 2-3 photos for a more accurate estimate. They stay on this device until you attach
-                     them in your message.
+                     Optional: add 2-3 photos for a more accurate estimate. If you upload them here, they are sent with
+                     your request so the studio can review condition before replying.
                    </p>
                   {fileHint ? (
                     <p className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="status">
@@ -666,7 +660,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     <div className="min-w-0 flex-1 pt-0.5">
                       <p className={asideFieldLabelClass}>Opening hours</p>
                       <ul className="mt-2 space-y-2 text-left">
-                        {TRUST_STUDIO_HOURS.map(({ label, time }) => (
+                        {SITE_CONTACT.studioHours.map(({ label, time }) => (
                           <li
                             key={label}
                             className="flex items-baseline justify-between gap-4 border-b border-white/4 pb-2 text-[12px] leading-snug last:border-b-0 last:pb-0 sm:gap-6"

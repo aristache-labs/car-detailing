@@ -43,11 +43,11 @@ export default function WhyUsPreview() {
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
               <Link
-                href="/#process"
+                href="/services"
                 className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#C9A84C]/90 transition-colors hover:text-[#e8d49a]"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
-                See our process
+                View services
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>

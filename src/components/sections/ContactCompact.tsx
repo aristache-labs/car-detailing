@@ -141,7 +141,7 @@ export default function ContactCompact() {
             >
               <li className="flex gap-2">
                 <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#C9A84C]/80" aria-hidden />
-                Response within 24h on business days
+                Reply by the next business day
               </li>
               <li className="flex gap-2">
                 <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#C9A84C]/80" aria-hidden />

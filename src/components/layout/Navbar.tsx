@@ -1,109 +1,21 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ChevronDown, Menu, X, Zap } from 'lucide-react';
-import { useLanguage, type Language } from '@/components/providers/LanguageProvider';
-import Image from 'next/image';
+import { Menu, X, Zap } from 'lucide-react';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const LANGUAGE_META: Record<Language, { code: string; flagSrc: string }> = {
-  en: { code: 'En', flagSrc: '/images/flags/en.svg' },
-  ro: { code: 'Ro', flagSrc: '/images/flags/ro.svg' },
-};
-
-/** Mobile drawer CTA only — desktop uses `.nav-cta-desktop` in globals.css */
 const GOLD = '#C6A35A';
 const GOLD_HOVER = '#D0AE68';
 const TEXT_MUTED = 'var(--text-muted)';
-
-// ── Language Dropdown ─────────────────────────────────────────────────────────
-function LanguageDropdown({
-  language,
-  langOpen,
-  setLangOpen,
-  langRef,
-  ariaLabel,
-  onSelect,
-}: {
-  language: Language;
-  langOpen: boolean;
-  setLangOpen: (v: boolean | ((prev: boolean) => boolean)) => void;
-  langRef: React.RefObject<HTMLDivElement | null>;
-  ariaLabel: string;
-  onSelect: (lang: Language) => void;
-}) {
-  return (
-    <div ref={langRef} className="relative">
-      <button
-        type="button"
-        onClick={() => setLangOpen((v) => !v)}
-        aria-label={ariaLabel}
-        aria-expanded={langOpen}
-        className="flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 font-body text-[0.8125rem] font-medium tracking-wide text-text-muted transition-colors duration-200 hover:text-chrome-mid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-mid/35 focus-visible:ring-offset-2 focus-visible:ring-offset-carbon-950"
-      >
-        <Image
-          src={LANGUAGE_META[language].flagSrc}
-          alt=""
-          aria-hidden
-          width={16}
-          height={11}
-          className="h-[11px] w-4 rounded-[2px] object-cover"
-        />
-        <span>{LANGUAGE_META[language].code}</span>
-        <ChevronDown
-          className={`size-3 text-text-soft opacity-70 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`}
-          aria-hidden
-        />
-      </button>
-
-      <AnimatePresence>
-        {langOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 6 }}
-            transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-1.5 min-w-[100px] overflow-hidden rounded-md border border-white/10 bg-carbon-800 shadow-lg shadow-black/40"
-          >
-            {(['en', 'ro'] as const).map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => onSelect(option)}
-                className={`flex w-full cursor-pointer items-center justify-between px-3 py-2.5 text-left font-body text-[0.8125rem] transition-colors duration-150 hover:bg-white/4 ${
-                  language === option ? 'text-gold-mid' : 'text-text-muted'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <Image
-                    src={LANGUAGE_META[option].flagSrc}
-                    alt=""
-                    aria-hidden
-                    width={16}
-                    height={11}
-                    className="h-[11px] w-4 rounded-[2px] object-cover"
-                  />
-                  <span>{LANGUAGE_META[option].code}</span>
-                </span>
-                {language === option && <Check className="size-3 text-gold-mid" aria-hidden />}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 // ── Main Navbar ───────────────────────────────────────────────────────────────
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const langRef = useRef<HTMLDivElement>(null);
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
   const pathname = usePathname();
 
   const navLinks = [
@@ -128,44 +40,8 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close lang dropdown on outside click
-  useEffect(() => {
-    if (!langOpen) return;
-    const handler = (e: MouseEvent) => {
-      if (langRef.current && !langRef.current.contains(e.target as Node)) {
-        setLangOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [langOpen]);
-
-  useEffect(() => {
-    if (!langOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLangOpen(false);
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [langOpen]);
-
   const closeOverlays = () => {
     setMenuOpen(false);
-    setLangOpen(false);
-  };
-
-  const handleLanguage = (next: Language) => {
-    setLanguage(next);
-    setLangOpen(false);
-  };
-
-  const langDropdownProps = {
-    language,
-    langOpen,
-    setLangOpen,
-    langRef,
-    ariaLabel: t.nav.language,
-    onSelect: handleLanguage,
   };
 
   return (
@@ -204,8 +80,7 @@ export default function Navbar() {
           </nav>
 
           {/* ── Desktop right controls ── */}
-          <div className="hidden shrink-0 items-center gap-5 lg:flex">
-            <LanguageDropdown {...langDropdownProps} />
+          <div className="hidden shrink-0 items-center lg:flex">
             <Link
               href="/contact"
               className="nav-cta-desktop btn-shimmer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-mid/40 focus-visible:ring-offset-2 focus-visible:ring-offset-carbon-950"
@@ -216,7 +91,6 @@ export default function Navbar() {
 
           {/* ── Mobile controls ── */}
           <div className="lg:hidden flex items-center gap-3">
-            <LanguageDropdown {...langDropdownProps} />
             <button
               className="cursor-pointer p-1.5 rounded"
               style={{ color: '#c8c8c8', lineHeight: 0 }}

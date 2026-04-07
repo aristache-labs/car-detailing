@@ -561,7 +561,7 @@ export default function ServicesDetail({
           style={{ background: 'rgba(201,168,76,0.28)' }}
         />
         <span className="text-[11px] font-semibold uppercase tracking-[0.1em] md:text-xs md:tracking-[0.12em]" style={{ fontFamily: 'var(--font-inter)' }}>
-          {String(services.length).padStart(2, '0')} Specializations
+          {String(services.length).padStart(2, '0')} Services
         </span>
       </div>
 
