@@ -379,12 +379,15 @@ export default function Process() {
         >
           <Link
             href="/contact"
-            className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.06)] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-[#e1c273] transition-colors duration-200 hover:bg-[rgba(201,168,76,0.1)]"
-            style={{
-              fontFamily: 'var(--font-inter)',
-            }}
+            className="group relative inline-flex min-h-11 cursor-pointer items-center justify-center overflow-hidden rounded-sm border border-[#C9A84C]/40 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-[#e1c273]"
+            style={{ fontFamily: 'var(--font-inter)' }}
           >
-            Start Your Booking
+            {/* directional fill — slides in from left on hover */}
+            <span
+              className="absolute inset-0 -translate-x-full bg-[rgba(201,168,76,0.12)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0"
+              aria-hidden
+            />
+            <span className="relative">Start Your Booking</span>
           </Link>
           <span className="text-[11px] uppercase tracking-widest text-text-muted md:text-[12px]" style={{ fontFamily: 'var(--font-inter)' }}>
             Same-day response guaranteed

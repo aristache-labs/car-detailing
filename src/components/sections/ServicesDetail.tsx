@@ -501,7 +501,7 @@ function ServiceRow({ service }: ServiceRowProps) {
             {service.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em]"
+                className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest"
                 style={{
                   background: 'rgba(201,168,76,0.05)',
                   border: '1px solid rgba(201,168,76,0.14)',
@@ -560,7 +560,7 @@ export default function ServicesDetail({
           className="h-px w-32 md:flex-1 md:w-auto"
           style={{ background: 'rgba(201,168,76,0.28)' }}
         />
-        <span className="text-[11px] font-semibold uppercase tracking-[0.1em] md:text-xs md:tracking-[0.12em]" style={{ fontFamily: 'var(--font-inter)' }}>
+        <span className="text-[11px] font-semibold uppercase tracking-widest md:text-xs md:tracking-[0.12em]" style={{ fontFamily: 'var(--font-inter)' }}>
           {String(services.length).padStart(2, '0')} Services
         </span>
       </div>
