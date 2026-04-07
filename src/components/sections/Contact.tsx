@@ -52,7 +52,7 @@ const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
 
 /** Pricing-aligned micro-labels — Included Services / section eyebrow family */
 const FIELD_LABEL_CLASS =
-  'mb-2.5 block text-[12px] font-medium uppercase tracking-[0.12em] text-[#c3aa68]';
+  'mb-2.5 block text-[12px] font-medium tracking-[0.02em] text-[#d1bc86]';
 
 const BODY_FONT = 'var(--font-contact-body, var(--font-inter))';
 
@@ -73,11 +73,11 @@ const asideHoursRowClass = 'flex flex-row items-start gap-3.5 text-left';
 
 /** Stronger sidebar section labels on small screens */
 const asideSectionLabelClass =
-  'shrink-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#cfb77a] md:text-[11px] md:tracking-[0.11em] md:text-[#bea774]';
+  'shrink-0 text-[11px] font-semibold tracking-[0.04em] text-[#cfb77a] md:text-[11px] md:text-[#bea774]';
 
 /** Phone + Opening hours sub-labels — higher contrast than body meta */
 const asideFieldLabelClass =
-  'text-[11px] font-semibold uppercase tracking-[0.1em] text-[#cfb77a] md:text-[11px] md:tracking-[0.09em] md:text-[#bea774]';
+  'text-[11px] font-semibold tracking-[0.03em] text-[#cfb77a] md:text-[11px] md:text-[#bea774]';
 
 const asidePhoneScheduleClass =
   'mt-1.5 text-[12px] font-medium leading-snug text-[#c4ccd6]';
@@ -198,20 +198,13 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
       style={{ background: 'var(--carbon-950)' }}
     >
       <div
-        className="absolute inset-0 opacity-[0.025]"
+        className="absolute inset-0 opacity-[0.012]"
         style={{
           backgroundImage: `
             linear-gradient(rgba(201,168,76,1) 1px, transparent 1px),
             linear-gradient(90deg, rgba(201,168,76,1) 1px, transparent 1px)
           `,
-          backgroundSize: '80px 80px',
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay"
-        aria-hidden
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: '96px 96px',
         }}
       />
 
@@ -219,36 +212,26 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
         {showIntro ? (
           <div className="mb-8 text-center md:mb-10 md:text-left">
             <span
-              className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base"
+              className="mb-3 inline-flex rounded-sm px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] md:text-[12px]"
               style={{
-                color: '#E2C06A',
-                fontFamily: 'var(--font-orbitron)',
-                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-                border: '1px solid rgba(201,168,76,0.35)',
+                color: '#d7c28c',
+                fontFamily: BODY_FONT,
+                background: 'rgba(201,168,76,0.08)',
+                border: '1px solid rgba(201,168,76,0.22)',
               }}
             >
               Request a Quote
             </span>
             <h2
-              className="text-5xl font-black leading-none md:text-7xl"
-              style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
+              className="max-w-4xl text-[clamp(2.35rem,7vw,4.75rem)] font-black leading-[0.94]"
+              style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.03em' }}
             >
-              TELL US ABOUT YOUR{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                VEHICLE
-              </span>
+              Tell us about your <span style={{ color: '#cfb36d' }}>vehicle</span>
             </h2>
             <div className="mt-4 flex items-center justify-center gap-2.5 md:justify-start md:gap-3">
-              <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.55)' }} />
+              <div className="h-px w-10 md:w-14" style={{ background: 'rgba(201,168,76,0.34)' }} />
               <span
-                className="text-center text-premium-micro tracking-[0.2em] md:text-left"
+                className="max-w-2xl text-center text-[12px] leading-relaxed text-[#aeb8c6] md:text-left md:text-[13px]"
                 style={{ fontFamily: BODY_FONT }}
               >
                 Tell us what your vehicle needs and we&apos;ll reply with a tailored recommendation within 24
@@ -266,21 +249,6 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
             transition={{ duration: 0.55 }}
             className="flex min-h-0 overflow-hidden rounded-sm border border-[rgba(201,168,76,0.13)] bg-[rgba(8,8,10,0.98)] shadow-[0_14px_44px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.04)] lg:col-span-7 lg:h-full"
           >
-            <div
-              className="relative hidden w-12 shrink-0 flex-col items-center justify-center border-r border-[rgba(201,168,76,0.14)] bg-[linear-gradient(180deg,rgba(201,168,76,0.07)_0%,rgba(6,6,8,0.98)_45%,rgba(4,4,6,0.99)_100%)] lg:flex"
-              aria-hidden
-            >
-              <span
-                className="select-none text-[9px] font-extrabold uppercase tracking-[0.42em] text-[#9a8060]"
-                style={{
-                  fontFamily: 'var(--font-orbitron)',
-                  writingMode: 'vertical-rl',
-                  transform: 'rotate(180deg)',
-                }}
-              >
-                Intake
-              </span>
-            </div>
             <div className="flex min-w-0 flex-1 flex-col">
             <div
               className="h-[2px] w-full shrink-0"
@@ -307,7 +275,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   <ShieldCheck className="h-7 w-7" style={{ color: '#C9A84C' }} />
                 </div>
                 <h3
-                  className="mb-2 text-3xl font-black tracking-[0.05em]"
+                  className="mb-2 text-[2rem] font-black tracking-[0.03em]"
                   style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
                 >
                    Request received
@@ -328,7 +296,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                  <div className="mt-6 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
                    <a
                      href={SITE_CONTACT.phoneHref}
-                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 bg-white/3 px-5 text-[12px] font-semibold uppercase tracking-[0.09em] text-white/88 transition-colors hover:border-white/18 hover:bg-white/5"
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 bg-white/3 px-5 text-[12px] font-semibold tracking-[0.02em] text-white/88 transition-colors hover:border-white/18 hover:bg-white/5"
                      style={{ fontFamily: BODY_FONT }}
                    >
                      Call studio
@@ -340,7 +308,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                        setSubmissionReference('');
                        setDeliveryMethod('');
                      }}
-                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 px-5 text-[12px] font-semibold uppercase tracking-[0.09em] text-white/70 transition-colors hover:border-white/18 hover:text-white/90"
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 px-5 text-[12px] font-semibold tracking-[0.02em] text-white/70 transition-colors hover:border-white/18 hover:text-white/90"
                      style={{ fontFamily: BODY_FONT }}
                    >
                      Send another request
@@ -539,7 +507,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                 style={{ fontFamily: BODY_FONT }}
               >
                 <header className="pr-1 text-center md:text-left">
-                  <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[#c3aa68]">
+                  <p className="text-[12px] font-medium tracking-[0.03em] text-[#cfb36d]">
                     Why clients book with us
                   </p>
                   <h3 className="mt-2.5 text-[1.45rem] font-semibold leading-[1.12] tracking-[-0.03em] text-white/95 sm:text-[1.55rem]">
@@ -616,7 +584,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   className="mt-5 flex w-full items-center justify-center gap-2 rounded-sm border border-[rgba(201,168,76,0.22)] bg-[rgba(201,168,76,0.05)] px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.3)] hover:bg-[rgba(201,168,76,0.07)]"
                   >
                     <MessageCircle className="h-4 w-4 shrink-0 text-[#c9a84c]/90" strokeWidth={1.75} aria-hidden />
-                    WhatsApp — quick message
+                    WhatsApp quick message
                   </a>
                 </div>
 

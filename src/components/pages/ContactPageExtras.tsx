@@ -13,27 +13,20 @@ const BODY = 'var(--font-contact-body, var(--font-inter))';
 export default function ContactPageExtras() {
   return (
     <div className="relative border-t border-white/[0.07]" style={{ background: 'var(--carbon-950)' }}>
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-overlay"
-        aria-hidden
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        }}
-      />
       <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-12 md:grid-cols-2 md:gap-14 md:px-14 md:py-16 md:[&>section:first-child]:pr-6 md:[&>section:last-child]:border-l md:[&>section:last-child]:border-[rgba(201,168,76,0.1)] md:[&>section:last-child]:pl-10">
         <section className="min-w-0 text-center md:text-left">
           <h2
-            className="mb-6 text-[clamp(1.25rem,2.2vw,1.65rem)] font-black uppercase leading-[1.02] tracking-[0.04em] text-white/95 md:mb-7 md:text-[1.75rem]"
+            className="mb-6 text-[clamp(1.1rem,2vw,1.45rem)] font-black leading-[1.08] tracking-[0.03em] text-white/95 md:mb-7 md:text-[1.55rem]"
             style={{ fontFamily: 'var(--font-bebas)' }}
           >
-            WHAT HAPPENS <span className="text-[#cab06a]">NEXT</span>
+            What happens <span className="text-[#cab06a]">next</span>
           </h2>
           <ol className="space-y-6">
             {STEPS.map((s, i) => (
               <li key={s.title} className="flex justify-center md:justify-start">
                 <div className="flex w-full max-w-[min(100%,22rem)] gap-4 text-left md:max-w-none">
                 <span
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.38)] bg-[rgba(201,168,76,0.1)] text-[12px] font-bold text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[2px] border border-[rgba(201,168,76,0.26)] bg-[rgba(201,168,76,0.06)] text-[12px] font-semibold text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
                   style={{ fontFamily: 'var(--font-orbitron)' }}
                   aria-hidden
                 >
@@ -61,17 +54,17 @@ export default function ContactPageExtras() {
 
         <section className="min-w-0 text-center md:text-left">
           <h2
-            className="mb-6 text-[clamp(1.25rem,2.2vw,1.65rem)] font-black uppercase leading-[1.02] tracking-[0.04em] text-white/95 md:mb-7 md:text-[1.75rem]"
+            className="mb-6 text-[clamp(1.1rem,2vw,1.45rem)] font-black leading-[1.08] tracking-[0.03em] text-white/95 md:mb-7 md:text-[1.55rem]"
             style={{ fontFamily: 'var(--font-bebas)' }}
           >
-            STUDIO <span className="text-[#cab06a]">LOCATION</span>
+            Studio <span className="text-[#cab06a]">location</span>
           </h2>
           <div className="relative mx-auto mb-5 aspect-video w-full min-h-44 max-w-md overflow-hidden rounded-sm border border-[rgba(201,168,76,0.14)] bg-[rgba(6,6,8,0.98)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_28px_rgba(0,0,0,0.35)] md:max-w-none">
             <div
               className="pointer-events-none absolute inset-0 opacity-90"
               style={{
                 background:
-                  'linear-gradient(145deg, rgba(201,168,76,0.07) 0%, rgba(8,8,10,0.97) 48%, rgba(4,4,6,0.99) 100%)',
+                  'linear-gradient(145deg, rgba(201,168,76,0.04) 0%, rgba(8,8,10,0.97) 48%, rgba(4,4,6,0.99) 100%)',
               }}
             />
             <div className="relative flex h-full min-h-[inherit] flex-col items-center justify-center gap-3 px-5 py-7 text-center sm:px-8">
@@ -112,7 +105,7 @@ export default function ContactPageExtras() {
             </div>
           </div>
           <p
-            className="mt-4 text-center text-[11px] font-medium uppercase tracking-[0.14em] text-[#8b939e] md:text-left"
+            className="mt-4 text-center text-[11px] font-medium tracking-[0.03em] text-[#8b939e] md:text-left"
             style={{ fontFamily: BODY }}
           >
             Visits by appointment only
