@@ -86,7 +86,7 @@ const PRICING_COPY = {
 
 /** Matches Results gallery service badge (`ResultsPageClient` `serviceBadgeClass`). */
 const SERVICE_BADGE_CLASS =
-  'inline-flex max-w-[min(100%,9.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.28)] bg-[rgba(201,168,76,0.1)] px-2 py-0.5 text-[8px] font-bold uppercase leading-tight tracking-[0.12em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[10px] md:tracking-[0.15em]';
+  'inline-flex max-w-[min(100%,10.5rem)] shrink-0 items-center rounded-[2px] border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-2.5 py-1 text-[10px] font-semibold uppercase leading-tight tracking-[0.09em] text-[#ddbb70] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] md:max-w-[min(100%,16rem)] md:px-3 md:py-1 md:text-[11px] md:tracking-[0.1em]';
 
 export default function Pricing({
   variant = 'full',
@@ -136,13 +136,13 @@ export default function Pricing({
             z-index: 2;
             background: rgba(16, 16, 16, 0.96);
             color: #d9b45a;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            padding: 4px 10px;
+            padding: 5px 11px;
             border-radius: 0;
-            border: 1px solid rgba(201, 168, 76, 0.36);
+            border: 1px solid rgba(201, 168, 76, 0.3);
             box-shadow: none;
             font-family: var(--font-inter), system-ui, sans-serif;
             line-height: 1;
@@ -173,12 +173,12 @@ export default function Pricing({
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #f2dd96 0%, #d2aa2f 52%, #bc9522 100%);
+  background: linear-gradient(180deg, #ead39b 0%, #cca451 52%, #b18637 100%);
   color: #130f08;
   font-size: 11px;
-  font-weight: 900;
-  font-variation-settings: 'wght' 900;
-  letter-spacing: 0.08em;
+  font-weight: 800;
+  font-variation-settings: 'wght' 800;
+  letter-spacing: 0.06em;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
@@ -186,8 +186,8 @@ export default function Pricing({
   transform-origin: center;
   font-family: var(--font-inter), system-ui, sans-serif;
   box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    0 5px 14px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
   text-shadow: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
@@ -290,7 +290,7 @@ export default function Pricing({
 
                 <div className="relative mx-auto mt-5 w-full max-w-48 min-h-20.5 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-3 md:mx-0 md:max-w-none md:min-h-19 md:px-4 md:py-3.5">
                   <p
-                    className="absolute left-3 top-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/55 md:left-4 md:top-3.5"
+                    className="absolute left-3 top-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-white/55 md:left-4 md:top-3.5"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {card.priceLabel}
@@ -305,7 +305,7 @@ export default function Pricing({
                     {card.startingPrice}
                   </span>
                   <span
-                    className="absolute bottom-2.5 right-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#c9a84c] md:bottom-3.5 md:right-4"
+                    className="absolute bottom-2.5 right-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#c9a84c] md:bottom-3.5 md:right-4"
                     style={{ fontFamily: 'var(--font-orbitron)' }}
                   >
                     RON
@@ -321,7 +321,7 @@ export default function Pricing({
 
                 <div className="mt-5">
                   <p
-                    className="mb-3 border-b border-[#c9a84c]/28 pb-2 pl-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-[#b8a574] md:border-b-0 md:border-l md:border-[#c9a84c]/28 md:pb-0 md:pl-3 md:text-left"
+                    className="mb-3 border-b border-[#c9a84c]/28 pb-2 pl-0 text-center text-[11px] font-medium uppercase tracking-[0.12em] text-[#b8a574] md:border-b-0 md:border-l md:border-[#c9a84c]/28 md:pb-0 md:pl-3 md:text-left"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {copy.includedLabel}
@@ -364,10 +364,10 @@ export default function Pricing({
                   <Link
                     href="/contact"
                     aria-label={`${copy.requestQuoteAria} ${card.title} (${card.priceLabel} ${card.startingPrice} RON)`}
-                    className={`group inline-flex min-h-10.5 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
+                    className={`group inline-flex min-h-10.5 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
                       card.featured
-                        ? 'border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)]'
-                        : 'border-[#C9A84C]/26 bg-[rgba(0,0,0,0.42)] text-[#ddc27a] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:-translate-y-px hover:border-[#C9A84C]/48 hover:bg-[#C9A84C]/8 hover:text-[#f0ddab] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_0_1px_rgba(201,168,76,0.1)]'
+                        ? 'border-[#b8964a]/52 bg-linear-to-b from-[#dfcca0] from-0% via-[#c89f52] via-50% to-[#a1793b] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_14px_rgba(0,0,0,0.32)] hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_20px_rgba(0,0,0,0.36)]'
+                        : 'border-[#C9A84C]/24 bg-[rgba(0,0,0,0.42)] text-[#ddc27a] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:-translate-y-px hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/7 hover:text-[#f0ddab] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_0_1px_rgba(201,168,76,0.08)]'
                     }`}
                     style={{ fontFamily: 'var(--font-inter)', WebkitTapHighlightColor: 'transparent' }}
                   >
@@ -387,7 +387,7 @@ export default function Pricing({
           <div className="mt-8 flex justify-center">
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 rounded-sm border border-[#C9A84C]/40 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/10"
+              className="inline-flex items-center gap-2 rounded-sm border border-[#C9A84C]/32 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/8"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               {copy.viewAll}
@@ -427,7 +427,7 @@ export default function Pricing({
                     </p>
                   </div>
                   <p
-                    className="shrink-0 self-start text-left text-[10px] font-medium uppercase tracking-[0.18em] text-[#b8a574]/95"
+                    className="shrink-0 self-start text-left text-[11px] font-medium uppercase tracking-[0.12em] text-[#b8a574]/95"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {block.meta}

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Clock, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
 import DarkSelect from '@/components/ui/DarkSelect';
 import { SITE_CONTACT } from '@/data/site-config';
+import { buildLeadMailtoHref, buildLeadRequest, buildLeadWhatsAppHref, type LeadRequest } from '@/lib/lead-intake';
 
 const SERVICE_OPTIONS = [
   'Exterior Detailing',
@@ -49,7 +50,7 @@ const CONDITION_SELECT_OPTIONS: { value: string; label: string }[] = [
 
 /** Pricing-aligned micro-labels — Included Services / section eyebrow family */
 const FIELD_LABEL_CLASS =
-  'mb-2.5 block text-[11px] font-medium uppercase tracking-[0.18em] text-[#b89a4a]';
+  'mb-2.5 block text-[12px] font-medium uppercase tracking-[0.12em] text-[#c3aa68]';
 
 const BODY_FONT = 'var(--font-contact-body, var(--font-inter))';
 
@@ -70,11 +71,11 @@ const asideHoursRowClass = 'flex flex-row items-start gap-3.5 text-left';
 
 /** Stronger sidebar section labels on small screens */
 const asideSectionLabelClass =
-  'shrink-0 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#cab06a] md:text-[10px] md:tracking-[0.14em] md:text-[#b8a574]';
+  'shrink-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#cfb77a] md:text-[11px] md:tracking-[0.11em] md:text-[#bea774]';
 
 /** Phone + Opening hours sub-labels — higher contrast than body meta */
 const asideFieldLabelClass =
-  'text-[11px] font-semibold uppercase tracking-[0.14em] text-[#cab06a] md:text-[10px] md:tracking-[0.13em] md:text-[#b8a574]';
+  'text-[11px] font-semibold uppercase tracking-[0.1em] text-[#cfb77a] md:text-[11px] md:tracking-[0.09em] md:text-[#bea774]';
 
 const asidePhoneScheduleClass =
   'mt-1.5 text-[12px] font-medium leading-snug text-[#c4ccd6]';
@@ -105,21 +106,23 @@ function FieldLabel({
 }
 
 export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
-  const [submitted, setSubmitted] = useState(false);
+  const [preparedLead, setPreparedLead] = useState<LeadRequest | null>(null);
   const [fileHint, setFileHint] = useState('');
   const [service, setService] = useState('');
   const [condition, setCondition] = useState('');
   const [serviceError, setServiceError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!service) {
       setServiceError(true);
       return;
     }
+    if (!e.currentTarget.reportValidity()) {
+      return;
+    }
     setServiceError(false);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    setPreparedLead(buildLeadRequest(new FormData(e.currentTarget)));
   };
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,6 +138,11 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
     }
     setFileHint('');
   };
+
+  const mailtoHref = preparedLead ? buildLeadMailtoHref(SITE_CONTACT.emailHref, preparedLead) : SITE_CONTACT.emailHref;
+  const whatsappHref = preparedLead
+    ? buildLeadWhatsAppHref(SITE_CONTACT.whatsappHref, preparedLead)
+    : SITE_CONTACT.whatsappHref;
 
   return (
     <section
@@ -234,17 +242,19 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
               }}
             />
 
-            {submitted ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center justify-center px-6 py-14 text-center sm:px-10"
-              >
-                <div
-                  className="mb-5 flex h-14 w-14 items-center justify-center"
-                  style={{
-                    background: 'rgba(201,168,76,0.1)',
-                    border: '1px solid rgba(201,168,76,0.35)',
+            {preparedLead ? (
+               <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                 className="flex flex-col items-center justify-center px-6 py-12 text-center sm:px-10"
+                 role="status"
+                 aria-live="polite"
+               >
+                 <div
+                   className="mb-5 flex h-14 w-14 items-center justify-center rounded-sm"
+                   style={{
+                     background: 'rgba(201,168,76,0.1)',
+                     border: '1px solid rgba(201,168,76,0.35)',
                   }}
                 >
                   <ShieldCheck className="h-7 w-7" style={{ color: '#C9A84C' }} />
@@ -253,21 +263,65 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   className="mb-2 text-3xl font-black tracking-[0.05em]"
                   style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
                 >
-                  Request Received
-                </h3>
-                <p className="max-w-sm text-sm" style={{ color: 'var(--text-secondary)', fontFamily: BODY_FONT }}>
-                  We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
-                </p>
-              </motion.div>
-            ) : (
+                   Request ready to send
+                 </h3>
+                 <p className="max-w-xl text-sm leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: BODY_FONT }}>
+                   Your details are ready. Choose how you&apos;d like to send them, and we&apos;ll reply with a tailored
+                   recommendation within 24 business hours.
+                 </p>
+                 <p className="mt-3 max-w-lg text-[11px] leading-relaxed text-[#aeb8c6]" style={{ fontFamily: BODY_FONT }}>
+                   We don&apos;t submit this form silently in the background yet, so the handoff always stays visible and
+                   easy to verify.
+                 </p>
+                 {preparedLead.photoCount ? (
+                   <p className="mt-2 max-w-lg text-[11px] leading-relaxed text-[#d4b45c]" style={{ fontFamily: BODY_FONT }}>
+                     {preparedLead.photoCount} photo{preparedLead.photoCount > 1 ? 's were' : ' was'} selected. Please attach
+                     them when your email or WhatsApp window opens.
+                   </p>
+                 ) : null}
+                 <div className="mt-6 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
+                   <a
+                     href={mailtoHref}
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#e4c77e] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.11)]"
+                     style={{ fontFamily: BODY_FONT }}
+                   >
+                     Email request
+                   </a>
+                   <a
+                     href={whatsappHref}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.05)] px-5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.08)]"
+                     style={{ fontFamily: BODY_FONT }}
+                   >
+                     WhatsApp request
+                   </a>
+                   <a
+                     href={SITE_CONTACT.phoneHref}
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 bg-white/3 px-5 text-[12px] font-semibold uppercase tracking-[0.09em] text-white/88 transition-colors hover:border-white/18 hover:bg-white/5"
+                     style={{ fontFamily: BODY_FONT }}
+                   >
+                     Call studio
+                   </a>
+                   <button
+                     type="button"
+                     onClick={() => setPreparedLead(null)}
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-white/10 px-5 text-[12px] font-semibold uppercase tracking-[0.09em] text-white/70 transition-colors hover:border-white/18 hover:text-white/90"
+                     style={{ fontFamily: BODY_FONT }}
+                   >
+                     Edit details
+                   </button>
+                 </div>
+               </motion.div>
+             ) : (
               <form onSubmit={handleSubmit} className="p-6 sm:p-7 lg:p-8">
                 <div className="grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-5">
                   <div className="sm:col-span-1">
                     <FieldLabel htmlFor="contact-name" required>
                       Full Name
                     </FieldLabel>
-                    <input id="contact-name" name="name" type="text" autoComplete="name" required className={inputBase} />
-                  </div>
+                     <input id="contact-name" name="name" type="text" autoComplete="name" required className={inputBase} />
+                   </div>
                   <div className="sm:col-span-1">
                     <FieldLabel htmlFor="contact-phone" required>
                       Phone Number
@@ -317,24 +371,24 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     <FieldLabel htmlFor="contact-service" required>
                       Service Needed
                     </FieldLabel>
-                    <DarkSelect
-                      id="contact-service"
-                      name="service"
+                     <DarkSelect
+                       id="contact-service"
+                       name="service"
                       value={service}
                       onChange={(v) => {
                         setService(v);
                         setServiceError(false);
                       }}
                       options={SERVICE_SELECT_OPTIONS}
-                      placeholder="Select a service"
-                      error={serviceError}
-                    />
-                    {serviceError ? (
-                      <p className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="alert">
-                        Please select a service.
-                      </p>
-                    ) : null}
-                  </div>
+                       placeholder="Select a service"
+                       error={serviceError}
+                     />
+                     {serviceError ? (
+                       <p id="contact-service-error" className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="alert">
+                         Choose the service you want quoted so we can prepare the right handoff.
+                       </p>
+                     ) : null}
+                   </div>
                   <div className="sm:col-span-1">
                     <FieldLabel htmlFor="contact-condition">Paint / Interior Condition</FieldLabel>
                     <DarkSelect
@@ -366,9 +420,10 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     className={`${inputBase} min-h-28 resize-y py-3`}
                     placeholder=""
                   />
-                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
-                    Tell us what you&apos;d like improved, protected, or restored.
-                  </p>
+                   <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
+                     Tell us what you want improved, protected, or restored. We&apos;ll carry this into your email or
+                     WhatsApp handoff.
+                   </p>
                 </div>
 
                 <div className="mt-5">
@@ -381,13 +436,13 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       accept="image/*"
                       multiple
                       onChange={handleFiles}
-                      className="w-full min-w-0 cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.24)] file:bg-[rgba(201,168,76,0.08)] file:px-2.5 file:py-1.5 file:text-[10px] file:font-semibold file:uppercase file:tracking-widest file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.38)] hover:file:bg-[rgba(201,168,76,0.12)]"
+                      className="w-full min-w-0 cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.24)] file:bg-[rgba(201,168,76,0.08)] file:px-2.5 file:py-1.5 file:text-[11px] file:font-semibold file:uppercase file:tracking-[0.1em] file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.32)] hover:file:bg-[rgba(201,168,76,0.1)]"
                     />
                   </div>
-                  <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
-                    Optional: Upload 2–3 photos for a more accurate estimate — helpful for paint defects,
-                    swirl marks, interior wear, or PPF quotes.
-                  </p>
+                   <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
+                     Optional: choose 2-3 photos for a more accurate estimate. They stay on this device until you attach
+                     them in your message.
+                   </p>
                   {fileHint ? (
                     <p className="mt-1.5 text-[11px] font-medium text-[#d4a84a]" role="status">
                       {fileHint}
@@ -399,14 +454,11 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   <div className="flex justify-center">
                     <button
                       type="submit"
-                      className="btn-shimmer relative w-auto cursor-pointer overflow-hidden px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.14em] transition-all duration-300"
+                      className="relative w-auto cursor-pointer overflow-hidden rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02]"
                       style={{
-                        background: 'linear-gradient(165deg, #e1c98e 0%, #cfa85a 46%, #b18a45 100%)',
-                        color: '#070709',
                         fontFamily: BODY_FONT,
-                        border: '1px solid rgba(255,255,255,0.1)',
                         boxShadow:
-                          'inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -1px 0 rgba(80,56,22,0.2), 0 8px 24px rgba(0,0,0,0.38)',
+                          'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(80,56,22,0.14), 0 8px 22px rgba(0,0,0,0.34)',
                       }}
                     >
                       <span className="relative z-10">Request your quote</span>
@@ -416,7 +468,8 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     className="mx-auto mt-3 max-w-[min(100%,36rem)] text-center text-[11px] leading-relaxed text-[#aeb8c6]"
                     style={{ fontFamily: BODY_FONT }}
                   >
-                    We&apos;ll review your request and reply with a tailored recommendation within 24 hours.
+                     Next step: we prepare the request, then you choose email or WhatsApp to send it through the channel
+                     you prefer.
                   </p>
                 </div>
               </form>
@@ -445,7 +498,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                 style={{ fontFamily: BODY_FONT }}
               >
                 <header className="pr-1 text-center md:text-left">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#b89a4a]">
+                  <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[#c3aa68]">
                     Why clients book with us
                   </p>
                   <h3 className="mt-2.5 text-[1.45rem] font-semibold leading-[1.12] tracking-[-0.03em] text-white/95 sm:text-[1.55rem]">
@@ -519,7 +572,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     href={SITE_CONTACT.whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-sm border border-[rgba(201,168,76,0.22)] bg-[rgba(201,168,76,0.05)] px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.35)] hover:bg-[rgba(201,168,76,0.08)]"
+                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-sm border border-[rgba(201,168,76,0.22)] bg-[rgba(201,168,76,0.05)] px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.3)] hover:bg-[rgba(201,168,76,0.07)]"
                   >
                     <MessageCircle className="h-4 w-4 shrink-0 text-[#c9a84c]/90" strokeWidth={1.75} aria-hidden />
                     WhatsApp — quick message

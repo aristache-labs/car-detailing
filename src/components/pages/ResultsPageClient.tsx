@@ -341,7 +341,7 @@ export default function ResultsPageClient() {
                       key={id}
                       type="button"
                       onClick={() => goToTab(id)}
-                      className={`shrink-0 rounded-sm px-2.5 py-1.5 text-center text-[10px] font-bold uppercase leading-snug tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
+                      className={`shrink-0 rounded-sm px-3 py-2 text-center text-[11px] font-semibold uppercase leading-snug tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
                         active ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                       }`}
                       style={{ fontFamily: 'var(--font-inter)' }}
@@ -372,7 +372,7 @@ export default function ResultsPageClient() {
                       key={id}
                       type="button"
                       onClick={() => setMobileGalleryFilter(id)}
-                      className={`shrink-0 rounded-sm px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
+                      className={`shrink-0 rounded-sm px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
                         on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
                       }`}
                       style={{ fontFamily: 'var(--font-inter)' }}
@@ -399,14 +399,14 @@ export default function ResultsPageClient() {
               {TABS.map(({ id, label }) => {
                 const active = activeTab === id;
                 return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => goToTab(id)}
-                    className={`w-full rounded-sm px-3 py-2 text-left text-[9px] font-bold uppercase leading-snug tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
-                      active ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
-                    }`}
-                    style={{ fontFamily: 'var(--font-inter)' }}
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => goToTab(id)}
+                      className={`w-full rounded-sm px-3.5 py-2.5 text-left text-[10px] font-semibold uppercase leading-snug tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
+                        active ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
+                      }`}
+                      style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {label}
                   </button>
@@ -426,14 +426,14 @@ export default function ResultsPageClient() {
                   {MOBILE_GALLERY_FILTERS.map(({ label, id }) => {
                     const on = mobileGalleryFilter === id;
                     return (
-                      <button
-                        key={id}
-                        type="button"
-                        onClick={() => setMobileGalleryFilter(id)}
-                        className={`rounded-sm px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.14em] transition-all duration-300 ease-out ${focusRing} ${
-                          on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
-                        }`}
-                        style={{ fontFamily: 'var(--font-inter)' }}
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => setMobileGalleryFilter(id)}
+                          className={`rounded-sm px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition-all duration-300 ease-out ${focusRing} ${
+                            on ? SERVICE_FILTER_BTN_ACTIVE : SERVICE_FILTER_BTN_INACTIVE
+                          }`}
+                          style={{ fontFamily: 'var(--font-inter)' }}
                       >
                         {label}
                       </button>

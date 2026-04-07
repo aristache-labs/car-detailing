@@ -238,20 +238,20 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.85rem;
   color: var(--gold-soft);
   font-family: var(--font-orbitron);
-  font-size: 0.875rem;
-  font-weight: 900;
-  letter-spacing: 0.2em;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold-tint) 0%, rgba(201, 168, 76, 0.05) 100%);
-  border: 1px solid var(--gold-border-soft);
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.08) 0%, rgba(201, 168, 76, 0.02) 100%);
+  border: 1px solid rgba(201, 168, 76, 0.28);
 }
 
 @media (min-width: 768px) {
   .section-badge {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -276,12 +276,12 @@ body {
   position: absolute;
   top: 0;
   left: -100%;
-  width: 60%;
+  width: 42%;
   height: 100%;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.1),
     transparent
   );
   transform: skewX(-20deg);
@@ -289,7 +289,7 @@ body {
 }
 
 .btn-shimmer:hover::after {
-  animation: shimmer 0.65s ease-out forwards;
+  animation: shimmer 0.7s ease-out forwards;
 }
 
 @keyframes shimmer {
@@ -573,7 +573,7 @@ body {
 }
 
 .hero-scroll-pulse {
-  animation: hero-scroll-pulse 1.8s ease-in-out infinite;
+  animation: hero-scroll-pulse 2.8s ease-in-out infinite;
 }
 
 /* ─── Shine sweep ────────────────────────────────────────────────────────── */
@@ -588,8 +588,8 @@ body {
   left: 0;
   width: 40%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-  animation: shine-sweep 3.5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+  animation: shine-sweep 5.5s ease-in-out infinite;
   pointer-events: none;
   will-change: transform, opacity;
 }
@@ -601,12 +601,12 @@ body {
     90deg,
     transparent 0%,
     rgba(255, 255, 255, 0.02) 38%,
-    rgba(255, 215, 120, 0.16) 50%,
-    rgba(255, 255, 255, 0.08) 62%,
+    rgba(255, 215, 120, 0.11) 50%,
+    rgba(255, 255, 255, 0.05) 62%,
     transparent 100%
   );
-  animation: shine-sweep 4s ease-in-out infinite;
-  opacity: 0.85;
+  animation: shine-sweep 6.5s ease-in-out infinite;
+  opacity: 0.7;
 }
 
 .shine-sweep--hero-delayed {
@@ -614,12 +614,12 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(201, 168, 76, 0.12),
+    rgba(201, 168, 76, 0.08),
     transparent
   );
-  animation: shine-sweep 5.5s ease-in-out infinite;
-  animation-delay: 1.8s;
-  opacity: 0.85;
+  animation: shine-sweep 8s ease-in-out infinite;
+  animation-delay: 2.4s;
+  opacity: 0.62;
 }
 
 /* Keep hero shine clipped to car alpha only (avoid rectangular sweep box) */
@@ -771,15 +771,17 @@ body {
 
 .pricing-highlight-card {
   border: 1px solid rgba(201,168,76,0.46) !important;
-  animation: pricing-glow-pulse 3.5s ease-in-out infinite;
+  box-shadow:
+    0 0 0 1px rgba(201,168,76,0.14),
+    0 18px 48px rgba(0,0,0,0.48),
+    0 0 24px rgba(201,168,76,0.05);
 }
 
 .pricing-highlight-card:hover {
-  animation-play-state: paused;
   box-shadow:
-    0 0 0 1px rgba(201,168,76,0.32),
-    0 24px 64px rgba(0,0,0,0.55),
-    0 0 64px rgba(201,168,76,0.22) !important;
+    0 0 0 1px rgba(201,168,76,0.24),
+    0 20px 48px rgba(0,0,0,0.5),
+    0 0 32px rgba(201,168,76,0.12) !important;
 }
 
 .pricing-top-sweep {
@@ -794,7 +796,8 @@ body {
     transparent 100%
   );
   background-size: 200% 100%;
-  animation: pricing-sweep 2.8s linear infinite;
+  animation: pricing-sweep 5s linear infinite;
+  opacity: 0.32;
 }
 
 /* ─── Service row clip-path — only on desktop ────────────────────────────── */

@@ -24,6 +24,9 @@ export default function ImageLightbox({ open, slides, index, onClose, onIndexCha
   const safeIndex = n === 0 ? 0 : Math.min(Math.max(0, index), n - 1);
   const slide = slides[safeIndex];
   const scrollYRef = useRef(0);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   /** Touch start for horizontal swipe (mobile): swipe left → next, swipe right → previous */
   const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
 
@@ -69,13 +72,35 @@ export default function ImageLightbox({ open, slides, index, onClose, onIndexCha
 
   useEffect(() => {
     if (!open) return;
+    lastFocusedElementRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowLeft') go(-1);
       if (e.key === 'ArrowRight') go(1);
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      lastFocusedElementRef.current?.focus();
+    };
   }, [open, onClose, go]);
 
   /** iOS: `overflow: hidden` on body alone often still allows rubber-band scroll; lock + restore scroll. */
@@ -109,6 +134,7 @@ export default function ImageLightbox({ open, slides, index, onClose, onIndexCha
 
   const node = (
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-300 flex h-dvh max-h-dvh flex-col overflow-hidden overscroll-none bg-black/95"
       role="dialog"
       aria-modal="true"
@@ -127,6 +153,7 @@ export default function ImageLightbox({ open, slides, index, onClose, onIndexCha
         <div className="pointer-events-auto flex shrink-0 justify-end px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-2">
           <button
             type="button"
+            ref={closeButtonRef}
             onClick={onClose}
             className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-black/80 text-white shadow-[0_4px_24px_rgba(0,0,0,0.55)] transition-opacity active:opacity-90 md:h-11 md:w-11 md:hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(201,168,76,0.55)]"
             aria-label="Close"
@@ -173,7 +200,14 @@ export default function ImageLightbox({ open, slides, index, onClose, onIndexCha
             onTouchCancel={onSwipeTouchCancel}
             role="presentation"
           >
-            <Image src={slide.src} alt="" fill className="object-contain" sizes="100vw" priority />
+            <Image
+              src={slide.src}
+              alt={slide.title || slide.subtitle || 'Detailing result image'}
+              fill
+              className="object-contain"
+              sizes="100vw"
+              priority
+            />
           </div>
         </div>
 

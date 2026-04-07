@@ -60,7 +60,7 @@ const sectionLabel =
   'mb-3 border-l-2 border-[rgba(201,168,76,0.45)] pl-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#d4b86a] sm:mb-3.5';
 
 const linkClass =
-  'block rounded-sm py-1.5 text-[13px] leading-snug text-white/75 transition-colors duration-200 hover:bg-white/[0.03] hover:text-[#e8d4a8] active:bg-white/[0.05] sm:py-1';
+  'block rounded-sm py-1.5 text-[13px] leading-snug text-white/80 transition-colors duration-200 hover:bg-white/[0.03] hover:text-[#e8d4a8] active:bg-white/[0.05] sm:py-1';
 
 const noiseBg = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
@@ -100,7 +100,7 @@ export default function Footer() {
                 <span className="text-[#d4b86a]">APEX</span>
                 <span className="text-white/95"> DETAILING</span>
               </p>
-              <p className="col-start-2 max-w-[20rem] text-[13px] leading-[1.55] text-white/58 sm:text-[12px] sm:leading-relaxed">
+              <p className="col-start-2 max-w-[20rem] text-[13px] leading-[1.55] text-white/66 sm:text-[12px] sm:leading-relaxed">
                 Premium detailing, correction, ceramic coating, and protection — built for vehicles that deserve more
                 than a wash.
               </p>
@@ -133,7 +133,7 @@ export default function Footer() {
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:gap-5">
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
                   <Phone className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Phone
                 </div>
@@ -142,7 +142,7 @@ export default function Footer() {
                 </a>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
                   <Mail className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Email
                 </div>
@@ -154,18 +154,18 @@ export default function Footer() {
                 </a>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
                   <MapPin className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Area
                 </div>
-                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">{SITE_CONTACT.area}</p>
+                <p className="text-[12px] font-medium leading-snug text-white/84 sm:text-[13px]">{SITE_CONTACT.area}</p>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
                   <Clock className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Hours
                 </div>
-                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">{SITE_CONTACT.hoursCompact}</p>
+                <p className="text-[12px] font-medium leading-snug text-white/84 sm:text-[13px]">{SITE_CONTACT.hoursCompact}</p>
               </div>
             </div>
           </div>
@@ -209,9 +209,9 @@ export default function Footer() {
               <ul className="flex flex-col gap-0.5">
                 {LEGAL_LINKS.map(({ label, href }) => (
                   <li key={label}>
-                    <a href={href} className={linkClass}>
+                    <Link href={href} className={linkClass}>
                       {label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

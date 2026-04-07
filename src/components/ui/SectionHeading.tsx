@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import SectionBadge from '@/components/ui/SectionBadge';
 
 interface SectionHeadingProps {
   eyebrow?: string;
@@ -17,7 +18,8 @@ export default function SectionHeading({
   subtitle,
   align = 'center',
 }: SectionHeadingProps) {
-  const alignClass = align === 'center' ? 'text-center items-center' : 'text-left items-start';
+  const centered = align === 'center';
+  const alignClass = centered ? 'text-center items-center' : 'text-left items-start';
 
   return (
     <motion.div
@@ -28,14 +30,11 @@ export default function SectionHeading({
       transition={{ duration: 0.7, ease: 'easeOut' }}
     >
       {eyebrow && (
-        <span
-          className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase mb-4"
-          style={{ color: 'var(--gold-mid)', fontFamily: 'var(--font-orbitron)' }}
-        >
-          <span className="w-8 h-px" style={{ background: 'var(--gold-mid)' }} />
-          {eyebrow}
-          <span className="w-8 h-px" style={{ background: 'var(--gold-mid)' }} />
-        </span>
+        <div className={`mb-4 flex items-center gap-3 ${centered ? 'justify-center' : 'justify-start'}`}>
+          <span className="h-px w-8 bg-[rgba(201,168,76,0.36)]" aria-hidden />
+          <SectionBadge>{eyebrow}</SectionBadge>
+          <span className="h-px w-8 bg-[rgba(201,168,76,0.36)]" aria-hidden />
+        </div>
       )}
       <h2
         className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight"
