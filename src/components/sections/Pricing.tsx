@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { servicePricingItems } from '@/data/service-pricing';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -96,6 +96,7 @@ export default function Pricing({
   showHeader?: boolean;
 } = {}) {
   const { language } = useLanguage();
+  const reduceMotion = useReducedMotion() ?? false;
   const copy = PRICING_COPY[language];
   const supportBlocks = SUPPORT_BLOCKS[language];
   const isPreview = variant === 'preview';
@@ -125,6 +126,24 @@ export default function Pricing({
             'radial-gradient(ellipse at top center, rgba(201,168,76,0.08), transparent 45%)',
         }}
       />
+      {!reduceMotion ? (
+        <>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute -left-20 top-28 h-56 w-56 rounded-full blur-3xl"
+            style={{ background: 'rgba(201,168,76,0.08)' }}
+            animate={{ x: [0, 26, 0], y: [0, -16, 0], opacity: [0.18, 0.28, 0.18] }}
+            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute -right-18 top-44 h-64 w-64 rounded-full blur-3xl"
+            style={{ background: 'rgba(120,138,160,0.08)' }}
+            animate={{ x: [0, -22, 0], y: [0, 18, 0], opacity: [0.12, 0.22, 0.12] }}
+            transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+          />
+        </>
+      ) : null}
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         <style>{`
@@ -151,14 +170,58 @@ export default function Pricing({
             justify-content: center;
             text-align: center;
           }
+          .pricing-card-sheen {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            overflow: hidden;
+            pointer-events: none;
+          }
+          .pricing-card-sheen::after {
+            content: "";
+            position: absolute;
+            inset: -18%;
+            background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.1) 48%, transparent 66%);
+            transform: translateX(-135%);
+            transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+          }
+          .group:hover .pricing-card-sheen::after,
+          .group:focus-within .pricing-card-sheen::after {
+            transform: translateX(135%);
+          }
+          .pricing-cta-glow {
+            position: relative;
+            overflow: hidden;
+          }
+          .pricing-cta-glow::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.16) 50%, transparent 80%);
+            transform: translateX(-140%);
+            transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+          }
+          .pricing-cta-glow:hover::after,
+          .pricing-cta-glow:focus-visible::after {
+            transform: translateX(140%);
+          }
         `}</style>
         {showHeader ? (
-          <div className="mb-8 text-center md:mb-10 md:text-left">
-            <span
+          <motion.div
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-8 text-center md:mb-10 md:text-left"
+          >
+            <motion.span
               className="section-badge mb-3 md:mb-4"
+              animate={reduceMotion ? undefined : { boxShadow: ['0 0 0 rgba(201,168,76,0)', '0 0 18px rgba(201,168,76,0.12)', '0 0 0 rgba(201,168,76,0)'] }}
+              transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut' }}
             >
               {copy.eyebrow}
-            </span>
+            </motion.span>
             <h2
               id={sectionHeadingId}
               className="flex flex-wrap items-baseline justify-center gap-x-2 uppercase leading-[0.92] tracking-[0.04em] md:justify-start md:gap-x-3"
@@ -177,7 +240,7 @@ export default function Pricing({
             >
               {copy.intro}
             </p>
-          </div>
+          </motion.div>
         ) : null}
 
         <div className="grid grid-cols-1 gap-x-4 gap-y-7 md:grid-cols-2 xl:grid-cols-4">
@@ -188,11 +251,21 @@ export default function Pricing({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ delay: Math.min(index * 0.05, 0.18), duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -3, transition: { duration: 0.22, ease: 'easeOut' } }}
+              whileHover={
+                reduceMotion
+                  ? undefined
+                  : {
+                      y: -5,
+                      scale: 1.008,
+                      transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1] },
+                    }
+              }
               className="group relative flex min-h-110 flex-col overflow-visible rounded-[1.35rem] border bg-[rgba(15,15,15,0.96)]"
               style={{
                 borderColor: card.featured ? '#c9a227' : '#2a2a2a',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                boxShadow: card.featured
+                  ? '0 14px 34px rgba(0,0,0,0.34), inset 0 1px 0 rgba(255,255,255,0.04)'
+                  : '0 10px 24px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             >
               <div
@@ -203,6 +276,7 @@ export default function Pricing({
                     : 'radial-gradient(ellipse at top right, rgba(255,255,255,0.035), transparent 62%)',
                 }}
               />
+              <div className="pricing-card-sheen" aria-hidden />
 
               <span className="service-badge">{card.badge}</span>
 
@@ -220,7 +294,10 @@ export default function Pricing({
                   {card.subtitle}
                 </p>
 
-                <div className="relative mx-auto mt-5 w-full max-w-48 min-h-20.5 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-3 md:mx-0 md:max-w-none md:min-h-19 md:px-4 md:py-3.5">
+                <motion.div
+                  whileHover={reduceMotion ? undefined : { y: -2, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] } }}
+                  className="relative mx-auto mt-5 w-full max-w-48 min-h-20.5 rounded-2xl border border-white/8 bg-[rgba(255,255,255,0.02)] px-3 py-3 md:mx-0 md:max-w-none md:min-h-19 md:px-4 md:py-3.5"
+                >
                   <p
                     className="absolute left-3 top-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] text-white/55 md:left-4 md:top-3.5"
                     style={{ fontFamily: 'var(--font-inter)' }}
@@ -242,7 +319,7 @@ export default function Pricing({
                   >
                     RON
                   </span>
-                </div>
+                </motion.div>
 
                 <p
                   className="mt-4 text-center text-[13px] leading-[1.55] text-text-muted md:text-left"
@@ -296,7 +373,7 @@ export default function Pricing({
                   <Link
                     href="/contact"
                     aria-label={`${copy.requestQuoteAria} ${card.title} (${card.priceLabel} ${card.startingPrice} RON)`}
-                    className={`group inline-flex min-h-10.5 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
+                    className={`pricing-cta-glow group inline-flex min-h-10.5 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.09em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
                       card.featured
                         ? 'border-[#b8964a]/52 bg-linear-to-b from-[#dfcca0] from-0% via-[#c89f52] via-50% to-[#a1793b] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_14px_rgba(0,0,0,0.32)] hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_6px_20px_rgba(0,0,0,0.36)]'
                         : 'border-[#C9A84C]/24 bg-[rgba(0,0,0,0.42)] text-[#ddc27a] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:-translate-y-px hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/7 hover:text-[#f0ddab] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_0_1px_rgba(201,168,76,0.08)]'
@@ -319,7 +396,7 @@ export default function Pricing({
           <div className="mt-8 flex justify-center">
             <Link
               href="/pricing"
-              className="inline-flex items-center gap-2 rounded-sm border border-[#C9A84C]/32 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/8"
+              className="pricing-cta-glow inline-flex items-center gap-2 rounded-sm border border-[#C9A84C]/32 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/8"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               {copy.viewAll}
@@ -329,10 +406,26 @@ export default function Pricing({
         ) : (
             <div className="mt-8 grid grid-cols-1 gap-4 border-t border-white/[0.07] pt-8 md:grid-cols-3">
               {supportBlocks.map((block) => (
-                <div
+                <motion.div
                   key={block.id}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.45, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={
+                    reduceMotion
+                      ? undefined
+                      : { y: -4, transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] } }
+                  }
                   className="relative flex min-h-70 flex-col overflow-hidden rounded-sm border border-[rgba(201,168,76,0.11)] bg-[rgba(255,255,255,0.025)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
                 >
+                  <motion.div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-[-25%] top-0 h-px"
+                    style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.75), transparent)' }}
+                    animate={reduceMotion ? undefined : { x: ['-20%', '120%'] }}
+                    transition={{ duration: 4.2, repeat: Infinity, ease: 'linear', delay: 0.6 }}
+                  />
                   <div className="flex shrink-0 items-start justify-between gap-3">
                     <span
                       className={SERVICE_BADGE_CLASS}
@@ -340,9 +433,13 @@ export default function Pricing({
                     >
                       {copy.supportBadge}
                     </span>
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[2px] border border-[#C9A84C]/14 bg-[rgba(201,168,76,0.05)]">
+                    <motion.div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[2px] border border-[#C9A84C]/14 bg-[rgba(201,168,76,0.05)]"
+                      animate={reduceMotion ? undefined : { rotate: [0, 8, 0], scale: [1, 1.06, 1] }}
+                      transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+                    >
                       <Sparkles className="h-3.5 w-3.5 text-[#c9a84c]/90" strokeWidth={1.75} />
-                    </div>
+                    </motion.div>
                   </div>
                   <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-0.5 py-4 text-center">
                     <h3
@@ -364,7 +461,7 @@ export default function Pricing({
                   >
                     {block.meta}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
         )}

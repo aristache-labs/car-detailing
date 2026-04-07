@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/components/providers/LanguageProvider';
@@ -64,13 +64,39 @@ const FAQ_COPY = {
 
 export default function PricingFAQ() {
   const { language } = useLanguage();
+  const reduceMotion = useReducedMotion() ?? false;
   const copy = FAQ_COPY[language];
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section className="border-t border-white/[0.07] py-10 md:py-14" style={{ background: 'var(--carbon-950)' }}>
       <div className="mx-auto max-w-4xl px-4 sm:px-8 md:px-14">
-        <div className="mb-10 text-center md:mb-11 md:text-left">
+        <style>{`
+          .pricing-faq-cta-glow {
+            position: relative;
+            overflow: hidden;
+          }
+          .pricing-faq-cta-glow::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.16) 50%, transparent 80%);
+            transform: translateX(-140%);
+            transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+          }
+          .pricing-faq-cta-glow:hover::after,
+          .pricing-faq-cta-glow:focus-visible::after {
+            transform: translateX(140%);
+          }
+        `}</style>
+        <motion.div
+          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-10 text-center md:mb-11 md:text-left"
+        >
           <div className="flex justify-center md:justify-start">
             <SectionBadge className="max-w-[min(100%,12rem)] md:max-w-[min(100%,18rem)]">
               {copy.eyebrow}
@@ -88,7 +114,7 @@ export default function PricingFAQ() {
           >
             {copy.intro}
           </p>
-        </div>
+        </motion.div>
 
         <div className="space-y-1.5">
           {copy.items.map((item, i) => {
@@ -96,8 +122,12 @@ export default function PricingFAQ() {
             const panelId = `pricing-faq-panel-${i}`;
             const buttonId = `pricing-faq-button-${i}`;
             return (
-              <div
+              <motion.div
                 key={item.q}
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.35, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
                 className="overflow-hidden rounded-sm border border-[rgba(201,168,76,0.15)] bg-[rgba(255,255,255,0.02)] shadow-[inset_0_1px_0_rgba(255,255,255,0.045)]"
               >
                 <button
@@ -138,7 +168,7 @@ export default function PricingFAQ() {
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -146,7 +176,7 @@ export default function PricingFAQ() {
         <div className="mt-8 flex justify-center md:justify-start">
           <Link
             href="/contact"
-            className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.13em] text-[#e1c273] transition-colors hover:bg-[rgba(201,168,76,0.1)]"
+            className="pricing-faq-cta-glow inline-flex min-h-11 items-center justify-center rounded-sm border border-[#C9A84C]/40 bg-[rgba(201,168,76,0.05)] px-5 py-2.5 text-center text-[11px] font-semibold uppercase tracking-[0.13em] text-[#e1c273] transition-colors hover:bg-[rgba(201,168,76,0.1)]"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             {copy.cta}
