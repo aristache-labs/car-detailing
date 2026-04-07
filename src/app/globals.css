@@ -262,7 +262,7 @@ body {
 
 /* ─── Gold Glow ───────────────────────────────────────────────────────────── */
 .glow-gold {
-  box-shadow: 0 0 20px var(--glow-gold), 0 0 40px rgba(201, 168, 76, 0.15);
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.18);
 }
 
 .glow-gold-border {
@@ -599,32 +599,19 @@ body {
   will-change: transform, opacity;
 }
 
-/* Stronger sweep for hero photo (read on dark paint + gold brand) */
+/* Stronger sweep for hero photo (read on dark paint) */
 .shine-sweep--hero {
   width: 48%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.02) 38%,
-    rgba(255, 215, 120, 0.11) 50%,
-    rgba(255, 255, 255, 0.05) 62%,
+    rgba(255, 255, 255, 0.03) 38%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 62%,
     transparent 100%
   );
   animation: shine-sweep 7s ease-in-out 1;
-  opacity: 0.7;
-}
-
-.shine-sweep--hero-delayed {
-  width: 32%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(201, 168, 76, 0.08),
-    transparent
-  );
-  animation: shine-sweep 8s ease-in-out 1;
-  animation-delay: 2.4s;
-  opacity: 0.62;
+  opacity: 0.65;
 }
 
 /* Keep hero shine clipped to car alpha only (avoid rectangular sweep box) */
@@ -753,56 +740,18 @@ body {
   color: white;
 }
 
-/* ─── Pricing card premium animations ───────────────────────────────────── */
-@keyframes pricing-glow-pulse {
-  0%, 100% {
-    box-shadow:
-      0 0 0 1px rgba(201,168,76,0.1),
-      0 18px 48px rgba(0,0,0,0.48),
-      0 0 30px rgba(201,168,76,0.06);
-  }
-  50% {
-    box-shadow:
-      0 0 0 1px rgba(201,168,76,0.26),
-      0 18px 48px rgba(0,0,0,0.48),
-      0 0 56px rgba(201,168,76,0.17);
-  }
-}
-
-@keyframes pricing-sweep {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
+/* ─── Pricing card featured treatment ───────────────────────────────────── */
 .pricing-highlight-card {
   border: 1px solid rgba(201,168,76,0.46) !important;
   box-shadow:
     0 0 0 1px rgba(201,168,76,0.14),
-    0 18px 48px rgba(0,0,0,0.48),
-    0 0 24px rgba(201,168,76,0.05);
+    0 18px 48px rgba(0,0,0,0.48);
 }
 
 .pricing-highlight-card:hover {
   box-shadow:
     0 0 0 1px rgba(201,168,76,0.24),
-    0 20px 48px rgba(0,0,0,0.5),
-    0 0 32px rgba(201,168,76,0.12) !important;
-}
-
-.pricing-top-sweep {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(201,168,76,0.35) 30%,
-    rgba(255,215,0,0.92) 50%,
-    rgba(201,168,76,0.35) 70%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: pricing-sweep 6s linear 1;
-  opacity: 0.24;
+    0 20px 48px rgba(0,0,0,0.5) !important;
 }
 
 /* ─── Service row clip-path — only on desktop ────────────────────────────── */

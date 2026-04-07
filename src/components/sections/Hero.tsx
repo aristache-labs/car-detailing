@@ -203,7 +203,6 @@ export default function Hero() {
           >
             <div className="hero-shine-core">
               <div className="shine-sweep shine-sweep--hero" />
-              <div className="shine-sweep shine-sweep--hero-delayed" />
             </div>
           </div>
         </div>

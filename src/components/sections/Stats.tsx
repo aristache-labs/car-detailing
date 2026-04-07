@@ -48,7 +48,6 @@ export default function Stats() {
                   letterSpacing: '0.03em',
                   color: 'white',
                   lineHeight: 1.25,
-                  whiteSpace: 'nowrap',
                 }}
               >
                 {item.text}

@@ -151,47 +151,6 @@ export default function Pricing({
             justify-content: center;
             text-align: center;
           }
-          .popular-ribbon {
-            position: absolute;
-            top: -1px;
-            right: -1px;
-            width: 136px;
-            height: 136px;
-            overflow: hidden;
-            z-index: 10;
-            pointer-events: none;
-            border-top-right-radius: inherit;
-          }
-.popular-ribbon::before {
-  content: 'TOP PICKS';
-  position: absolute;
-  top: 28px;
-  right: -36px;
-  width: 160px;
-  min-height: 30px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #ead39b 0%, #cca451 52%, #b18637 100%);
-  color: #130f08;
-  font-size: 11px;
-  font-weight: 800;
-  font-variation-settings: 'wght' 800;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  transform: rotate(45deg);
-  transform-origin: center;
-  font-family: var(--font-inter), system-ui, sans-serif;
-  box-shadow:
-    0 5px 14px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  text-shadow: none;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: geometricPrecision;
-}
         `}</style>
         {showHeader ? (
           <div className="mb-8 text-center md:mb-10 md:text-left">
@@ -236,8 +195,6 @@ export default function Pricing({
                 boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
               }}
             >
-              {card.featured ? <div className="popular-ribbon" aria-hidden /> : null}
-
               <div
                 className="absolute inset-0 z-0 rounded-[inherit] pointer-events-none"
                 style={{
