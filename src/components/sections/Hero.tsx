@@ -33,7 +33,6 @@ export default function Hero() {
 
     const ctx = gsap.context(() => {
       if (reducedMotion) {
-        // Ensure all elements are visible for reduced-motion users
         gsap.set(
           [
             atmosphereRef.current,
@@ -45,69 +44,54 @@ export default function Hero() {
             carRef.current,
             handoffScrimRef.current,
           ],
-          { opacity: 1, x: 0, y: 0, clearProps: 'transform' }
+          { clearProps: 'all' }
         );
-        gsap.set(handoffScrimRef.current, { opacity: 0 });
         return;
       }
-
-      // Set initial hidden state imperatively — keeps JSX clean and ensures
-      // no invisible content for non-JS / reduced-motion users
-      gsap.set([titleRef.current, subRef.current, ctaRef.current, trustRef.current], {
-        opacity: 0,
-        y: 0,
-      });
-      gsap.set(carRef.current, { opacity: 0, x: 0 });
 
       const introTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.08 });
 
       introTl
-        // Atmosphere depth bleeds in first — sets the stage
-        .fromTo(atmosphereRef.current, { opacity: 0 }, { opacity: 1, duration: 0.6 })
-        // Headline hits with authority while atmosphere is still settling
+        .fromTo(atmosphereRef.current, { opacity: 0 }, { opacity: 1, duration: 0.45 })
         .fromTo(
           titleRef.current,
-          { y: 28, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, ease: 'power4.out' },
-          '-=0.35'
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.65, ease: 'power4.out' },
+          '-=0.16'
         )
-        // Supporting copy follows tight behind
         .fromTo(
           subRef.current,
-          { y: 18, opacity: 0 },
+          { y: 20, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.5 },
-          '-=0.38'
-        )
-        // CTAs arrive as a unit
-        .fromTo(
-          ctaRef.current,
-          { y: 16, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.46 },
           '-=0.3'
         )
-        // Trust strip settles last in the copy column
+        .fromTo(
+          ctaRef.current,
+          { y: 18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.48 },
+          '-=0.28'
+        )
         .fromTo(
           trustRef.current,
-          { y: 12, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.4 },
-          '-=0.22'
+          { y: 14, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.44 },
+          '-=0.24'
         )
-        // Car slides in and settles — overlapping copy reveal, finishes last
         .fromTo(
           carRef.current,
-          { x: 52, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.95, ease: 'power4.out' },
-          '-=0.7'
+          { x: 56, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.88, ease: 'power4.out' },
+          '-=0.56'
         );
 
       gsap.to(contentWrapRef.current, {
-        y: -22,
+        y: -26,
         opacity: 0.86,
         ease: 'none',
         scrollTrigger: {
           trigger: heroEl,
           start: 'top top',
-          end: '+=48%',
+          end: '+=36%',
           scrub: 0.85,
         },
       });
@@ -118,7 +102,7 @@ export default function Hero() {
         scrollTrigger: {
           trigger: heroEl,
           start: 'top top',
-          end: '+=48%',
+          end: '+=36%',
           scrub: 0.85,
         },
       });
@@ -129,7 +113,7 @@ export default function Hero() {
         scrollTrigger: {
           trigger: heroEl,
           start: 'top top',
-          end: '+=44%',
+          end: '+=34%',
           scrub: 0.9,
         },
       });
@@ -189,6 +173,7 @@ export default function Hero() {
         <div
           ref={titleRef}
           className="hero-title-wrap filter-[drop-shadow(0_6px_24px_rgba(0,0,0,0.45))] text-center lg:text-left"
+          style={{ opacity: 0 }}
         >
           <h1
             className="leading-[0.92] tracking-[0.012em] mb-0"
@@ -224,6 +209,7 @@ export default function Hero() {
             fontFamily: 'var(--font-inter)',
             fontWeight: 400,
             letterSpacing: '0.018em',
+            opacity: 0,
           }}
         >
           {t.hero.description}
@@ -233,6 +219,7 @@ export default function Hero() {
         <div
           ref={ctaRef}
           className="flex flex-col sm:flex-row lg:flex-row lg:items-stretch gap-3 sm:gap-3.5 justify-center lg:justify-start"
+          style={{ opacity: 0 }}
         >
           <Link href="/contact" className="hero-cta-primary group inline-flex items-center justify-center">
             {t.hero.primaryCta}
@@ -249,6 +236,7 @@ export default function Hero() {
         <ul
           ref={trustRef}
           className="hero-trust-strip mt-9 lg:mt-11"
+          style={{ opacity: 0 }}
         >
           {[t.hero.trust1, t.hero.trust2, t.hero.trust3].map((item, index) => (
             <li
@@ -274,7 +262,7 @@ export default function Hero() {
       <div
         ref={carRef}
         className="relative lg:absolute lg:right-0 lg:top-0 lg:bottom-0 w-full lg:w-[50%] flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-10 lg:pb-0"
-        style={{ zIndex: 3 }}
+        style={{ zIndex: 3, opacity: 0 }}
       >
         {/* Soft spotlight behind the car */}
         <div
@@ -329,8 +317,7 @@ export default function Hero() {
 
       <div
         ref={handoffScrimRef}
-        className="hero-handoff-scrim pointer-events-none absolute inset-x-0 bottom-0 h-[28vh]"
-        style={{ zIndex: 4 }}
+        className="hero-handoff-scrim pointer-events-none absolute inset-x-0 bottom-0 h-[28vh] z-4"
         aria-hidden
       />
     </section>

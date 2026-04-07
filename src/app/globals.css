@@ -332,7 +332,7 @@ body {
 
 .hero-cta-primary:hover {
   transform: translateY(-2px);
-  filter: brightness(1.06);
+  filter: brightness(1.02);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     0 4px 12px rgba(0, 0, 0, 0.35),
@@ -391,7 +391,7 @@ body {
 }
 
 .hero-content-wrap {
-  /* will-change set/cleared by GSAP during scroll; not static to avoid wasting GPU memory */
+  will-change: transform, opacity;
 }
 
 .hero-title-wrap {
@@ -399,11 +399,10 @@ body {
 }
 
 .hero-media-plane {
-  /* will-change managed by GSAP during animation phases only */
+  will-change: transform;
 }
 
 .hero-handoff-scrim {
-  z-index: 4;
   opacity: 0;
   background:
     linear-gradient(
@@ -416,9 +415,10 @@ body {
 
 .hero-trust-strip {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem;
+  justify-content: center;
+  gap: 0.75rem 0.4rem;
   border-top: 1px solid rgba(201, 168, 76, 0.2);
   border-bottom: 1px solid rgba(201, 168, 76, 0.12);
   padding: 0.65rem 0.1rem;
@@ -435,10 +435,8 @@ body {
 
 @media (min-width: 1024px) {
   .hero-trust-strip {
-    flex-direction: row;
-    flex-wrap: nowrap;
     justify-content: flex-start;
-    gap: 0;
+    gap: 0.35rem;
     padding: 0.72rem 0.15rem;
   }
 
@@ -653,7 +651,7 @@ body {
 }
 
 .hero-scroll-pulse {
-  /* Decorative gradient line — animation removed to avoid dead state after completion */
+  animation: hero-scroll-pulse 2.8s ease-in-out 2;
 }
 
 /* ─── Shine sweep ────────────────────────────────────────────────────────── */
