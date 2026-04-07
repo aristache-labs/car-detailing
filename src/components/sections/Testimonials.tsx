@@ -141,15 +141,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
             className="lg:col-span-2 flex flex-col items-center lg:items-start text-center lg:text-left"
           >
             {/* Eyebrow */}
-            <span
-              className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-3"
-              style={{
-                color: '#E2C06A',
-                fontFamily: 'var(--font-orbitron)',
-                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-                border: '1px solid rgba(201,168,76,0.35)',
-              }}
-            >
+            <span className="section-badge mb-3">
               Verified Owner Reviews
             </span>
 
@@ -159,14 +151,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
               style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
             >
               CLIENT{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
+              <span className="text-gold-metal">
                 VOICES
               </span>
             </h2>
@@ -190,14 +175,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
                   color: 'white',
                 }}
               >
-                <span
-                  style={{
-                    background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
+                <span className="text-gold">
                   {String(current + 1).padStart(2, '0')}
                 </span>{' '}
                 <span style={{ color: 'rgba(255,255,255,0.42)' }}>/</span>{' '}
@@ -215,23 +193,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
                   markInteracted();
                   back();
                 }}
-                className="w-11 h-11 flex items-center justify-center cursor-pointer transition-all duration-200"
-                style={{
-                  border: '1px solid rgba(201,168,76,0.25)',
-                  background: 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))',
-                  color: '#C9A84C',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'rgba(201,168,76,0.08)';
-                  el.style.borderColor = 'rgba(201,168,76,0.48)';
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))';
-                  el.style.borderColor = 'rgba(201,168,76,0.25)';
-                }}
+                className="flex h-11 w-11 cursor-pointer items-center justify-center border border-[rgba(201,168,76,0.25)] bg-[linear-gradient(180deg,rgba(22,22,30,0.72),rgba(13,13,18,0.72))] text-gold-mid shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-200 hover:border-[rgba(201,168,76,0.48)] hover:bg-[rgba(201,168,76,0.08)]"
                 aria-label="Previous"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -250,7 +212,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
                     style={{
                       width: i === current ? '24px' : '6px',
                       height: '6px',
-                      background: i === current ? '#C9A84C' : 'rgba(201,168,76,0.28)',
+                      background: i === current ? 'var(--gold-mid)' : 'rgba(201,168,76,0.28)',
                       border: 'none',
                       borderRadius: '3px',
                     }}
@@ -265,23 +227,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
                   markInteracted();
                   advance();
                 }}
-                className="w-11 h-11 flex items-center justify-center cursor-pointer transition-all duration-200"
-                style={{
-                  border: '1px solid rgba(201,168,76,0.25)',
-                  background: 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))',
-                  color: '#C9A84C',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'rgba(201,168,76,0.08)';
-                  el.style.borderColor = 'rgba(201,168,76,0.48)';
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.background = 'linear-gradient(180deg, rgba(22,22,30,0.72), rgba(13,13,18,0.72))';
-                  el.style.borderColor = 'rgba(201,168,76,0.25)';
-                }}
+                className="flex h-11 w-11 cursor-pointer items-center justify-center border border-[rgba(201,168,76,0.25)] bg-[linear-gradient(180deg,rgba(22,22,30,0.72),rgba(13,13,18,0.72))] text-gold-mid shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-all duration-200 hover:border-[rgba(201,168,76,0.48)] hover:bg-[rgba(201,168,76,0.08)]"
                 aria-label="Next"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -299,7 +245,7 @@ export default function Testimonials({ maxItems }: { maxItems?: number } = {}) {
             <div className="mt-4 h-px w-full max-w-xs" style={{ background: 'rgba(255,255,255,0.07)' }}>
               <motion.div
                 className="h-full"
-                style={{ background: 'linear-gradient(90deg, #C9A84C, #FFD700)' }}
+                style={{ background: 'linear-gradient(90deg, var(--gold-mid), var(--gold-bright))' }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
               />

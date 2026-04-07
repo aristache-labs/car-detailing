@@ -83,10 +83,10 @@ export default function PricingFAQ() {
             className="mt-3 font-black uppercase leading-[0.96] tracking-[0.028em] text-white/92 max-md:text-[clamp(1.5rem,5.2vw,1.8rem)] md:mt-3.5 md:text-[clamp(1.8rem,3vw,2.2rem)]"
             style={{ fontFamily: 'var(--font-bebas)' }}
           >
-            {copy.titleLead} <span className="text-[#cab06a]">{copy.titleAccent}</span>
+            {copy.titleLead} <span style={{ color: 'var(--gold-soft)' }}>{copy.titleAccent}</span>
           </h2>
           <p
-            className="mx-auto mt-4 max-w-[min(100%,26rem)] text-[13px] leading-[1.58] text-[#a4adb8] md:mx-0 md:mt-5 md:text-[14px] md:leading-[1.62]"
+            className="mx-auto mt-4 max-w-[min(100%,26rem)] text-[13px] leading-[1.58] text-text-muted md:mx-0 md:mt-5 md:text-[14px] md:leading-[1.62]"
             style={{ fontFamily: 'var(--font-inter)' }}
           >
             {copy.intro}
@@ -133,7 +133,7 @@ export default function PricingFAQ() {
                       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <p
-                        className="border-t border-[rgba(201,168,76,0.1)] bg-[rgba(5,5,7,0.45)] px-4 pb-[1.1rem] pt-4 text-[13px] leading-[1.62] text-[#aeb6c2] md:px-5 md:pb-5 md:text-[14px] md:leading-[1.65]"
+                        className="border-t border-[rgba(201,168,76,0.1)] bg-[rgba(5,5,7,0.45)] px-4 pb-[1.1rem] pt-4 text-[13px] leading-[1.62] text-text-muted md:px-5 md:pb-5 md:text-[14px] md:leading-[1.65]"
                         style={{ fontFamily: 'var(--font-inter)' }}
                       >
                         {item.a}

@@ -210,7 +210,7 @@ function StatBlock({
       >
         {text}
       </p>
-      <p className="mt-1 max-w-48 text-xs font-bold uppercase tracking-widest text-[#666]">
+      <p className="mt-1 max-w-48 text-xs font-bold uppercase tracking-widest text-text-quiet">
         {label}
       </p>
     </div>
@@ -234,7 +234,7 @@ export default function WhyUsPageContent() {
       <section
         className="relative overflow-hidden px-4 py-12 sm:px-8 md:px-14 md:py-16 lg:py-20"
         style={{
-          background: 'linear-gradient(165deg, #0a0a0a 0%, #0d0d0d 45%, #080808 100%)',
+          background: 'linear-gradient(165deg, var(--carbon-950) 0%, var(--carbon-900) 45%, var(--carbon-950) 100%)',
         }}
       >
         <div
@@ -282,7 +282,7 @@ export default function WhyUsPageContent() {
             </ScrollReveal>
             <ScrollReveal delayMs={160}>
               <p
-                className="mt-5 max-w-xl text-base leading-relaxed text-[#A0A0A0] md:mt-6 md:text-lg lg:mx-0 mx-auto"
+                className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-text-soft md:mt-6 md:text-lg lg:mx-0"
                 style={{ fontFamily: 'var(--font-inter)' }}
               >
                 Standards, materials, and how we work — so you know exactly what you&apos;re booking

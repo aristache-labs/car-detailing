@@ -291,15 +291,7 @@ export default function Process() {
           transition={{ duration: reduceMotion ? 0.3 : 0.55 }}
           className="mb-10 md:mb-12 max-w-3xl text-center md:text-left"
         >
-          <span
-            className="inline-flex px-4 py-2 text-sm md:text-base font-black tracking-[0.2em] uppercase mb-2"
-            style={{
-              color: '#E2C06A',
-              fontFamily: 'var(--font-orbitron)',
-              background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-              border: '1px solid rgba(201,168,76,0.35)',
-            }}
-          >
+          <span className="section-badge mb-2">
             Our Method
           </span>
           <h2
@@ -307,16 +299,7 @@ export default function Process() {
             style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
           >
             PIT STOP{' '}
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #F0D892 0%, #C9A84C 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              PROCESS
-            </span>
+            <span className="text-gold-metal">PROCESS</span>
           </h2>
 
           <div className="mt-4 flex items-center justify-center md:justify-start gap-2.5 md:gap-3">
@@ -402,8 +385,8 @@ export default function Process() {
             href="/contact"
             className="btn-shimmer inline-flex cursor-pointer px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300"
             style={{
-              background: 'linear-gradient(135deg, #C9A84C, #FFD700)',
-              color: '#070709',
+              background: 'linear-gradient(135deg, var(--gold-mid), var(--gold-bright))',
+              color: 'var(--carbon-950)',
               fontFamily: 'var(--font-inter)',
               clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)',
             }}

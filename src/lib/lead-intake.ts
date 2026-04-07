@@ -11,9 +11,25 @@ export type LeadRequest = {
   photoCount?: number;
 };
 
-function getText(formData: FormData, key: string) {
+/** Maximum character lengths for each field — keeps mailto URIs well under browser limits */
+const FIELD_LIMITS: Record<string, number> = {
+  name: 120,
+  phone: 30,
+  email: 254,
+  vehicle: 120,
+  service: 80,
+  condition: 80,
+  preferredDate: 20,
+  year: 4,
+  message: 800,
+};
+
+function getText(formData: FormData, key: string): string {
   const value = formData.get(key);
-  return typeof value === 'string' ? value.trim() : '';
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  const limit = FIELD_LIMITS[key];
+  return limit ? trimmed.slice(0, limit) : trimmed;
 }
 
 export function buildLeadRequest(formData: FormData): LeadRequest {
@@ -34,6 +50,12 @@ export function buildLeadRequest(formData: FormData): LeadRequest {
     photoCount: photoCount || undefined,
   };
 }
+
+/**
+ * Maximum safe mailto body length. Most desktop email clients handle ~2000 chars
+ * in the URI; we leave headroom for subject, encoding overhead, and long field values.
+ */
+const MAILTO_BODY_LIMIT = 1600;
 
 export function buildLeadSummary(lead: LeadRequest) {
   const lines = [
@@ -58,7 +80,7 @@ export function buildLeadSummary(lead: LeadRequest) {
 export function buildLeadMailtoHref(emailHref: string, lead: LeadRequest) {
   const email = emailHref.replace(/^mailto:/, '');
   const subject = `Quote request - ${lead.vehicle || 'vehicle detail'}`;
-  const body = buildLeadSummary(lead);
+  const body = buildLeadSummary(lead).slice(0, MAILTO_BODY_LIMIT);
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 

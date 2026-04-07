@@ -44,7 +44,7 @@ export default function WhyUs({ leadColumn = true }: { leadColumn?: boolean }) {
         return (
           <div key={item.title} className="pb-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="flex items-start gap-2.5">
-              <Icon className="w-[25px] h-[25px] mt-px shrink-0" style={{ color: '#DFC16D' }} />
+              <Icon className="w-[25px] h-[25px] mt-px shrink-0" style={{ color: 'var(--gold-soft)' }} />
               <div>
                 <h3
                   className="text-[12px] font-bold uppercase tracking-[0.12em]"
@@ -76,15 +76,7 @@ export default function WhyUs({ leadColumn = true }: { leadColumn?: boolean }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-start">
           <div className="lg:col-span-2 text-center lg:text-left">
-            <span
-              className="inline-flex items-center px-3 py-1.5 text-xs font-black tracking-[0.2em] uppercase"
-              style={{
-                color: '#E2C06A',
-                fontFamily: 'var(--font-orbitron)',
-                background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-                border: '1px solid rgba(201,168,76,0.32)',
-              }}
-            >
+            <span className="section-badge">
               Why Apex Detailing
             </span>
             <h2

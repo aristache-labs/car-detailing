@@ -82,6 +82,11 @@
   --color-text-muted: var(--text-muted);
   --color-text-soft: var(--text-soft);
   --color-text-micro: var(--text-micro);
+  --color-text-dim: var(--text-dim);
+  --color-text-quiet: var(--text-quiet);
+
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-tint: var(--gold-tint);
 
   --font-display: var(--font-bebas);
   --font-heading: var(--font-orbitron);

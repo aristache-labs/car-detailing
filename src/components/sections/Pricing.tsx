@@ -196,14 +196,7 @@ export default function Pricing({
         {showHeader ? (
           <div className="mb-8 text-center md:mb-10 md:text-left">
             <span
-              className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:mb-4 md:text-base"
-              style={{
-                color: '#E2C06A',
-                fontFamily: 'var(--font-orbitron)',
-                background:
-                  'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-                border: '1px solid rgba(201,168,76,0.35)',
-              }}
+              className="section-badge mb-3 md:mb-4"
             >
               {copy.eyebrow}
             </span>
@@ -212,33 +205,15 @@ export default function Pricing({
               className="flex flex-wrap items-baseline justify-center gap-x-2 uppercase leading-[0.92] tracking-[0.04em] md:justify-start md:gap-x-3"
               style={{ fontFamily: 'var(--font-bebas)' }}
             >
-              <span
-                className="shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]"
-                style={{
-                  background:
-                    'linear-gradient(165deg, #f0f4f8 0%, #dce0e0 35%, #ffffff 48%, #c8d0d0 58%, #8a9aa8 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
+              <span className="text-metal shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]">
                 {copy.headingA}
               </span>
-              <span
-                className="shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]"
-                style={{
-                  background:
-                    'linear-gradient(165deg, #ead8b8 0%, #d6b36a 28%, #cfa85a 52%, #b8924a 78%, #8a6a38 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
+              <span className="text-gold-metal shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]">
                 {copy.headingB}
               </span>
             </h2>
             <p
-              className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#aeb8c6] md:mx-0 md:mt-5 md:text-[15px]"
+              className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-text-muted md:mx-0 md:mt-5 md:text-[15px]"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               {copy.intro}
@@ -282,7 +257,7 @@ export default function Pricing({
                   {card.title}
                 </h3>
                 <p
-                  className="mx-auto mt-2 max-w-[20rem] text-center text-[12px] leading-snug text-[#b9c5d4]"
+                  className="mx-auto mt-2 max-w-[20rem] text-center text-[12px] leading-snug text-text-muted"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.subtitle}
@@ -305,7 +280,7 @@ export default function Pricing({
                     {card.startingPrice}
                   </span>
                   <span
-                    className="absolute bottom-2.5 right-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#c9a84c] md:bottom-3.5 md:right-4"
+                    className="absolute bottom-2.5 right-3 text-[11px] font-semibold uppercase tracking-widest text-[#c9a84c] md:bottom-3.5 md:right-4"
                     style={{ fontFamily: 'var(--font-orbitron)' }}
                   >
                     RON
@@ -313,7 +288,7 @@ export default function Pricing({
                 </div>
 
                 <p
-                  className="mt-4 text-center text-[13px] leading-[1.55] text-[#aeb8c6] md:text-left"
+                  className="mt-4 text-center text-[13px] leading-[1.55] text-text-muted md:text-left"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   {card.summary}
@@ -330,12 +305,12 @@ export default function Pricing({
                     {card.includedItems.map((item) => (
                       <li key={item} className="flex gap-2.5">
                         <Check
-                          className="mt-[0.35em] h-3 w-3 shrink-0 text-[#c9a84c]/85"
+                          className="mt-[0.35em] h-3 w-3 shrink-0 text-gold-mid/85"
                           strokeWidth={2}
                           aria-hidden
                         />
                         <span
-                          className="text-[12px] font-normal leading-normal tracking-[0.01em] text-[#c4ccd8]"
+                          className="text-[12px] font-normal leading-normal tracking-[0.01em] text-text-secondary"
                           style={{ fontFamily: 'var(--font-inter)' }}
                         >
                           {item}
@@ -356,7 +331,7 @@ export default function Pricing({
                     }}
                   />
                   <p
-                    className="mb-3.5 text-center text-[11px] font-medium leading-relaxed text-[#94a3b8]"
+                    className="mb-3.5 text-center text-[11px] font-medium leading-relaxed text-text-soft"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
                     {copy.quoteNote}
@@ -420,7 +395,7 @@ export default function Pricing({
                       {block.title}
                     </h3>
                     <p
-                      className="mt-3.5 max-w-88 text-[13px] leading-[1.55] text-[#c9d0d9]"
+                      className="mt-3.5 max-w-88 text-[13px] leading-[1.55] text-text-secondary"
                       style={{ fontFamily: 'var(--font-inter)' }}
                     >
                       {block.description}

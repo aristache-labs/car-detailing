@@ -105,15 +105,22 @@ function FieldLabel({
   );
 }
 
+const CURRENT_YEAR = new Date().getFullYear();
+const MAX_PHOTO_SIZE_MB = 8;
+const MAX_PHOTO_SIZE_BYTES = MAX_PHOTO_SIZE_MB * 1024 * 1024;
+const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+
 export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
   const [preparedLead, setPreparedLead] = useState<LeadRequest | null>(null);
   const [fileHint, setFileHint] = useState('');
   const [service, setService] = useState('');
   const [condition, setCondition] = useState('');
   const [serviceError, setServiceError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: { preventDefault(): void; currentTarget: HTMLFormElement }) => {
     e.preventDefault();
+    if (submitting) return;
     if (!service) {
       setServiceError(true);
       return;
@@ -122,7 +129,12 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
       return;
     }
     setServiceError(false);
-    setPreparedLead(buildLeadRequest(new FormData(e.currentTarget)));
+    setSubmitting(true);
+    try {
+      setPreparedLead(buildLeadRequest(new FormData(e.currentTarget)));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,6 +145,20 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
     }
     if (f.length > 3) {
       setFileHint('Please choose up to 3 photos.');
+      e.target.value = '';
+      return;
+    }
+    const oversized = Array.from(f).find((file) => file.size > MAX_PHOTO_SIZE_BYTES);
+    if (oversized) {
+      setFileHint(`"${oversized.name}" exceeds ${MAX_PHOTO_SIZE_MB} MB. Please choose a smaller file.`);
+      e.target.value = '';
+      return;
+    }
+    const badType = Array.from(f).find(
+      (file) => file.type && !ALLOWED_PHOTO_TYPES.includes(file.type),
+    );
+    if (badType) {
+      setFileHint(`"${badType.name}" isn't a supported image type. Use JPEG, PNG, WebP, or HEIC.`);
       e.target.value = '';
       return;
     }
@@ -362,7 +388,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       type="number"
                       inputMode="numeric"
                       min={1980}
-                      max={2030}
+                      max={CURRENT_YEAR + 1}
                       placeholder=""
                       className={inputBase}
                     />
@@ -454,14 +480,16 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   <div className="flex justify-center">
                     <button
                       type="submit"
-                      className="relative w-auto cursor-pointer overflow-hidden rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02]"
+                      disabled={submitting}
+                      aria-busy={submitting}
+                      className="relative w-auto cursor-pointer overflow-hidden rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
                       style={{
                         fontFamily: BODY_FONT,
                         boxShadow:
                           'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(80,56,22,0.14), 0 8px 22px rgba(0,0,0,0.34)',
                       }}
                     >
-                      <span className="relative z-10">Request your quote</span>
+                      <span className="relative z-10">{submitting ? 'Preparing…' : 'Request your quote'}</span>
                     </button>
                   </div>
                   <p

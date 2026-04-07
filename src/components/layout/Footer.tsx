@@ -57,10 +57,10 @@ const SOCIAL_LINKS: {
 const BODY = 'var(--font-inter)';
 
 const sectionLabel =
-  'mb-3 border-l-2 border-[rgba(201,168,76,0.45)] pl-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#d4b86a] sm:mb-3.5';
+  'mb-3 border-l-2 border-[rgba(201,168,76,0.45)] pl-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-soft sm:mb-3.5';
 
 const linkClass =
-  'block rounded-sm py-1.5 text-[13px] leading-snug text-white/80 transition-colors duration-200 hover:bg-white/[0.03] hover:text-[#e8d4a8] active:bg-white/[0.05] sm:py-1';
+  'block rounded-sm py-1.5 text-[13px] leading-snug text-white/80 transition-colors duration-200 hover:bg-white/[0.03] hover:text-[var(--gold-soft)] active:bg-white/[0.05] sm:py-1';
 
 const noiseBg = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
@@ -97,7 +97,7 @@ export default function Footer() {
                 className="col-start-2 min-w-0 text-[clamp(0.75rem,2.8vw,0.8125rem)] font-bold uppercase leading-[1.15] tracking-[0.18em] sm:text-xs sm:tracking-[0.2em]"
                 style={{ fontFamily: 'var(--font-orbitron)' }}
               >
-                <span className="text-[#d4b86a]">APEX</span>
+                <span style={{ color: 'var(--gold-soft)' }}>APEX</span>
                 <span className="text-white/95"> DETAILING</span>
               </p>
               <p className="col-start-2 max-w-[20rem] text-[13px] leading-[1.55] text-white/66 sm:text-[12px] sm:leading-relaxed">
@@ -126,42 +126,42 @@ export default function Footer() {
           {/* Contact — card, 2×2 on mobile for density */}
           <div className="rounded-sm border border-[rgba(201,168,76,0.12)] bg-[linear-gradient(165deg,rgba(201,168,76,0.06)_0%,rgba(8,8,10,0.92)_38%,rgba(6,6,8,0.98)_100%)] p-4 shadow-[0_12px_40px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-5 lg:col-span-4">
             <h2
-              className="mb-4 text-[10px] font-bold uppercase tracking-[0.24em] text-[#b89a4a]"
+              className="mb-4 text-[10px] font-bold uppercase tracking-[0.24em] text-gold-dark"
               style={{ fontFamily: 'var(--font-orbitron)' }}
             >
               Studio &amp; hours
             </h2>
             <div className="grid grid-cols-2 gap-4 sm:gap-5">
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
                   <Phone className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Phone
                 </div>
-                <a href={SITE_CONTACT.phoneHref} className="text-[13px] font-medium text-white/90 transition-colors hover:text-[#e8d4a8]">
+                <a href={SITE_CONTACT.phoneHref} className="text-[13px] font-medium text-white/90 transition-colors hover:text-gold-soft">
                   {SITE_CONTACT.phoneDisplay}
                 </a>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
                   <Mail className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Email
                 </div>
                 <a
                   href={SITE_CONTACT.emailHref}
-                  className="break-all text-[12px] font-medium leading-snug text-white/90 transition-colors hover:text-[#e8d4a8] sm:text-[13px]"
+                  className="break-all text-[12px] font-medium leading-snug text-white/90 transition-colors hover:text-gold-soft sm:text-[13px]"
                 >
                   {SITE_CONTACT.email}
                 </a>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
                   <MapPin className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Area
                 </div>
                 <p className="text-[12px] font-medium leading-snug text-white/84 sm:text-[13px]">{SITE_CONTACT.area}</p>
               </div>
               <div className="min-w-0">
-                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#a58a59]">
+                <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-gold-dark">
                   <Clock className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Hours
                 </div>

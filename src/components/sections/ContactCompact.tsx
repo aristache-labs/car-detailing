@@ -32,9 +32,11 @@ export default function ContactCompact() {
   const [preparedLead, setPreparedLead] = useState<LeadRequest | null>(null);
   const [service, setService] = useState('');
   const [serviceError, setServiceError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: { preventDefault(): void; currentTarget: HTMLFormElement }) => {
     e.preventDefault();
+    if (submitting) return;
     if (!service) {
       setServiceError(true);
       return;
@@ -43,7 +45,12 @@ export default function ContactCompact() {
       return;
     }
     setServiceError(false);
-    setPreparedLead(buildLeadRequest(new FormData(e.currentTarget)));
+    setSubmitting(true);
+    try {
+      setPreparedLead(buildLeadRequest(new FormData(e.currentTarget)));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const mailtoHref = preparedLead ? buildLeadMailtoHref(SITE_CONTACT.emailHref, preparedLead) : SITE_CONTACT.emailHref;
@@ -74,7 +81,7 @@ export default function ContactCompact() {
             <span
               className="inline-flex items-center px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] md:text-xs"
               style={{
-                color: '#E2C06A',
+                color: 'var(--gold-soft)',
                 fontFamily: 'var(--font-orbitron)',
                 background: 'linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%)',
                 border: '1px solid rgba(201,168,76,0.28)',
@@ -142,10 +149,10 @@ export default function ContactCompact() {
                    border: '1px solid rgba(201,168,76,0.35)',
                 }}
               >
-                <ShieldCheck className="h-6 w-6" style={{ color: '#C9A84C' }} />
+                <ShieldCheck className="h-6 w-6" style={{ color: 'var(--gold-mid)' }} />
               </div>
               <p className="text-lg font-black tracking-[0.06em]" style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}>
-                 Request ready
+                 Request ready to send
                </p>
               <p className="mt-2 max-w-md text-sm leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>
                  Choose how you&apos;d like to send your request. We&apos;ll reply within 24 business hours.
@@ -156,7 +163,7 @@ export default function ContactCompact() {
                <div className="mt-5 flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
                  <a
                    href={mailtoHref}
-                   className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#e4c77e] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.11)]"
+                   className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-5 text-[12px] font-semibold uppercase tracking-widest text-[#e4c77e] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.11)]"
                    style={{ fontFamily: 'var(--font-inter)' }}
                  >
                    Email request
@@ -165,7 +172,7 @@ export default function ContactCompact() {
                    href={whatsappHref}
                    target="_blank"
                    rel="noopener noreferrer"
-                   className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.05)] px-5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.08)]"
+                   className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.05)] px-5 text-[12px] font-semibold uppercase tracking-widest text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.08)]"
                    style={{ fontFamily: 'var(--font-inter)' }}
                  >
                    WhatsApp request
@@ -185,31 +192,31 @@ export default function ContactCompact() {
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-3">
                 <div className="sm:col-span-1">
                   <label htmlFor="compact-name" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
-                    Full name<span className="ml-0.5 text-[#C9A84C]">*</span>
+                    Full name<span className="ml-0.5 text-gold-mid">*</span>
                   </label>
                   <input id="compact-name" name="name" type="text" autoComplete="name" required className={inputBase} />
                 </div>
                 <div className="sm:col-span-1">
                   <label htmlFor="compact-phone" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
-                    Phone<span className="ml-0.5 text-[#C9A84C]">*</span>
+                    Phone<span className="ml-0.5 text-gold-mid">*</span>
                   </label>
                   <input id="compact-phone" name="phone" type="tel" autoComplete="tel" required className={inputBase} />
                 </div>
                 <div className="sm:col-span-1">
                   <label htmlFor="compact-email" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
-                    Email<span className="ml-0.5 text-[#C9A84C]">*</span>
+                    Email<span className="ml-0.5 text-gold-mid">*</span>
                   </label>
                   <input id="compact-email" name="email" type="email" autoComplete="email" required className={inputBase} />
                 </div>
                 <div className="sm:col-span-1">
                   <label htmlFor="compact-vehicle" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
-                    Vehicle<span className="ml-0.5 text-[#C9A84C]">*</span>
+                    Vehicle<span className="ml-0.5 text-gold-mid">*</span>
                   </label>
                   <input id="compact-vehicle" name="vehicle" type="text" required placeholder="Make / model" className={inputBase} />
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="compact-service" className={labelBase} style={{ color: 'var(--text-micro)', fontFamily: 'var(--font-inter)' }}>
-                    Service interest<span className="ml-0.5 text-[#C9A84C]">*</span>
+                    Service interest<span className="ml-0.5 text-gold-mid">*</span>
                   </label>
                     <DarkSelect
                       id="compact-service"
@@ -245,18 +252,20 @@ export default function ContactCompact() {
               <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <button
                   type="submit"
-                  className="cursor-pointer rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02]"
+                  disabled={submitting}
+                  aria-busy={submitting}
+                  className="cursor-pointer rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-8 py-3 text-[11px] font-semibold uppercase tracking-widest text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
                   style={{
                     fontFamily: 'var(--font-inter)',
                     boxShadow:
                       'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(80,56,22,0.14), 0 8px 22px rgba(0,0,0,0.34)',
                   }}
                 >
-                  Prepare your request
+                  {submitting ? 'Preparing…' : 'Prepare your request'}
                 </button>
                 <Link
                   href="/contact"
-                  className="text-center text-[11px] font-semibold uppercase tracking-[0.1em] text-[#C9A84C]/90 hover:text-[#e8d49a] sm:text-left"
+                  className="text-center text-[11px] font-semibold uppercase tracking-widest text-[#C9A84C]/90 hover:text-[#e8d49a] sm:text-left"
                   style={{ fontFamily: 'var(--font-inter)' }}
                 >
                   Full form with photos →
