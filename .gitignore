@@ -26,7 +26,8 @@
 
 # cursor (local IDE config & skills — not for GitHub)
 .cursor/
-
+.claude
+.codex-temp/
 # debug
 npm-debug.log*
 yarn-debug.log*

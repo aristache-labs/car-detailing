@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { ChevronUp } from 'lucide-react';
+import { SITE_CONTACT } from '@/data/site-config';
 
 /** Official WhatsApp mark (white on green) — Meta brand shape */
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -67,7 +68,7 @@ export default function FloatingCTA() {
           </motion.button>
 
           <motion.a
-            href="https://wa.me/40700000000"
+            href={SITE_CONTACT.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.85 }}

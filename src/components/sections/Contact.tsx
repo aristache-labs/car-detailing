@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
 import DarkSelect from '@/components/ui/DarkSelect';
+import { SITE_CONTACT } from '@/data/site-config';
 
 const SERVICE_OPTIONS = [
   'Exterior Detailing',
@@ -505,17 +506,17 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                     <div className="min-w-0 flex-1 pt-0.5">
                       <p className={asideFieldLabelClass}>Phone</p>
                       <a
-                        href="tel:+40721000000"
+                        href={SITE_CONTACT.phoneHref}
                         className="mt-1 block text-[15px] font-semibold tracking-wide text-white transition-colors hover:text-[#e8d8b8]"
                       >
-                        +40 721 000 000
+                        {SITE_CONTACT.phoneDisplay}
                       </a>
-                      <p className={asidePhoneScheduleClass}>Mon – Sat · 09:00 – 18:00</p>
+                      <p className={asidePhoneScheduleClass}>{SITE_CONTACT.hoursCompact}</p>
                     </div>
                   </div>
 
                   <a
-                    href="https://wa.me/40721000000"
+                    href={SITE_CONTACT.whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-sm border border-[rgba(201,168,76,0.22)] bg-[rgba(201,168,76,0.05)] px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.35)] hover:bg-[rgba(201,168,76,0.08)]"
@@ -547,10 +548,10 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       <MapPin className="h-4 w-4 text-[#c9a84c]/95" strokeWidth={1.75} />
                     </div>
                     <div className="min-w-0 flex-1 pt-0.5">
-                      <p className="text-[14px] font-semibold text-white/95">București</p>
-                      <p className="mt-0.5 text-[12px] text-[#8b939e]">By appointment only</p>
+                      <p className="text-[14px] font-semibold text-white/95">{SITE_CONTACT.area.replace('Bucharest', 'București')}</p>
+                      <p className="mt-0.5 text-[12px] text-[#8b939e]">{SITE_CONTACT.appointmentNote}</p>
                       <p className="mt-2 text-[12px] leading-snug text-[#aeb8c6]">
-                        Str. Industriei 14
+                        {SITE_CONTACT.addressLine}
                       </p>
                     </div>
                   </div>

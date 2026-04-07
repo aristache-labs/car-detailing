@@ -30,6 +30,9 @@
   --gold-bright: #ffd700;
   --gold-mid: #c9a84c;
   --gold-dark: #9a7b2e;
+  --gold-soft: #e2c06a;
+  --gold-tint: rgba(201, 168, 76, 0.14);
+  --gold-border-soft: rgba(201, 168, 76, 0.35);
 
   /* Text */
   --text-primary: #f7f9fc;
@@ -37,6 +40,8 @@
   --text-muted: #b7c0cf;
   --text-soft: #96a1b3;
   --text-micro: #aab4c3;
+  --text-dim: #8b939e;
+  --text-quiet: #666;
 
   /* Glow */
   --glow-gold: rgba(201, 168, 76, 0.35);
@@ -199,6 +204,55 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.text-metal {
+  background: linear-gradient(
+    165deg,
+    #f0f4f8 0%,
+    #dce0e0 35%,
+    #ffffff 48%,
+    #c8d0d0 58%,
+    #8a9aa8 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gold-metal {
+  background: linear-gradient(
+    165deg,
+    #ead8b8 0%,
+    #d6b36a 28%,
+    #cfa85a 52%,
+    #b8924a 78%,
+    #8a6a38 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  color: var(--gold-soft);
+  font-family: var(--font-orbitron);
+  font-size: 0.875rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold-tint) 0%, rgba(201, 168, 76, 0.05) 100%);
+  border: 1px solid var(--gold-border-soft);
+}
+
+@media (min-width: 768px) {
+  .section-badge {
+    font-size: 1rem;
+  }
 }
 
 /* ─── Gold Glow ───────────────────────────────────────────────────────────── */

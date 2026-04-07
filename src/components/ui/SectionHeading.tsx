@@ -30,11 +30,11 @@ export default function SectionHeading({
       {eyebrow && (
         <span
           className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase mb-4"
-          style={{ color: '#C9A84C', fontFamily: 'var(--font-orbitron)' }}
+          style={{ color: 'var(--gold-mid)', fontFamily: 'var(--font-orbitron)' }}
         >
-          <span className="w-8 h-px" style={{ background: '#C9A84C' }} />
+          <span className="w-8 h-px" style={{ background: 'var(--gold-mid)' }} />
           {eyebrow}
-          <span className="w-8 h-px" style={{ background: '#C9A84C' }} />
+          <span className="w-8 h-px" style={{ background: 'var(--gold-mid)' }} />
         </span>
       )}
       <h2
@@ -42,18 +42,7 @@ export default function SectionHeading({
         style={{ fontFamily: 'var(--font-bebas)', letterSpacing: '0.04em' }}
       >
         <span className="text-white">{title} </span>
-        {highlight && (
-          <span
-            style={{
-              background: 'linear-gradient(135deg, #FFD700 0%, #C9A84C 50%, #9A7B2E 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            {highlight}
-          </span>
-        )}
+        {highlight && <span className="text-gold">{highlight}</span>}
       </h2>
       {subtitle && (
         <p

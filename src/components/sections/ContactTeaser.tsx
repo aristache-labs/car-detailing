@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { Phone } from 'lucide-react';
+import SectionBadge from '@/components/ui/SectionBadge';
+import { SITE_CONTACT } from '@/data/site-config';
 
 /** Homepage quote strip — full form lives on /contact */
 export default function ContactTeaser() {
@@ -20,17 +22,7 @@ export default function ContactTeaser() {
         }}
       />
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14 text-center md:text-left">
-        <span
-          className="mb-3 inline-flex px-4 py-2 text-sm font-black uppercase tracking-[0.2em] md:text-base"
-          style={{
-            color: '#E2C06A',
-            fontFamily: 'var(--font-orbitron)',
-            background: 'linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.05) 100%)',
-            border: '1px solid rgba(201,168,76,0.35)',
-          }}
-        >
-          Next step
-        </span>
+        <SectionBadge className="mb-3">Next step</SectionBadge>
         <h2
           className="text-4xl font-black leading-none md:text-6xl"
           style={{ fontFamily: 'var(--font-bebas)', color: 'white', letterSpacing: '0.05em' }}
@@ -68,7 +60,7 @@ export default function ContactTeaser() {
             Open quote form
           </Link>
           <a
-            href="tel:+40721000000"
+            href={SITE_CONTACT.phoneHref}
             className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 transition-colors hover:border-[#C9A84C]/45 hover:text-[#f0d892]"
             style={{ fontFamily: 'var(--font-inter)' }}
           >

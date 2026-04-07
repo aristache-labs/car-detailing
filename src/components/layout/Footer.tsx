@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Clock, Mail, MapPin, Phone, Zap } from 'lucide-react';
+import { SITE_CONTACT } from '@/data/site-config';
 
 const EXPLORE_LINKS = [
   { label: 'Home', href: '/' },
@@ -136,8 +137,8 @@ export default function Footer() {
                   <Phone className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Phone
                 </div>
-                <a href="tel:+40721000000" className="text-[13px] font-medium text-white/90 transition-colors hover:text-[#e8d4a8]">
-                  +40 721 000 000
+                <a href={SITE_CONTACT.phoneHref} className="text-[13px] font-medium text-white/90 transition-colors hover:text-[#e8d4a8]">
+                  {SITE_CONTACT.phoneDisplay}
                 </a>
               </div>
               <div className="min-w-0">
@@ -146,10 +147,10 @@ export default function Footer() {
                   Email
                 </div>
                 <a
-                  href="mailto:info@apexdetailing.ro"
+                  href={SITE_CONTACT.emailHref}
                   className="break-all text-[12px] font-medium leading-snug text-white/90 transition-colors hover:text-[#e8d4a8] sm:text-[13px]"
                 >
-                  info@apexdetailing.ro
+                  {SITE_CONTACT.email}
                 </a>
               </div>
               <div className="min-w-0">
@@ -157,14 +158,14 @@ export default function Footer() {
                   <MapPin className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Area
                 </div>
-                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">Bucharest · Ilfov</p>
+                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">{SITE_CONTACT.area}</p>
               </div>
               <div className="min-w-0">
                 <div className="mb-1.5 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#8a7350]">
                   <Clock className="h-3 w-3 shrink-0 text-[#C9A84C]/90" aria-hidden />
                   Hours
                 </div>
-                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">Mon–Sat · 09:00–18:00</p>
+                <p className="text-[12px] font-medium leading-snug text-white/78 sm:text-[13px]">{SITE_CONTACT.hoursCompact}</p>
               </div>
             </div>
           </div>
