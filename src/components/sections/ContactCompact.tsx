@@ -83,13 +83,13 @@ export default function ContactCompact() {
   return (
     <section id="contact-compact" className="relative overflow-hidden py-12 md:py-14" style={{ background: 'var(--carbon-950)' }}>
       <div
-        className="absolute inset-0 opacity-[0.012]"
+        className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: `
             linear-gradient(rgba(201,168,76,1) 1px, transparent 1px),
             linear-gradient(90deg, rgba(201,168,76,1) 1px, transparent 1px)
           `,
-          backgroundSize: '96px 96px',
+          backgroundSize: '80px 80px',
         }}
       />
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-8 md:px-14">
@@ -101,23 +101,23 @@ export default function ContactCompact() {
               aria-hidden
             />
             <span
-              className="inline-flex items-center rounded-sm px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] md:text-[12px]"
+              className="inline-flex items-center px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] md:text-xs"
               style={{
                 color: 'var(--gold-soft)',
-                fontFamily: 'var(--font-inter)',
-                background: 'rgba(201,168,76,0.08)',
-                border: '1px solid rgba(201,168,76,0.2)',
+                fontFamily: 'var(--font-orbitron)',
+                background: 'linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%)',
+                border: '1px solid rgba(201,168,76,0.28)',
               }}
             >
               Quick quote
             </span>
             <h2
-              className="mt-5 text-[clamp(2rem,5vw,3.5rem)] font-black leading-[0.94] tracking-[0.03em] sm:mt-6"
+              className="mt-5 text-[clamp(2.5rem,6vw,4.25rem)] font-black leading-[0.88] tracking-[0.06em] sm:mt-6"
               style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}
             >
-              <span className="block text-white">Request a</span>
-              <span className="mt-1 block text-[#cfb36d] sm:mt-0">
-                callback
+              <span className="block text-white">REQUEST A</span>
+              <span className="mt-1 block bg-linear-to-br from-[#F5E6B8] via-[#D4B05C] to-[#9a7630] bg-clip-text text-transparent sm:mt-0">
+                CALLBACK
               </span>
             </h2>
 
@@ -126,7 +126,7 @@ export default function ContactCompact() {
               aria-hidden
             />
             <p
-              className="mt-5 max-w-88 text-[13px] leading-[1.75] text-white/64 sm:text-sm"
+              className="mt-5 max-w-88 text-[13px] leading-[1.75] text-white/58 sm:text-sm"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               Short form for a fast reply — full details and photo uploads on the{' '}
@@ -136,7 +136,7 @@ export default function ContactCompact() {
               .
             </p>
             <ul
-              className="mt-7 max-w-md space-y-3 text-[12px] leading-relaxed text-white/58 sm:text-[13px]"
+              className="mt-7 max-w-md space-y-3 text-[12px] leading-relaxed text-white/48 sm:text-[13px]"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
               <li className="flex gap-2">
@@ -173,7 +173,7 @@ export default function ContactCompact() {
               >
                 <ShieldCheck className="h-6 w-6" style={{ color: 'var(--gold-mid)' }} />
               </div>
-              <p className="text-[1.45rem] font-black tracking-[0.03em]" style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}>
+              <p className="text-lg font-black tracking-[0.06em]" style={{ fontFamily: 'var(--font-bebas)', color: 'white' }}>
                  Request received
                </p>
               <p className="mt-2 max-w-md text-sm leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-inter)' }}>

@@ -100,7 +100,6 @@ export default function Pricing({
   const supportBlocks = SUPPORT_BLOCKS[language];
   const isPreview = variant === 'preview';
   const cards = isPreview ? servicePricingItems.slice(0, 4) : servicePricingItems;
-  const teaserRows = servicePricingItems.slice(0, 3);
   const sectionHeadingId = isPreview ? 'pricing-preview-heading' : 'pricing-heading';
 
   return (
@@ -181,91 +180,6 @@ export default function Pricing({
           </div>
         ) : null}
 
-        {isPreview ? (
-          <div className="grid grid-cols-1 gap-6 rounded-[1.25rem] border border-white/8 bg-[rgba(12,12,16,0.92)] p-5 shadow-[0_14px_40px_rgba(0,0,0,0.34)] md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-start md:p-7">
-            <div className="max-w-xl text-center md:text-left">
-              <span
-                className="inline-flex rounded-sm border border-[rgba(201,168,76,0.18)] bg-[rgba(201,168,76,0.06)] px-3 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-[#d8c18b]"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                Pricing overview
-              </span>
-              <h3
-                className="mt-4 text-[clamp(1.8rem,4vw,3rem)] font-black leading-[0.96] tracking-[0.03em] text-white/96"
-                style={{ fontFamily: 'var(--font-bebas)' }}
-              >
-                Start with a clear range, then confirm the exact quote after inspection.
-              </h3>
-              <p
-                className="mt-4 max-w-lg text-[13px] leading-[1.7] text-[#b9c2ce] md:text-[14px]"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                We keep homepage pricing light on purpose. Results, condition, and coverage affect the final number, so the full page explains each service in more detail.
-              </p>
-              <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
-                <Link
-                  href="/pricing"
-                  className="inline-flex min-h-11 items-center gap-2 rounded-sm border border-[#C9A84C]/28 bg-[rgba(201,168,76,0.06)] px-5 py-2.5 text-[11px] font-semibold tracking-[0.08em] text-[#e7c979] transition-colors hover:bg-[rgba(201,168,76,0.1)]"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {copy.viewAll}
-                  <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.25} />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex min-h-11 items-center gap-2 text-[11px] font-semibold tracking-[0.05em] text-white/76 transition-colors hover:text-white/92"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  Request a tailored quote
-                  <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.25} />
-                </Link>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-white/7 bg-[rgba(255,255,255,0.02)] p-4">
-              <ul className="divide-y divide-white/7">
-                {teaserRows.map((card) => (
-                  <li key={card.id} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-                    <div className="min-w-0">
-                      <p
-                        className="text-[13px] font-semibold text-white/92"
-                        style={{ fontFamily: 'var(--font-inter)' }}
-                      >
-                        {card.title}
-                      </p>
-                      <p
-                        className="mt-1 text-[11px] leading-relaxed text-white/55"
-                        style={{ fontFamily: 'var(--font-inter)' }}
-                      >
-                        {card.priceLabel}
-                      </p>
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <p
-                        className="text-[1.1rem] font-semibold text-[#e4cca0]"
-                        style={{ fontFamily: 'var(--font-orbitron)' }}
-                      >
-                        {card.startingPrice}
-                      </p>
-                      <p
-                        className="mt-0.5 text-[10px] tracking-[0.08em] text-[#b8a574]"
-                        style={{ fontFamily: 'var(--font-inter)' }}
-                      >
-                        RON start
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <p
-                className="mt-4 border-t border-white/7 pt-4 text-[11px] leading-relaxed text-[#aeb8c6]"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                Final pricing depends on inspection findings, service scope, and coverage level.
-              </p>
-            </div>
-          </div>
-        ) : (
         <div className="grid grid-cols-1 gap-x-4 gap-y-7 md:grid-cols-2 xl:grid-cols-4">
           {cards.map((card, index) => (
             <motion.article
@@ -400,9 +314,19 @@ export default function Pricing({
             </motion.article>
           ))}
         </div>
-        )}
 
-        {!isPreview ? (
+        {isPreview ? (
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 rounded-sm border border-[#C9A84C]/32 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/8"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              {copy.viewAll}
+              <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.25} />
+            </Link>
+          </div>
+        ) : (
             <div className="mt-8 grid grid-cols-1 gap-4 border-t border-white/[0.07] pt-8 md:grid-cols-3">
               {supportBlocks.map((block) => (
                 <div
@@ -443,7 +367,7 @@ export default function Pricing({
                 </div>
               ))}
             </div>
-        ) : null}
+        )}
       </div>
     </section>
   );
