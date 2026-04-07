@@ -191,13 +191,13 @@ function BeforeAfterDragSlider({
         aria-hidden
       />
       <span
-        className="pointer-events-none absolute left-3 top-3 z-5 rounded-[2px] border border-white/22 bg-[rgba(8,8,10,0.9)] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-white/92 shadow-[0_1px_10px_rgba(0,0,0,0.45)]"
+        className="pointer-events-none absolute left-3 top-3 z-5 rounded-[2px] border border-white/22 bg-[rgba(8,8,10,0.9)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/92 shadow-[0_1px_10px_rgba(0,0,0,0.45)]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         Before
       </span>
       <span
-        className="pointer-events-none absolute right-3 top-3 z-5 rounded-[2px] border border-[#C9A84C]/38 bg-[rgba(8,8,10,0.9)] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#e8d8b8] shadow-[0_1px_10px_rgba(0,0,0,0.45)]"
+        className="pointer-events-none absolute right-3 top-3 z-5 rounded-[2px] border border-[#C9A84C]/38 bg-[rgba(8,8,10,0.9)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#e8d8b8] shadow-[0_1px_10px_rgba(0,0,0,0.45)]"
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         After
@@ -211,7 +211,9 @@ function BeforeAfterDragSlider({
       </div>
       <p
         className={`pointer-events-none absolute left-0 right-0 z-3 text-center text-white/30 ${
-          featured ? 'bottom-3 text-[8px] font-medium tracking-[0.08em]' : 'bottom-2.5 text-[9px] font-semibold uppercase tracking-[0.2em]'
+          featured
+            ? 'bottom-3 text-[10px] font-medium tracking-[0.05em]'
+            : 'bottom-2.5 text-[10px] font-semibold uppercase tracking-[0.14em]'
         }`}
       >
         {featured ? 'Slide to compare' : 'Drag to compare'}
@@ -779,7 +781,7 @@ function VideoCard({ item }: { item: VideoItem }) {
     <article className={mediaCardFrame}>
       <div className="group relative aspect-video bg-black">
         <span
-          className="pointer-events-none absolute right-2 top-2 z-30 rounded-[2px] border border-white/15 bg-black/60 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-white/85 tabular-nums backdrop-blur-[2px] md:right-2.5 md:top-2.5 md:text-[10px]"
+          className="pointer-events-none absolute right-2 top-2 z-30 rounded-[2px] border border-white/15 bg-black/60 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-white/85 tabular-nums backdrop-blur-[2px] md:right-2.5 md:top-2.5 md:text-[11px]"
           style={{ fontFamily: 'var(--font-inter)' }}
         >
           {item.duration}

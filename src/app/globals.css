@@ -545,7 +545,7 @@ body {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 28s linear infinite;
+  animation: marquee 28s linear 4;
 }
 
 .marquee-track:hover {
@@ -559,7 +559,7 @@ body {
 }
 
 .tyre-spin {
-  animation: tyre-spin 6s linear infinite;
+  animation: tyre-spin 6s linear 3;
   transform-origin: center;
 }
 

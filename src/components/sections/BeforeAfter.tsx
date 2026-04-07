@@ -227,7 +227,7 @@ export default function BeforeAfter({
           </div>
         </div>
         <span
-          className="hidden md:block text-xs tracking-[0.2em] uppercase"
+          className="hidden md:block text-xs tracking-[0.14em] uppercase"
           style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-inter)' }}
         >
           Click any panel to expand
@@ -324,7 +324,7 @@ export default function BeforeAfter({
                       style={{ background: 'rgba(201,168,76,0.2)', maxHeight: 80 }}
                     />
                     <span
-                      className="text-xs font-bold tracking-[0.2em] uppercase"
+                      className="text-xs font-bold tracking-[0.14em] uppercase"
                       style={{
                         color: 'rgba(201,168,76,0.58)',
                         fontFamily: 'var(--font-orbitron)',
