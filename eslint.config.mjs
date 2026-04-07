@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local skill packs / templates (not part of application source):
+    ".cursor/skills/**",
   ]),
 ]);
 

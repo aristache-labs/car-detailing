@@ -4,30 +4,85 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { servicePricingItems } from '@/data/service-pricing';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
-const SUPPORT_BLOCKS = [
-  {
-    id: 'ppf',
-    title: 'PPF Coverage Planning',
-    description:
-      'Front-end, partial, and full-body film options are scoped around coverage goals, panel complexity, and finish type.',
-    meta: 'Quoted after inspection',
+const SUPPORT_BLOCKS = {
+  en: [
+    {
+      id: 'ppf',
+      title: 'PPF Coverage Planning',
+      description:
+        'Front-end, partial, and full-body film options are scoped around coverage goals, panel complexity, and finish type.',
+      meta: 'Quoted after inspection',
+    },
+    {
+      id: 'combo',
+      title: 'Multi-Service Combinations',
+      description:
+        'Correction, coating, interior, and specialty work can be combined into one studio plan when the vehicle needs a fuller reset.',
+      meta: 'Built around your priorities',
+    },
+    {
+      id: 'bespoke',
+      title: 'Bespoke Quote Support',
+      description:
+        'If the car has heavier defects, restoration needs, or multiple problem areas, we build a custom recommendation with final timing and pricing.',
+      meta: 'Tailored after assessment',
+    },
+  ],
+  ro: [
+    {
+      id: 'ppf',
+      title: 'Planificare Acoperire PPF',
+      description:
+        'Opțiunile front-end, parțiale sau full-body se stabilesc după zona dorită, complexitatea panourilor și tipul de finisaj.',
+      meta: 'Cotat după inspecție',
+    },
+    {
+      id: 'combo',
+      title: 'Pachete Multi-Serviciu',
+      description:
+        'Corecția, coating-ul, interiorul și serviciile speciale pot fi combinate într-un plan unic pentru un rezultat complet.',
+      meta: 'Construit după priorități',
+    },
+    {
+      id: 'bespoke',
+      title: 'Ofertă Personalizată',
+      description:
+        'Dacă mașina are defecte accentuate, nevoi de restaurare sau mai multe zone critice, construim o recomandare cu durată și cost final.',
+      meta: 'Adaptat după evaluare',
+    },
+  ],
+} as const;
+
+const PRICING_COPY = {
+  en: {
+    eyebrow: 'Service Pricing',
+    headingA: 'Pricing',
+    headingB: 'By Service',
+    intro:
+      'Eight service cards, matched to the same lineup on Services. Every figure is a starting point, and final quotes are confirmed after inspection.',
+    includedLabel: 'Included Services',
+    quoteNote: 'Final quote confirmed after inspection.',
+    requestQuote: 'Request Quote',
+    requestQuoteAria: 'Request quote for',
+    viewAll: 'View all service pricing',
+    supportBadge: 'Guidance',
   },
-  {
-    id: 'combo',
-    title: 'Multi-Service Combinations',
-    description:
-      'Correction, coating, interior, and specialty work can be combined into one studio plan when the vehicle needs a fuller reset.',
-    meta: 'Built around your priorities',
+  ro: {
+    eyebrow: 'Prețuri Servicii',
+    headingA: 'Prețuri',
+    headingB: 'Pe Serviciu',
+    intro:
+      'Opt servicii, în aceeași structură ca în pagina Services. Fiecare preț este orientativ, iar oferta finală se confirmă după inspecție.',
+    includedLabel: 'Servicii Incluse',
+    quoteNote: 'Oferta finală se confirmă după inspecție.',
+    requestQuote: 'Solicită ofertă',
+    requestQuoteAria: 'Solicită ofertă pentru',
+    viewAll: 'Vezi toate prețurile',
+    supportBadge: 'Ghidaj',
   },
-  {
-    id: 'bespoke',
-    title: 'Bespoke Quote Support',
-    description:
-      'If the car has heavier defects, restoration needs, or multiple problem areas, we build a custom recommendation with final timing and pricing.',
-    meta: 'Tailored after assessment',
-  },
-];
+} as const;
 
 /** Matches Results gallery service badge (`ResultsPageClient` `serviceBadgeClass`). */
 const SERVICE_BADGE_CLASS =
@@ -40,12 +95,18 @@ export default function Pricing({
   variant?: 'full' | 'preview';
   showHeader?: boolean;
 } = {}) {
+  const { language } = useLanguage();
+  const copy = PRICING_COPY[language];
+  const supportBlocks = SUPPORT_BLOCKS[language];
   const isPreview = variant === 'preview';
   const cards = isPreview ? servicePricingItems.slice(0, 4) : servicePricingItems;
+  const sectionHeadingId = isPreview ? 'pricing-preview-heading' : 'pricing-heading';
 
   return (
     <section
       id={isPreview ? 'pricing-preview' : 'pricing'}
+      aria-labelledby={showHeader ? sectionHeadingId : undefined}
+      aria-label={showHeader ? undefined : copy.headingA}
       className="relative overflow-hidden py-14 md:py-18"
       style={{ background: 'var(--carbon-950)' }}
     >
@@ -144,9 +205,10 @@ export default function Pricing({
                 border: '1px solid rgba(201,168,76,0.35)',
               }}
             >
-              Service Pricing
+              {copy.eyebrow}
             </span>
             <h2
+              id={sectionHeadingId}
               className="flex flex-wrap items-baseline justify-center gap-x-2 uppercase leading-[0.92] tracking-[0.04em] md:justify-start md:gap-x-3"
               style={{ fontFamily: 'var(--font-bebas)' }}
             >
@@ -160,7 +222,7 @@ export default function Pricing({
                   backgroundClip: 'text',
                 }}
               >
-                Pricing
+                {copy.headingA}
               </span>
               <span
                 className="shrink-0 font-black text-[clamp(2.25rem,8vw,4.25rem)]"
@@ -172,15 +234,14 @@ export default function Pricing({
                   backgroundClip: 'text',
                 }}
               >
-                By Service
+                {copy.headingB}
               </span>
             </h2>
             <p
               className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#aeb8c6] md:mx-0 md:mt-5 md:text-[15px]"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
-              Eight service cards, matched to the same lineup on Services. Every figure is a starting point,
-              and final quotes are confirmed after inspection.
+              {copy.intro}
             </p>
           </div>
         ) : null}
@@ -263,7 +324,7 @@ export default function Pricing({
                     className="mb-3 border-b border-[#c9a84c]/28 pb-2 pl-0 text-center text-[10px] font-medium uppercase tracking-[0.2em] text-[#b8a574] md:border-b-0 md:border-l md:border-[#c9a84c]/28 md:pb-0 md:pl-3 md:text-left"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
-                    Included Services
+                    {copy.includedLabel}
                   </p>
                   <ul className="mx-auto w-fit max-w-full space-y-2.5 text-left md:mx-0 md:w-full">
                     {card.includedItems.map((item) => (
@@ -298,10 +359,11 @@ export default function Pricing({
                     className="mb-3.5 text-center text-[11px] font-medium leading-relaxed text-[#94a3b8]"
                     style={{ fontFamily: 'var(--font-inter)' }}
                   >
-                    Final quote confirmed after inspection.
+                    {copy.quoteNote}
                   </p>
                   <Link
                     href="/contact"
+                    aria-label={`${copy.requestQuoteAria} ${card.title} (${card.priceLabel} ${card.startingPrice} RON)`}
                     className={`group inline-flex min-h-10.5 w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] transition-[transform,box-shadow,border-color,background,color] duration-200 ease-out ${
                       card.featured
                         ? 'border-[#b8964a]/60 bg-linear-to-b from-[#e4d4a8] from-0% via-[#cfa85a] via-48% to-[#9a7430] to-100% text-[#0a0a0c] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_4px_14px_rgba(0,0,0,0.35)] hover:-translate-y-px hover:border-[#a07d32] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_6px_22px_rgba(0,0,0,0.4)]'
@@ -309,7 +371,7 @@ export default function Pricing({
                     }`}
                     style={{ fontFamily: 'var(--font-inter)', WebkitTapHighlightColor: 'transparent' }}
                   >
-                    Request Quote
+                    {language === 'en' ? card.ctaLabel : copy.requestQuote}
                     <ArrowRight
                       className="h-[14px] w-[14px] shrink-0 opacity-90 transition-transform duration-200 group-hover:translate-x-0.5"
                       strokeWidth={2.25}
@@ -328,13 +390,13 @@ export default function Pricing({
               className="inline-flex items-center gap-2 rounded-sm border border-[#C9A84C]/40 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#E7C979] transition-colors hover:bg-[#C9A84C]/10"
               style={{ fontFamily: 'var(--font-inter)' }}
             >
-              View all service pricing
+              {copy.viewAll}
               <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.25} />
             </Link>
           </div>
         ) : (
             <div className="mt-8 grid grid-cols-1 gap-4 border-t border-white/[0.07] pt-8 md:grid-cols-3">
-              {SUPPORT_BLOCKS.map((block) => (
+              {supportBlocks.map((block) => (
                 <div
                   key={block.id}
                   className="relative flex min-h-70 flex-col overflow-hidden rounded-sm border border-[rgba(201,168,76,0.11)] bg-[rgba(255,255,255,0.025)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
@@ -344,7 +406,7 @@ export default function Pricing({
                       className={SERVICE_BADGE_CLASS}
                       style={{ fontFamily: 'var(--font-inter)' }}
                     >
-                      Guidance
+                      {copy.supportBadge}
                     </span>
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[2px] border border-[#C9A84C]/14 bg-[rgba(201,168,76,0.05)]">
                       <Sparkles className="h-3.5 w-3.5 text-[#c9a84c]/90" strokeWidth={1.75} />
