@@ -325,16 +325,18 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     0 4px 12px rgba(0, 0, 0, 0.35);
   transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.4s ease;
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.34s ease,
+    filter 0.34s ease;
 }
 
 .hero-cta-primary:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  filter: brightness(1.06);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     0 4px 12px rgba(0, 0, 0, 0.35),
-    0 8px 24px rgba(0, 0, 0, 0.35);
+    0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
 .hero-cta-primary:active {
@@ -355,10 +357,12 @@ body {
   text-transform: uppercase;
   color: #d6b36a;
   border-radius: 0.1875rem;
-  border: 1px solid rgba(207, 168, 90, 0.2);
-  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(207, 168, 90, 0.28);
+  background: linear-gradient(180deg, rgba(22, 22, 27, 0.82) 0%, rgba(13, 13, 18, 0.84) 100%);
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 4px 12px rgba(0, 0, 0, 0.25);
   transition:
     border-color 0.4s ease,
     background 0.4s ease,
@@ -368,17 +372,88 @@ body {
 }
 
 .hero-cta-secondary:hover {
-  border-color: rgba(207, 168, 90, 0.42);
-  background: rgba(207, 168, 90, 0.05);
+  border-color: rgba(207, 168, 90, 0.5);
+  background: linear-gradient(180deg, rgba(30, 28, 22, 0.82) 0%, rgba(18, 18, 21, 0.84) 100%);
   color: #e0c088;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 0 1px rgba(207, 168, 90, 0.08);
-  transform: translateY(-1px);
+    0 0 0 1px rgba(207, 168, 90, 0.1),
+    0 10px 22px rgba(0, 0, 0, 0.28);
+  transform: translateY(-2px);
 }
 
 .hero-cta-secondary:active {
   transform: translateY(0);
+}
+
+.hero-cinematic {
+  isolation: isolate;
+}
+
+.hero-content-wrap {
+  /* will-change set/cleared by GSAP during scroll; not static to avoid wasting GPU memory */
+}
+
+.hero-title-wrap {
+  text-wrap: balance;
+}
+
+.hero-media-plane {
+  /* will-change managed by GSAP during animation phases only */
+}
+
+.hero-handoff-scrim {
+  z-index: 4;
+  opacity: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 7, 9, 0) 0%,
+      rgba(7, 7, 9, 0.38) 58%,
+      rgba(7, 7, 9, 0.8) 100%
+    );
+}
+
+.hero-trust-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.2);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+  padding: 0.65rem 0.1rem;
+}
+
+.hero-trust-item {
+  position: relative;
+  padding-inline: 0.2rem;
+}
+
+.hero-trust-separator {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .hero-trust-strip {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0.72rem 0.15rem;
+  }
+
+  .hero-trust-item {
+    padding-inline: 0.36rem;
+  }
+
+  .hero-trust-separator {
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    margin-left: 0.55rem;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.3), rgba(201, 168, 76, 0.08));
+    transform: translateY(1px);
+  }
 }
 
 /* ─── Navbar desktop CTA (compact metallic, matches hero tone) ─────────────── */
@@ -578,7 +653,7 @@ body {
 }
 
 .hero-scroll-pulse {
-  animation: hero-scroll-pulse 2.8s ease-in-out 2;
+  /* Decorative gradient line — animation removed to avoid dead state after completion */
 }
 
 /* ─── Shine sweep ────────────────────────────────────────────────────────── */
@@ -648,6 +723,28 @@ body {
   .hero-shine-core {
     inset: 18% 2% 20% 2%;
     opacity: 0.72;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content-wrap,
+  .hero-media-plane,
+  .hero-handoff-scrim,
+  .hero-scroll-pulse,
+  .shine-sweep,
+  .shine-sweep--hero {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .hero-handoff-scrim {
+    opacity: 0 !important;
+  }
+
+  .hero-cta-primary:hover,
+  .hero-cta-secondary:hover {
+    transform: none;
   }
 }
 

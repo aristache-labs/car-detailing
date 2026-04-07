@@ -5,53 +5,156 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Eye } from 'lucide-react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useLanguage } from '@/components/providers/LanguageProvider';
 
 const HERO_CAR = '/images/hero-car-no-bg.png';
 
 export default function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const atmosphereRef = useRef<HTMLDivElement>(null);
+  const contentWrapRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const trustRef = useRef<HTMLUListElement>(null);
   const carRef = useRef<HTMLDivElement>(null);
+  const carMediaRef = useRef<HTMLDivElement>(null);
+  const handoffScrimRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.2 });
+    if (!heroRef.current) return;
+    const heroEl = heroRef.current;
 
-    tl.fromTo(
-      titleRef.current,
-      { x: -60, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }
-    )
-      .fromTo(
-        subRef.current,
-        { x: -40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
-        '-=0.5'
-      )
-      .fromTo(
-        ctaRef.current,
-        { x: -30, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
-        '-=0.4'
-      )
-      .fromTo(
-        carRef.current,
-        { x: 80, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.1, ease: 'power2.out' },
-        '-=0.8'
-      );
+    const mm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reducedMotion = mm.matches;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      if (reducedMotion) {
+        // Ensure all elements are visible for reduced-motion users
+        gsap.set(
+          [
+            atmosphereRef.current,
+            contentWrapRef.current,
+            titleRef.current,
+            subRef.current,
+            ctaRef.current,
+            trustRef.current,
+            carRef.current,
+            handoffScrimRef.current,
+          ],
+          { opacity: 1, x: 0, y: 0, clearProps: 'transform' }
+        );
+        gsap.set(handoffScrimRef.current, { opacity: 0 });
+        return;
+      }
+
+      // Set initial hidden state imperatively — keeps JSX clean and ensures
+      // no invisible content for non-JS / reduced-motion users
+      gsap.set([titleRef.current, subRef.current, ctaRef.current, trustRef.current], {
+        opacity: 0,
+        y: 0,
+      });
+      gsap.set(carRef.current, { opacity: 0, x: 0 });
+
+      const introTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.08 });
+
+      introTl
+        // Atmosphere depth bleeds in first — sets the stage
+        .fromTo(atmosphereRef.current, { opacity: 0 }, { opacity: 1, duration: 0.6 })
+        // Headline hits with authority while atmosphere is still settling
+        .fromTo(
+          titleRef.current,
+          { y: 28, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, ease: 'power4.out' },
+          '-=0.35'
+        )
+        // Supporting copy follows tight behind
+        .fromTo(
+          subRef.current,
+          { y: 18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5 },
+          '-=0.38'
+        )
+        // CTAs arrive as a unit
+        .fromTo(
+          ctaRef.current,
+          { y: 16, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.46 },
+          '-=0.3'
+        )
+        // Trust strip settles last in the copy column
+        .fromTo(
+          trustRef.current,
+          { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4 },
+          '-=0.22'
+        )
+        // Car slides in and settles — overlapping copy reveal, finishes last
+        .fromTo(
+          carRef.current,
+          { x: 52, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.95, ease: 'power4.out' },
+          '-=0.7'
+        );
+
+      gsap.to(contentWrapRef.current, {
+        y: -22,
+        opacity: 0.86,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroEl,
+          start: 'top top',
+          end: '+=48%',
+          scrub: 0.85,
+        },
+      });
+
+      gsap.to(carMediaRef.current, {
+        y: -16,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroEl,
+          start: 'top top',
+          end: '+=48%',
+          scrub: 0.85,
+        },
+      });
+
+      gsap.to(handoffScrimRef.current, {
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroEl,
+          start: 'top top',
+          end: '+=44%',
+          scrub: 0.9,
+        },
+      });
+    }, heroEl);
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger === heroEl) {
+          trigger.kill();
+        }
+      });
+    };
   }, []);
 
   return (
     <section
+      ref={heroRef}
       id="hero"
-      className="relative overflow-hidden flex flex-col lg:flex-row lg:items-center min-h-screen"
+      className="hero-cinematic relative overflow-hidden flex flex-col lg:flex-row lg:items-center min-h-screen"
       style={{ background: 'var(--carbon-950)' }}
     >
       {/* Subtle left radial accent */}
       <div
+        ref={atmosphereRef}
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
@@ -78,19 +181,21 @@ export default function Hero() {
 
       {/* ── LEFT PANEL — editorial; desktop: content block nudged toward car ── */}
       <div className="relative z-10 w-full lg:w-[52%] xl:w-[50%] px-6 sm:px-8 md:px-14 lg:pl-10 lg:pr-4 xl:pl-14 xl:pr-8 pt-28 pb-6 lg:py-0">
-        <div className="lg:max-w-xl xl:max-w-2xl lg:ml-auto lg:mr-2 xl:mr-6 2xl:mr-10">
+        <div
+          ref={contentWrapRef}
+          className="hero-content-wrap lg:max-w-xl xl:max-w-2xl lg:ml-auto lg:mr-2 xl:mr-6 2xl:mr-10"
+        >
         {/* Main headline — two-line premium value proposition */}
         <div
           ref={titleRef}
-          className="filter-[drop-shadow(0_6px_24px_rgba(0,0,0,0.45))] text-center lg:text-left"
-          style={{ opacity: 0 }}
+          className="hero-title-wrap filter-[drop-shadow(0_6px_24px_rgba(0,0,0,0.45))] text-center lg:text-left"
         >
           <h1
-            className="leading-[0.94] tracking-[0.01em] mb-0"
+            className="leading-[0.92] tracking-[0.012em] mb-0"
             style={{ fontFamily: 'var(--font-bebas)' }}
           >
             <span
-              className="block text-[clamp(3.5rem,6vw,7rem)]"
+              className="block text-[clamp(3.55rem,6vw,7rem)]"
               style={{
                 color: '#f3f5f7',
                 lineHeight: 0.92,
@@ -99,7 +204,7 @@ export default function Hero() {
               {t.hero.headlineTop}
             </span>
             <span
-              className="block text-[clamp(2.8rem,4.5vw,5.5rem)]"
+              className="block text-[clamp(2.8rem,4.45vw,5.4rem)]"
               style={{
                 color: '#d6b36a',
                 lineHeight: 0.92,
@@ -113,13 +218,12 @@ export default function Hero() {
         {/* Tagline — editorial width, elegant contrast */}
         <p
           ref={subRef}
-          className="mt-4 mb-8 mx-auto lg:mx-0 max-w-[min(100%,28rem)] lg:max-w-104 leading-[1.7] text-[15px] lg:text-[15px] xl:text-[0.97rem] text-center lg:text-left"
+          className="mt-5 mb-8 mx-auto lg:mx-0 max-w-[min(100%,29rem)] lg:max-w-104 leading-[1.68] text-[15px] lg:text-[15px] xl:text-[0.97rem] text-center lg:text-left"
           style={{
-            color: 'rgba(210, 212, 222, 0.82)',
+            color: 'rgba(214, 218, 226, 0.85)',
             fontFamily: 'var(--font-inter)',
             fontWeight: 400,
-            letterSpacing: '0.02em',
-            opacity: 0,
+            letterSpacing: '0.018em',
           }}
         >
           {t.hero.description}
@@ -129,7 +233,6 @@ export default function Hero() {
         <div
           ref={ctaRef}
           className="flex flex-col sm:flex-row lg:flex-row lg:items-stretch gap-3 sm:gap-3.5 justify-center lg:justify-start"
-          style={{ opacity: 0 }}
         >
           <Link href="/contact" className="hero-cta-primary group inline-flex items-center justify-center">
             {t.hero.primaryCta}
@@ -143,19 +246,23 @@ export default function Hero() {
         </div>
 
         {/* Trust bullets */}
-        <ul className="flex flex-col gap-2.5 mt-10 lg:mt-12">
-          {[t.hero.trust1, t.hero.trust2, t.hero.trust3].map((item) => (
+        <ul
+          ref={trustRef}
+          className="hero-trust-strip mt-9 lg:mt-11"
+        >
+          {[t.hero.trust1, t.hero.trust2, t.hero.trust3].map((item, index) => (
             <li
               key={item}
-              className="flex items-center justify-center lg:justify-start gap-2.5 text-[13px]"
+              className="hero-trust-item flex items-center justify-center lg:justify-start gap-2.5 text-[12px] lg:text-[12.5px]"
               style={{
-                color: 'rgba(210, 212, 222, 0.74)',
+                color: 'rgba(206, 210, 218, 0.8)',
                 fontFamily: 'var(--font-inter)',
-                letterSpacing: '0.01em',
+                letterSpacing: '0.015em',
               }}
             >
-              <CheckCircle className="w-3.5 h-3.5 shrink-0 text-[#cfa85a]" strokeWidth={2} />
+              <CheckCircle className="w-3.5 h-3.5 shrink-0 text-[#cfa85a]" strokeWidth={1.9} />
               <span>{item}</span>
+              {index < 2 ? <span className="hero-trust-separator" aria-hidden /> : null}
             </li>
           ))}
         </ul>
@@ -167,7 +274,7 @@ export default function Hero() {
       <div
         ref={carRef}
         className="relative lg:absolute lg:right-0 lg:top-0 lg:bottom-0 w-full lg:w-[50%] flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-10 lg:pb-0"
-        style={{ zIndex: 3, opacity: 0 }}
+        style={{ zIndex: 3 }}
       >
         {/* Soft spotlight behind the car */}
         <div
@@ -178,7 +285,10 @@ export default function Hero() {
           }}
         />
 
-        <div className="relative flex h-[56vw] sm:h-[48vw] lg:h-[min(82vh,760px)] xl:h-[min(88vh,820px)] w-full max-w-[min(96vw,900px)] items-center justify-center overflow-hidden">
+        <div
+          ref={carMediaRef}
+          className="hero-media-plane relative flex h-[56vw] sm:h-[48vw] lg:h-[min(82vh,760px)] xl:h-[min(88vh,820px)] w-full max-w-[min(96vw,900px)] items-center justify-center overflow-hidden"
+        >
           <Image
             src={HERO_CAR}
             alt="Premium detailed sports car"
@@ -216,6 +326,13 @@ export default function Hero() {
           style={{ background: 'linear-gradient(180deg, #C9A84C, transparent)' }}
         />
       </div>
+
+      <div
+        ref={handoffScrimRef}
+        className="hero-handoff-scrim pointer-events-none absolute inset-x-0 bottom-0 h-[28vh]"
+        style={{ zIndex: 4 }}
+        aria-hidden
+      />
     </section>
   );
 }
