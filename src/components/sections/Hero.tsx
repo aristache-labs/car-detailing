@@ -49,7 +49,7 @@ export default function Hero() {
         return;
       }
 
-      const introTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.08 });
+      const introTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.15 });
 
       introTl
         .fromTo(atmosphereRef.current, { opacity: 0 }, { opacity: 1, duration: 0.45 })
@@ -57,13 +57,13 @@ export default function Hero() {
           titleRef.current,
           { y: 30, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.65, ease: 'power4.out' },
-          '-=0.16'
+          '-=0.22'
         )
         .fromTo(
           subRef.current,
           { y: 20, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.5 },
-          '-=0.3'
+          '-=0.22'
         )
         .fromTo(
           ctaRef.current,
@@ -79,14 +79,14 @@ export default function Hero() {
         )
         .fromTo(
           carRef.current,
-          { x: 56, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.88, ease: 'power4.out' },
-          '-=0.56'
+          { x: 32, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.96, ease: 'power4.out' },
+          '-=0.62'
         );
 
       gsap.to(contentWrapRef.current, {
         y: -26,
-        opacity: 0.86,
+        opacity: 0.72,
         ease: 'none',
         scrollTrigger: {
           trigger: heroEl,
@@ -227,7 +227,7 @@ export default function Hero() {
           </Link>
 
           <Link href="/results" className="hero-cta-secondary group inline-flex items-center justify-center">
-            <Eye className="w-[15px] h-[15px] shrink-0 opacity-90" strokeWidth={2} />
+            <Eye className="w-[15px] h-[15px] shrink-0 opacity-90 transition-[transform,opacity] duration-220 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 group-hover:opacity-100" strokeWidth={2} />
             {t.hero.secondaryCta}
           </Link>
         </div>
@@ -269,7 +269,7 @@ export default function Hero() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse 72% 58% at 50% 52%, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.04) 48%, transparent 75%)',
+              'radial-gradient(ellipse 72% 58% at 50% 52%, rgba(201,168,76,0.18) 0%, rgba(201,168,76,0.05) 48%, transparent 75%)',
           }}
         />
 
