@@ -282,7 +282,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                  <div className="mt-6 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
                    <a
                      href={mailtoHref}
-                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#e4c77e] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.11)]"
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.08)] px-5 text-[12px] font-semibold uppercase tracking-widest text-[#e4c77e] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.11)]"
                      style={{ fontFamily: BODY_FONT }}
                    >
                      Email request
@@ -291,7 +291,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                      href={whatsappHref}
                      target="_blank"
                      rel="noopener noreferrer"
-                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.05)] px-5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.08)]"
+                     className="inline-flex min-h-11 items-center justify-center rounded-sm border border-[rgba(201,168,76,0.24)] bg-[rgba(201,168,76,0.05)] px-5 text-[12px] font-semibold uppercase tracking-widest text-[#ddbb70] transition-colors hover:border-[rgba(201,168,76,0.34)] hover:bg-[rgba(201,168,76,0.08)]"
                      style={{ fontFamily: BODY_FONT }}
                    >
                      WhatsApp request
@@ -436,7 +436,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                       accept="image/*"
                       multiple
                       onChange={handleFiles}
-                      className="w-full min-w-0 cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.24)] file:bg-[rgba(201,168,76,0.08)] file:px-2.5 file:py-1.5 file:text-[11px] file:font-semibold file:uppercase file:tracking-[0.1em] file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.32)] hover:file:bg-[rgba(201,168,76,0.1)]"
+                      className="w-full min-w-0 cursor-pointer bg-transparent text-[12px] leading-normal text-white/80 file:mr-3 file:cursor-pointer file:rounded-[2px] file:border file:border-[rgba(201,168,76,0.24)] file:bg-[rgba(201,168,76,0.08)] file:px-2.5 file:py-1.5 file:text-[11px] file:font-semibold file:uppercase file:tracking-widest file:text-[#ddbb70] hover:file:border-[rgba(201,168,76,0.32)] hover:file:bg-[rgba(201,168,76,0.1)]"
                     />
                   </div>
                    <p className={HELPER_TEXT_CLASS} style={{ fontFamily: BODY_FONT }}>
@@ -454,7 +454,7 @@ export default function Contact({ showIntro = true }: { showIntro?: boolean }) {
                   <div className="flex justify-center">
                     <button
                       type="submit"
-                      className="relative w-auto cursor-pointer overflow-hidden rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02]"
+                      className="relative w-auto cursor-pointer overflow-hidden rounded-sm border border-[rgba(255,255,255,0.08)] bg-[linear-gradient(180deg,#ddc48a_0%,#c79e52_52%,#a57d3e_100%)] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-[#070709] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-px hover:brightness-[1.02]"
                       style={{
                         fontFamily: BODY_FONT,
                         boxShadow:
